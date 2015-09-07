@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+environment/project/0.638982372/PATH/delimiter=\:
+environment/project/0.638982372/PATH/operation=replace
+environment/project/0.638982372/PATH/value=/usr/local/bin\:/usr/bin\:/bin\:/usr/local/games\:/usr/games\:/home/lieven/esp-open-sdk/xtensa-lx106-elf/bin
+environment/project/0.638982372/append=true
+environment/project/0.638982372/appendContributed=true

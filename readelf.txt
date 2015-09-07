@@ -1,0 +1,30 @@
+There are 22 section headers, starting at offset 0x65cd4:
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .data             PROGBITS        3ffe8000 0000e0 000bec 00  WA  0   0 16
+  [ 2] .rodata           PROGBITS        3ffe8bf0 000cd0 0010b0 00  WA  0   0 16
+  [ 3] .bss              NOBITS          3ffe9ca0 001d80 006cd0 00  WA  0   0 16
+  [ 4] .text             PROGBITS        40100000 001d80 006fbe 00  AX  0   0  4
+  [ 5] .irom0.text       PROGBITS        40240000 008d40 036a20 00  AX  0   0 16
+  [ 6] .debug_frame      PROGBITS        00000000 03f760 000f64 00      0   0  4
+  [ 7] .debug_info       PROGBITS        00000000 0406c4 0087f0 00      0   0  1
+  [ 8] .debug_abbrev     PROGBITS        00000000 048eb4 002268 00      0   0  1
+  [ 9] .debug_aranges    PROGBITS        00000000 04b120 0006e8 00      0   0  8
+  [10] .debug_ranges     PROGBITS        00000000 04b808 000418 00      0   0  1
+  [11] .debug_macro      PROGBITS        00000000 04bc20 003343 00      0   0  1
+  [12] .debug_line       PROGBITS        00000000 04ef63 0063ce 00      0   0  1
+  [13] .debug_str        PROGBITS        00000000 055331 00b901 01  MS  0   0  1
+  [14] .comment          PROGBITS        00000000 060c32 002091 00      0   0  1
+  [15] .xtensa.info      NOTE            00000000 062cc3 000038 00      0   0  1
+  [16] .xt.lit._ZN11Prot PROGBITS        00000000 062cfb 000008 00      0   0  1
+  [17] .xt.prop._ZN11Pro PROGBITS        00000000 062d03 000030 00      0   0  1
+  [18] .debug_loc        PROGBITS        00000000 062d33 002e91 00      0   0  1
+  [19] .shstrtab         STRTAB          00000000 065bc4 00010e 00      0   0  1
+  [20] .symtab           SYMTAB          00000000 066044 006490 10     21  97  4
+  [21] .strtab           STRTAB          00000000 06c4d4 006a26 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
