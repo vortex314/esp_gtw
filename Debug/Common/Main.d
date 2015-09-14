@@ -1,11 +1,13 @@
-Common/Main.d: ../Common/Main.cpp /home/lieven/projects/Common/inc/Msg.h \
- /home/lieven/projects/Common/inc/Bytes.h \
- /home/lieven/projects/Common/inc/Erc.h \
- /home/lieven/projects/Common/inc/Sys.h \
- /home/lieven/projects/Common/inc/BipBuffer.h \
- /home/lieven/projects/Common/inc/Handler.h \
- /home/lieven/projects/Common/inc/Msg.h \
- /home/lieven/projects/Common/inc/ProtoThread.h \
+Common/Main.d: ../Common/Main.cpp /home/lieven/workspace/Common/inc/Msg.h \
+ /home/lieven/workspace/Common/inc/Bytes.h \
+ /home/lieven/workspace/Common/inc/Erc.h \
+ /home/lieven/workspace/Common/inc/Sys.h \
+ /home/lieven/workspace/Common/inc/BipBuffer.h \
+ /home/lieven/workspace/Common/inc/Cbor.h \
+ /home/lieven/workspace/Common/inc/Str.h \
+ /home/lieven/workspace/Common/inc/Handler.h \
+ /home/lieven/workspace/Common/inc/Msg.h \
+ /home/lieven/workspace/Common/inc/ProtoThread.h \
  /home/lieven/workspace/esp_gtw/include/all.h \
  /home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include/c_types.h \
  /home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include/osapi.h \
@@ -36,23 +38,30 @@ Common/Main.d: ../Common/Main.cpp /home/lieven/projects/Common/inc/Msg.h \
  /home/lieven/workspace/esp_gtw/include/typedef.h \
  /home/lieven/workspace/esp_gtw/include/proto.h \
  /home/lieven/workspace/esp_gtw/include/mqtt.h \
- /home/lieven/workspace/esp_gtw/include/mqtt_msg.h
+ /home/lieven/workspace/esp_gtw/include/mqtt_msg.h \
+ /home/lieven/workspace/Common/inc/Cbor.h \
+ /home/lieven/workspace/Common/inc/Sys.h \
+ /home/lieven/workspace/esp_gtw/include/gpio16.h
 
-/home/lieven/projects/Common/inc/Msg.h:
+/home/lieven/workspace/Common/inc/Msg.h:
 
-/home/lieven/projects/Common/inc/Bytes.h:
+/home/lieven/workspace/Common/inc/Bytes.h:
 
-/home/lieven/projects/Common/inc/Erc.h:
+/home/lieven/workspace/Common/inc/Erc.h:
 
-/home/lieven/projects/Common/inc/Sys.h:
+/home/lieven/workspace/Common/inc/Sys.h:
 
-/home/lieven/projects/Common/inc/BipBuffer.h:
+/home/lieven/workspace/Common/inc/BipBuffer.h:
 
-/home/lieven/projects/Common/inc/Handler.h:
+/home/lieven/workspace/Common/inc/Cbor.h:
 
-/home/lieven/projects/Common/inc/Msg.h:
+/home/lieven/workspace/Common/inc/Str.h:
 
-/home/lieven/projects/Common/inc/ProtoThread.h:
+/home/lieven/workspace/Common/inc/Handler.h:
+
+/home/lieven/workspace/Common/inc/Msg.h:
+
+/home/lieven/workspace/Common/inc/ProtoThread.h:
 
 /home/lieven/workspace/esp_gtw/include/all.h:
 
@@ -115,3 +124,9 @@ Common/Main.d: ../Common/Main.cpp /home/lieven/projects/Common/inc/Msg.h \
 /home/lieven/workspace/esp_gtw/include/mqtt.h:
 
 /home/lieven/workspace/esp_gtw/include/mqtt_msg.h:
+
+/home/lieven/workspace/Common/inc/Cbor.h:
+
+/home/lieven/workspace/Common/inc/Sys.h:
+
+/home/lieven/workspace/esp_gtw/include/gpio16.h:

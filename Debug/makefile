@@ -45,7 +45,7 @@ all: esp_gtw
 esp_gtw: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	xtensa-lx106-elf-g++ -nostartfiles -nodefaultlibs -nostdlib -L/home/lieven/esp-open-sdk/sdk/lib -u call_user_start -Wl,-static -T/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/ld/eagle.app.v6.ld  -Wl,--gc-sections -mlongcalls -Xlinker -L/home/lieven/esp-open-sdk/sdk/lib -Xlinker -lssl -lmain -lhal -lphy -lpp -lnet80211 -llwip -lwpa -lssl -lmain -lcirom -Xlinker --gc-sections -Xlinker --no-undefined -o "esp_gtw" $(OBJS) $(USER_OBJS) $(LIBS)
+	xtensa-lx106-elf-g++ -nostartfiles -nodefaultlibs -nostdlib -L/home/lieven/esp-open-sdk/sdk/lib -L"/home/lieven/workspace/Common/Debug" -u call_user_start -Wl,-static -T/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/ld/eagle.app.v6.ld  -Wl,--gc-sections -mlongcalls -Xlinker -L/home/lieven/esp-open-sdk/sdk/lib -Xlinker -lssl -lmain -lhal -lphy -lpp -lnet80211 -llwip -lwpa -lssl -lmain -lcirom -Xlinker --gc-sections -Xlinker --no-undefined -o "esp_gtw" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

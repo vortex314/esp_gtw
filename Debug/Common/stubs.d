@@ -29,7 +29,12 @@ Common/stubs.d: ../Common/stubs.cpp \
  /home/lieven/workspace/esp_gtw/include/typedef.h \
  /home/lieven/workspace/esp_gtw/include/proto.h \
  /home/lieven/workspace/esp_gtw/include/mqtt.h \
- /home/lieven/workspace/esp_gtw/include/mqtt_msg.h
+ /home/lieven/workspace/esp_gtw/include/mqtt_msg.h \
+ /home/lieven/workspace/Common/inc/Cbor.h \
+ /home/lieven/workspace/Common/inc/Bytes.h \
+ /home/lieven/workspace/Common/inc/Erc.h \
+ /home/lieven/workspace/Common/inc/Sys.h \
+ /home/lieven/workspace/Common/inc/Str.h
 
 /home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include/mem.h:
 
@@ -92,3 +97,13 @@ Common/stubs.d: ../Common/stubs.cpp \
 /home/lieven/workspace/esp_gtw/include/mqtt.h:
 
 /home/lieven/workspace/esp_gtw/include/mqtt_msg.h:
+
+/home/lieven/workspace/Common/inc/Cbor.h:
+
+/home/lieven/workspace/Common/inc/Bytes.h:
+
+/home/lieven/workspace/Common/inc/Erc.h:
+
+/home/lieven/workspace/Common/inc/Sys.h:
+
+/home/lieven/workspace/Common/inc/Str.h:
