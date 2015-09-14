@@ -47,6 +47,11 @@ disconnectCounter = 0;
 uint32_t messagesPublished = 0;
 char mqttPrefix[30];
 
+#include "Msg.h"
+extern void MsgPump();
+extern void MsgPublish(void* src, Signal signal);
+extern void MsgInit(void* mqtt);
+
 void wifiConnectCb(uint8_t status) {
 	if (status == STATION_GOT_IP) {
 		MQTT_Connect(&mqttClient);
@@ -67,6 +72,8 @@ void mqttConnectedCb(uint32_t *args) {
 	ets_sprintf(topic,"PUT%s/realTime",mqttPrefix);
 	MQTT_Publish(client, topic, "12234578", 6, 0, 0);
 
+	MsgPublish(client,SIG_CONNECTED);
+
 	os_timer_arm(&hello_timer, DELAY, 1);
 
 }
@@ -76,6 +83,7 @@ void mqttDisconnectedCb(uint32_t *args) {
 	info("MQTT: Disconnected");
 	disconnectCounter++;
 	os_timer_disarm(&hello_timer);
+	MsgPublish(client,SIG_CONNECTED);
 }
 
 void mqttPublishedCb(uint32_t *args) {
@@ -102,24 +110,22 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 }
 
 bool ledOn = true;
-#include "Msg.h"
-extern void msgPump();
-extern void msgPublish(void* src, Signal signal);
+
 #include "util.h"
-LOCAL void iram hello_cb(void *arg) {
-	msgPublish(OS_CLOCK,SIG_TICK);
-	msgPump();
+LOCAL void IRAM hello_cb(void *arg) {
+	MsgPublish(OS_CLOCK,SIG_TICK);
+	MsgPump();
 	info("hello world ");
 //	info("HELLO WORLD ");
 //	debug(" DEBUG THE WORLD ");
-
+/*
 	if (ledOn) {
 		gpio16_output_set(1);
 		ledOn = false;
 	} else {
 		gpio16_output_set(0);
 		ledOn = true;
-	}
+	}*/
 
 	char buf[100];
 	char topic[30];
@@ -142,12 +148,20 @@ LOCAL void iram hello_cb(void *arg) {
 	messagesPublished++;
 }
 
-void user_init(void) {
+LOCAL os_timer_t tick_timer;
+LOCAL void IRAM tick_cb(void *arg) {
+	MsgPublish(2,SIG_TICK);
+	MsgPump();
+	disconnectCounter++;
+}
+
+IROM void user_init(void) {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	gpio_init();
 	gpio16_output_conf();
 	os_delay_us(1000000);
 	info("Starting");
+	MsgInit(&mqttClient);
 	ets_sprintf(mqttPrefix,"/ESP_%08X",system_get_chip_id());
 	uart_div_modify(0, UART_CLK_FREQ / 115200);
 
@@ -172,6 +186,10 @@ void user_init(void) {
 	os_timer_disarm(&hello_timer);
 
 	os_timer_setfn(&hello_timer, (os_timer_func_t *) hello_cb, (void *) 0);
+
+	os_timer_disarm(&tick_timer);
+	os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
+	os_timer_arm(&tick_timer,1,1); // 1 msec repeat
 
 	info("System started ...");
 }

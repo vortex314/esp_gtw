@@ -8,13 +8,13 @@
 
 const char* space = "                                 ";
 
-void strAlign(char *dst, int dstLength, char* src, int srcLength) {
+void IROM strAlign(char *dst, int dstLength, char* src, int srcLength) {
 	int copyLength = (srcLength < dstLength) ? srcLength : dstLength;
 	strncat(dst, src, copyLength);
 	strncat(dst, space, dstLength - copyLength);
 }
 
-void irom log(const char* file, const char* function, const char * format, ...) {
+void IROM SysLog(const char* file, const char* function, const char * format, ...) {
 	uint32_t time = system_get_time() / 1000;
 	char buffer[256];
 	va_list args;
@@ -28,4 +28,3 @@ void irom log(const char* file, const char* function, const char * format, ...) 
 	ets_printf("%06d.%03d | %s | %s\r\n", time / 1000, time % 1000, dst,
 			buffer);
 }
-

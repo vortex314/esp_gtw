@@ -38,6 +38,7 @@ extern "C" {
 #include "user_config.h"
 
 #ifdef __cplusplus
+#include "Cbor.h"
 }
 #endif
 

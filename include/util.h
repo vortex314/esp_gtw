@@ -7,11 +7,11 @@ extern "C" {
 
 
 extern void os_printf_plus(const char* s, ...);
-extern void log(const char* file,const char* function,const char* fmt, ...);
+extern void SysLog(const char* file,const char* function,const char* fmt, ...);
 extern void logShort(const char * format, ...);
 
-#define debug(fmt,...) log(__FILE__,__FUNCTION__,fmt,##__VA_ARGS__)
-#define info(fmt,...)  log(__FILE__, __PRETTY_FUNCTION__ ,fmt,##__VA_ARGS__)
+#define debug(fmt,...) SysLog(__FILE__,__FUNCTION__,fmt,##__VA_ARGS__)
+#define info(fmt,...)  SysLog(__FILE__, __PRETTY_FUNCTION__ ,fmt,##__VA_ARGS__)
 #define BOOL uint8_t
 
 typedef enum __attribute__ ((__packed__))
@@ -24,8 +24,8 @@ typedef enum __attribute__ ((__packed__))
 
 //_Static_assert(sizeof(bool_t) == 1, "sizeof(bool_t) != 1");
 
-#define irom __attribute__((section(".irom0.text")))
-#define iram __attribute__((section(".text")))
+#define IROM __attribute__((section(".irom0.text")))
+#define IRAM __attribute__((section(".text")))
 #define noinline __attribute__ ((noinline))
 #define attr_pure __attribute__ ((pure))
 #define attr_const __attribute__ ((const))

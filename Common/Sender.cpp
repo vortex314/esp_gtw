@@ -8,19 +8,19 @@
 #include "Sender.h"
 #include "all.h"
 
-Sender::Sender(Handler* mqtt) {
+IROM Sender::Sender(Handler* mqtt) {
 	_mqtt = mqtt;
 	_myProp = 0;
 }
 
-Sender::~Sender() {
+IROM Sender::~Sender() {
 
 }
 
 
 extern "C" void ets_sprintf(char *s,char* fmt,...);
 
-bool irom Sender::dispatch(Msg& msg) {
+bool IROM Sender::dispatch(Msg& msg) {
 	PT_BEGIN()
 	DISCONNECTED: {
 		PT_YIELD_UNTIL( msg.is(_mqtt, SIG_CONNECTED));
