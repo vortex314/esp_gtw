@@ -80,4 +80,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>eagle.app.v6.ld</name>
+			<type>1</type>
+			<location>/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/ld/eagle.app.v6.ld</location>
+		</link>
+	</linkedResources>
 </projectDescription>
