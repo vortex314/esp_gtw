@@ -9,6 +9,7 @@
 #define UARTESP8266_H_
 
 #include <Uart.h>
+#include "CircBuf.h"
 #include "uart.h"
 // EXPOSED C routines for C interrupt handlers
 extern "C" void uart0Receive(uint8_t b);
@@ -16,7 +17,8 @@ extern "C" void uart1Receive(uint8_t b);
 
 class UartEsp8266: public Uart {
 private:
-
+	CircBuf _in;
+	CircBuf _out;
 	uint8_t _index;
 public:
 	static UartEsp8266* _uart0;

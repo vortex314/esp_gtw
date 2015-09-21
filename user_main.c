@@ -42,9 +42,13 @@
 MQTT_Client mqttClient;
 #define DELAY 1000/* milliseconds */
 LOCAL os_timer_t hello_timer;
+
 uint32_t count = 0;
 disconnectCounter = 0;
 uint32_t messagesPublished = 0;
+uint32_t tcpConnectCounter=0;
+uint32_t mqttConnectCounter=0;
+uint32_t wifiConnectCounter=0;
 char mqttPrefix[30];
 
 #include "Msg.h"
@@ -81,7 +85,7 @@ void mqttConnectedCb(uint32_t *args) {
 void mqttDisconnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 	info("MQTT: Disconnected");
-	disconnectCounter++;
+	mqttConnectCounter++;
 	os_timer_disarm(&hello_timer);
 	MsgPublish(client,SIG_CONNECTED);
 }
@@ -111,6 +115,18 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 
 bool ledOn = true;
 
+LOCAL void IROM publish(const char* topicName,uint32_t value) {
+	char buf[100];
+	char topic[30];
+	info(" Message %d ", count);
+
+	ets_sprintf(buf, "%d", value);
+	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
+	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 2, 0);
+	messagesPublished++;
+
+}
+
 #include "util.h"
 LOCAL void IRAM hello_cb(void *arg) {
 	MsgPublish(OS_CLOCK,SIG_TICK);
@@ -131,21 +147,15 @@ LOCAL void IRAM hello_cb(void *arg) {
 	char topic[30];
 	info(" Message %d ", count);
 
-	ets_sprintf(buf, "%d", count++);
-	ets_sprintf(topic,"%s/count",mqttPrefix);
-	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
-
-	ets_sprintf(buf, "%d", disconnectCounter);
-	ets_sprintf(topic,"%s/disconnectCounter",mqttPrefix);
-	MQTT_Publish(&mqttClient, topic, buf, strlen(buf),
-			0, 0);
-	ets_sprintf(buf, "%d", messagesPublished);
-	ets_sprintf(topic,"%s/messagesPublished",mqttPrefix);
-	MQTT_Publish(&mqttClient, topic, buf, strlen(buf),
-			0, 0);
+	publish("count",count++);
+	publish("mqtt/connections",mqttConnectCounter);
+	publish("wifi/connections",wifiConnectCounter);
+	publish("tcp/connections",tcpConnectCounter);
+	publish("mqtt/published",messagesPublished);
+	publish("system/heapSize",system_get_free_heap_size());
 
 	os_timer_arm(&hello_timer, DELAY, 1);
-	messagesPublished++;
+
 }
 
 LOCAL os_timer_t tick_timer;

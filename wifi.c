@@ -15,6 +15,8 @@
 #include "user_config.h"
 #include "config.h"
 
+extern uint32_t wifiConnectCounter;
+
 static ETSTimer WiFiLinker;
 WifiCallback wifiCb = NULL;
 static uint8_t wifiStatus = STATION_IDLE, lastWifiStatus = STATION_IDLE;
@@ -40,6 +42,7 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 
 			info("STATION_WRONG_PASSWORD");
 			wifi_station_connect();
+			wifiConnectCounter++;
 
 
 		}
@@ -48,7 +51,7 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 
 			info("STATION_NO_AP_FOUND");
 			wifi_station_connect();
-
+			wifiConnectCounter++;
 
 		}
 		else if(wifi_station_get_connect_status() == STATION_CONNECT_FAIL)
@@ -56,6 +59,7 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 
 			info("STATION_CONNECT_FAIL");
 			wifi_station_connect();
+			wifiConnectCounter++;
 
 		}
 		else
@@ -95,5 +99,6 @@ void ICACHE_FLASH_ATTR WIFI_Connect(uint8_t* ssid, uint8_t* pass, WifiCallback c
 
 	wifi_station_set_auto_connect(TRUE);
 	wifi_station_connect();
+	wifiConnectCounter++;
 }
 

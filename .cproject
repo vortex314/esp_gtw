@@ -58,7 +58,7 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1505451701" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1065140071" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
-								<option id="gnu.cpp.link.option.flags.92119245" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-u call_user_start -Wl,-static -T/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/ld/eagle.app.v6.ld  -Wl,--gc-sections -mlongcalls " valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.92119245" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-u call_user_start -Wl,-static -T../ld/link.ld  -Wl,--gc-sections -mlongcalls " valueType="string"/>
 								<option id="gnu.cpp.link.option.paths.1016800191" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/sdk/lib"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/Debug}&quot;"/>

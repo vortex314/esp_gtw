@@ -10,6 +10,7 @@ C_SRCS += \
 ../mqtt_msg.c \
 ../proto.c \
 ../queue.c \
+../rboot_loc.c \
 ../ringbuf.c \
 ../uart.c \
 ../user_main.c \
@@ -24,6 +25,7 @@ OBJS += \
 ./mqtt_msg.o \
 ./proto.o \
 ./queue.o \
+./rboot_loc.o \
 ./ringbuf.o \
 ./uart.o \
 ./user_main.o \
@@ -38,6 +40,7 @@ C_DEPS += \
 ./mqtt_msg.d \
 ./proto.d \
 ./queue.d \
+./rboot_loc.d \
 ./ringbuf.d \
 ./uart.d \
 ./user_main.d \

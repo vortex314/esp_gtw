@@ -328,9 +328,11 @@ mqtt_tcpclient_discon_cb(void *arg)
   * @param  arg: contain the ip link information
   * @retval None
   */
+extern uint32_t tcpConnectCounter;
 void ICACHE_FLASH_ATTR
 mqtt_tcpclient_connect_cb(void *arg)
 {
+	tcpConnectCounter++;
 	struct espconn *pCon = (struct espconn *)arg;
 	MQTT_Client* client = (MQTT_Client *)pCon->reverse;
 
