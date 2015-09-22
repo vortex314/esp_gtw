@@ -122,7 +122,7 @@ LOCAL void IROM publish(const char* topicName,uint32_t value) {
 
 	ets_sprintf(buf, "%d", value);
 	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
-	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 2, 0);
+	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
 	messagesPublished++;
 
 }
@@ -162,7 +162,6 @@ LOCAL os_timer_t tick_timer;
 LOCAL void IRAM tick_cb(void *arg) {
 	MsgPublish(2,SIG_TICK);
 	MsgPump();
-	disconnectCounter++;
 }
 
 IROM void user_init(void) {

@@ -105,7 +105,7 @@ CFG_Load()
 
 		info("default configuration");
 
-		CFG_Save();
+// LMR commented out 		CFG_Save();
 	}
 
 }

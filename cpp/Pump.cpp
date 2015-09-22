@@ -21,8 +21,9 @@ extern "C"  IROM void MsgPump() {
 		msg.rewind();
 		Handler::dispatchToChilds(msg);
 		msg.free();
-		if ((__count++) % 1000 == 0)
-			SysLog(__FILE__, __FUNCTION__, "Count loop : %d ", __count);
+		if ((__count++) % 1000 == 0) {
+			SysLog(__FILE__, __FUNCTION__, "Count loop : %d Committed size :%d ", __count,msg._bb->getCommittedSize());
+		}
 	}
 }
 

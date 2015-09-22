@@ -44,6 +44,7 @@ public:
 			case SIG_TICK: {
 				gpio16_output_set(_isOn);
 				_isOn = !_isOn;
+				SysLog(__FILE__, __FUNCTION__, "Led Tick ");
 				break;
 			}
 			case SIG_CONNECTED: {
