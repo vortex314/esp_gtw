@@ -14,6 +14,7 @@
 #include "debug.h"
 #include "user_config.h"
 #include "config.h"
+#include "Sys.h"
 
 extern uint32_t wifiConnectCounter;
 
@@ -40,7 +41,7 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 		if(wifi_station_get_connect_status() == STATION_WRONG_PASSWORD)
 		{
 
-			info("STATION_WRONG_PASSWORD");
+			INFO("STATION_WRONG_PASSWORD");
 			wifi_station_connect();
 			wifiConnectCounter++;
 
@@ -49,7 +50,7 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 		else if(wifi_station_get_connect_status() == STATION_NO_AP_FOUND)
 		{
 
-			info("STATION_NO_AP_FOUND");
+			INFO("STATION_NO_AP_FOUND");
 			wifi_station_connect();
 			wifiConnectCounter++;
 
@@ -57,14 +58,14 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 		else if(wifi_station_get_connect_status() == STATION_CONNECT_FAIL)
 		{
 
-			info("STATION_CONNECT_FAIL");
+			INFO("STATION_CONNECT_FAIL");
 			wifi_station_connect();
 			wifiConnectCounter++;
 
 		}
 		else
 		{
-			info("STATION_IDLE");
+			INFO("STATION_IDLE");
 		}
 
 		os_timer_setfn(&WiFiLinker, (os_timer_func_t *)wifi_check_ip, NULL);
@@ -81,7 +82,7 @@ void ICACHE_FLASH_ATTR WIFI_Connect(uint8_t* ssid, uint8_t* pass, WifiCallback c
 {
 	struct station_config stationConf;
 
-	info("WIFI_INIT");
+	INFO("WIFI_INIT");
 	wifi_set_opmode(STATION_MODE);
 	wifi_station_set_auto_connect(FALSE);
 	wifiCb = cb;

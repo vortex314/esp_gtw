@@ -9,7 +9,7 @@
 #define USER_DEBUG_H_
 #include "util.h"
 #ifndef INFO
-#define INFO os_printf
+//#define INFO os_printf
 
 #define IINFO(fmt, ...) do {        \
 		char str[200]; \

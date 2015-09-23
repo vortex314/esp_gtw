@@ -29,6 +29,7 @@
 * POSSIBILITY OF SUCH DAMAGE.
 */
 #include "all.h"
+#include "Sys.h"
 /*
 #include "ets_sys.h"
 #include "os_type.h"
@@ -73,7 +74,7 @@ void ICACHE_FLASH_ATTR
 CFG_Load()
 {
 
-	info("load ...");
+	INFO("load ...");
 	spi_flash_read((CFG_LOCATION + 3) * SPI_FLASH_SEC_SIZE,
 				   (uint32 *)&saveFlag, sizeof(SAVE_FLAG));
 	if (saveFlag.flag == 0) {
@@ -103,7 +104,7 @@ CFG_Load()
 
 		sysCfg.mqtt_keepalive = MQTT_KEEPALIVE;
 
-		info("default configuration");
+		INFO("default configuration");
 
 // LMR commented out 		CFG_Save();
 	}

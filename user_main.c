@@ -38,6 +38,7 @@
 #include "user_interface.h"
 #include "mem.h"
 #include "gpio16.h"
+#include "Sys.h"
 
 MQTT_Client mqttClient;
 #define DELAY 1000/* milliseconds */
@@ -66,7 +67,7 @@ void wifiConnectCb(uint8_t status) {
 }
 void mqttConnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
-	info("MQTT: Connected");
+	INFO("MQTT: Connected");
 
 	char topic[30];
 
@@ -84,7 +85,7 @@ void mqttConnectedCb(uint32_t *args) {
 
 void mqttDisconnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
-	info("MQTT: Disconnected");
+	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
 	os_timer_disarm(&hello_timer);
 	MsgPublish(client,SIG_CONNECTED);
@@ -92,7 +93,7 @@ void mqttDisconnectedCb(uint32_t *args) {
 
 void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
-	info("MQTT: Published");
+	INFO("MQTT: Published");
 }
 
 void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
@@ -108,7 +109,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 	os_memcpy(dataBuf, data, data_len);
 	dataBuf[data_len] = 0;
 
-	info("Receive topic: %s, data: %s ", topicBuf, dataBuf);
+	INFO("Receive topic: %s, data: %s ", topicBuf, dataBuf);
 	os_free(topicBuf);
 	os_free(dataBuf);
 }
@@ -118,7 +119,7 @@ bool ledOn = true;
 LOCAL void IROM publish(const char* topicName,uint32_t value) {
 	char buf[100];
 	char topic[30];
-	info(" Message %d ", count);
+	INFO(" Message %d ", count);
 
 	ets_sprintf(buf, "%d", value);
 	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
@@ -131,8 +132,8 @@ LOCAL void IROM publish(const char* topicName,uint32_t value) {
 LOCAL void IRAM hello_cb(void *arg) {
 	MsgPublish(OS_CLOCK,SIG_TICK);
 	MsgPump();
-	info("hello world ");
-//	info("HELLO WORLD ");
+	INFO("hello world ");
+//	INFO("HELLO WORLD ");
 //	debug(" DEBUG THE WORLD ");
 /*
 	if (ledOn) {
@@ -145,7 +146,7 @@ LOCAL void IRAM hello_cb(void *arg) {
 
 	char buf[100];
 	char topic[30];
-	info(" Message %d ", count);
+	INFO(" Message %d ", count);
 
 	publish("count",count++);
 	publish("mqtt/connections",mqttConnectCounter);
@@ -169,7 +170,7 @@ IROM void user_init(void) {
 	gpio_init();
 	gpio16_output_conf();
 	os_delay_us(1000000);
-	info("Starting");
+	INFO("Starting");
 	MsgInit(&mqttClient);
 	ets_sprintf(mqttPrefix,"/ESP_%08X",system_get_chip_id());
 	uart_div_modify(0, UART_CLK_FREQ / 115200);
@@ -200,5 +201,5 @@ IROM void user_init(void) {
 	os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
 	os_timer_arm(&tick_timer,1,1); // 1 msec repeat
 
-	info("System started ...");
+	INFO("System started ...");
 }

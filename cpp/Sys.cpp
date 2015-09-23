@@ -38,7 +38,7 @@ IROM void Sys::log(const char* file, const char* function, const char * format,
 //	char buffer[256];
 	va_list args;
 	va_start(args, format);
-	SysLog(file,function,format,args);
+	SysLog("INFO.",file,function,format,args);
 //	ets_vsnprintf(buffer, 256, format, args);
 	va_end(args);
 	/*

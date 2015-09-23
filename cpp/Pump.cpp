@@ -15,14 +15,14 @@ extern "C" {
 }
 uint32_t __count = 0;
 //Sender sender();
-static Msg msg(0);
+static Msg msg(256);
 extern "C"  IROM void MsgPump() {
 	while (msg.receive()) {
 		msg.rewind();
 		Handler::dispatchToChilds(msg);
 		msg.free();
 		if ((__count++) % 1000 == 0) {
-			SysLog(__FILE__, __FUNCTION__, "Count loop : %d Committed size :%d ", __count,msg._bb->getCommittedSize());
+			INFO( "Count loop : %d Committed size :%d ", __count,msg._bb->getCommittedSize());
 		}
 	}
 }
