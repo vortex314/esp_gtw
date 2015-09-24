@@ -1,4 +1,5 @@
 #include "malloc.h"
+#include "Sys.h"
 extern "C" {
 #include "mem.h"
 };
@@ -7,24 +8,30 @@ extern "C" {
 //extern "C" void os_free(void* ptr);
 
 extern "C" void* malloc(size_t size){
-	return pvPortMalloc(size);
+	INFO("malloc(%d)",size);
+	return os_zalloc(size);
+//	return pvPortMalloc(size);
 }
 
 extern "C" void free(void* ptr){
-	return vPortFree(ptr);
+	return os_free(ptr);
+//	return vPortFree(ptr);
 }
 
 
 void * operator new(size_t size) {
-	return malloc(size);
+	return os_zalloc(size);
+//	return malloc(size);
 }
 
 void operator delete(void * ptr) {
-	free(ptr);
+	 os_free(ptr);
+//	free(ptr);
 }
 
 void * operator new[](size_t size) {
-	return malloc(size);
+	return os_zalloc(size);
+//	return malloc(size);
 }
 
 void operator delete[](void * ptr) {
