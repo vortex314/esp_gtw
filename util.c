@@ -4,7 +4,7 @@
  *  Created on: Sep 5, 2015
  *      Author: lieven
  */
-#include "all.h"
+#include "Sys.h"
 
 const char* space = "                                 ";
 
@@ -13,28 +13,32 @@ void IROM strAlign(char *dst, int dstLength, char* src, int srcLength) {
 	strncat(dst, src, copyLength);
 	strncat(dst, space, dstLength - copyLength);
 }
-
+#include <stdarg.h>
 char lastLog[256];
-void* lastStack = 0xFFFFFFFF;
 
-void IROM SysLog(const char* type, const char* file, const char* function,
+const char* SysLogLevelStr[] = { "TRACE", "DEBUG", "INFO", "WARN", "ERROR",
+		"FATAL" };
+
+void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 		const char * format, ...) {
 	uint32_t time = system_get_time() / 1000;
+
 	char buffer[256];
 	va_list args;
 	va_start(args, format);
 	ets_vsnprintf(buffer, 256, format, args);
 	va_end(args);
+
 	char dst[30];
 	dst[0] = '\0';
 	strAlign(dst, 15, file, strlen(file));
 	strAlign(&dst[15], 15, function, strlen(function));
-	ets_printf("%06d.%03d |%s| %s | %s\r\n", time / 1000, time % 1000, type,
-			dst, buffer);
-	ets_strcpy(lastLog, buffer);
-	if (&buffer < lastStack) {
-		ets_sprintf(lastLog,"%06d.%03d |%s| %s | %s \r\n", time / 1000,
-				time % 1000, type, dst, buffer);
+
+	if (level < LOG_INFO) { // put log in mqtt buffer
+		ets_sprintf(lastLog, "%s:%s:%s", SysLogLevelStr[level], dst, buffer);
 	}
-//	ets_sprintf(lastLog, "%d", buffer);
+
+	ets_printf("%06d.%03d |%s| %s | %d %s\r\n", time / 1000, time % 1000,
+			SysLogLevelStr[level], dst, level, buffer);
+
 }

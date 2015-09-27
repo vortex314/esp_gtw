@@ -156,6 +156,7 @@ LOCAL void IROM hello_cb(void *arg) {
 	publish("tcp/connections",tcpConnectCounter);
 	publish("mqtt/published",messagesPublished);
 	publishStr("system/log",lastLog);
+	publishStr("system/build",__DATE__ " " __TIME__);
 	publish("system/heapSize",system_get_free_heap_size());
 
 	os_timer_arm(&hello_timer, DELAY, 1);

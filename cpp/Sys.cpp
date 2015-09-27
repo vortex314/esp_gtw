@@ -38,7 +38,7 @@ return system_get_time() / 1000;
 #include "stdarg.h"
 
 IROM
-void Sys::log(const char* level,const char* file, const	char * function, const char *	format,	... )
+void Sys::log(SysLogLevel level,const char* file, const	char * function, const char *	format,	... )
 {
 	va_list args;
 	va_start(args , format);

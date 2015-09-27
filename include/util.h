@@ -7,7 +7,6 @@ extern "C" {
 
 
 extern void os_printf_plus(const char* s, ...);
-extern void SysLog(const char *type ,const char* file,const char* function,const char* fmt, ...);
 extern void logShort(const char * format, ...);
 
 #define debug(fmt,...) SysLog(__FILE__,__FUNCTION__,fmt,##__VA_ARGS__)
