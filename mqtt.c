@@ -396,7 +396,7 @@ MQTT_Publish(MQTT_Client *client, const char* topic, const char* data, int data_
 {
 	uint8_t dataBuffer[MQTT_BUF_SIZE];
 	uint16_t dataLen;
-	INFO("PUIBLISH : %s = %s",topic,data);
+	INFO("PUBLISH : %s = %s",topic,data);
 	client->mqtt_state.outbound_message = mqtt_msg_publish(&client->mqtt_state.mqtt_connection,
 										 topic, data, data_length,
 										 qos, retain,
@@ -472,7 +472,7 @@ MQTT_Task(os_event_t *e)
 
 
 			client->sendTimeout = MQTT_SEND_TIMOUT;
-			INFO("MQTT: Sending, type: %d, id: %04X",client->mqtt_state.pending_msg_type, client->mqtt_state.pending_msg_id);
+//			INFO("MQTT: Sending, type: %d, id: %04X",client->mqtt_state.pending_msg_type, client->mqtt_state.pending_msg_id);
 			if(client->security){
 				espconn_secure_sent(client->pCon, dataBuffer, dataLen);
 			}

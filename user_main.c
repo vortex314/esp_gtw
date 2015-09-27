@@ -126,15 +126,22 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 
 LOCAL void IROM publish(const char* topicName,uint32_t value) {
 	char buf[100];
-	char topic[30];
-	INFO(" Message %d ", count);
+	char topic[40];
 
 	ets_sprintf(buf, "%d", value);
 	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
 	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
 	messagesPublished++;
 }
-extern char* lastLog;
+
+LOCAL void IROM publishStr(const char* topicName,char* buf) {
+	char topic[40];
+
+	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
+	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
+	messagesPublished++;
+}
+extern char lastLog[];
 #include "util.h"
 LOCAL void IROM hello_cb(void *arg) {
 
@@ -148,7 +155,7 @@ LOCAL void IROM hello_cb(void *arg) {
 	publish("wifi/connections",wifiConnectCounter);
 	publish("tcp/connections",tcpConnectCounter);
 	publish("mqtt/published",messagesPublished);
-	publish("system/log",lastLog);
+	publishStr("system/log",lastLog);
 	publish("system/heapSize",system_get_free_heap_size());
 
 	os_timer_arm(&hello_timer, DELAY, 1);

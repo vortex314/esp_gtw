@@ -15,6 +15,7 @@ void IROM strAlign(char *dst, int dstLength, char* src, int srcLength) {
 }
 
 char lastLog[256];
+void* lastStack = 0xFFFFFFFF;
 
 void IROM SysLog(const char* type, const char* file, const char* function,
 		const char * format, ...) {
@@ -30,7 +31,10 @@ void IROM SysLog(const char* type, const char* file, const char* function,
 	strAlign(&dst[15], 15, function, strlen(function));
 	ets_printf("%06d.%03d |%s| %s | %s\r\n", time / 1000, time % 1000, type,
 			dst, buffer);
-	strcpy(lastLog,buffer);
-//	ets_sprintf(lastLog, "%06d.%03d |%s| %s | %s\r\n", time / 1000,
-//			time % 1000, type, dst, buffer);
+	ets_strcpy(lastLog, buffer);
+	if (&buffer < lastStack) {
+		ets_sprintf(lastLog,"%06d.%03d |%s| %s | %s \r\n", time / 1000,
+				time % 1000, type, dst, buffer);
+	}
+//	ets_sprintf(lastLog, "%d", buffer);
 }
