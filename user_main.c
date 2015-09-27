@@ -55,16 +55,23 @@ char mqttPrefix[30];
 #include "Msg.h"
 extern void MsgPump();
 extern void MsgPublish(void* src, Signal signal);
-extern void MsgInit(void* mqtt);
+extern void MsgInit();
+
+const char* MQTT_ID="MQTT";
+const char* CLOCK_ID="CLOCK";
+const char* TCP_ID="TCP";
+const char* WIFI_ID="TCP";
 
 void wifiConnectCb(uint8_t status) {
 	if (status == STATION_GOT_IP) {
+		MsgPublish(WIFI_ID,SIG_CONNECTED);
 		MQTT_Connect(&mqttClient);
 	} else {
+		MsgPublish(WIFI_ID,SIG_DISCONNECTED);
 		MQTT_Disconnect(&mqttClient);
-
 	}
 }
+
 void mqttConnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 	INFO("MQTT: Connected");
@@ -77,7 +84,7 @@ void mqttConnectedCb(uint32_t *args) {
 	ets_sprintf(topic,"PUT%s/realTime",mqttPrefix);
 	MQTT_Publish(client, topic, "12234578", 6, 0, 0);
 
-	MsgPublish(client,SIG_CONNECTED);
+	MsgPublish(MQTT_ID,SIG_CONNECTED);
 
 	os_timer_arm(&hello_timer, DELAY, 1);
 
@@ -88,12 +95,13 @@ void mqttDisconnectedCb(uint32_t *args) {
 	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
 	os_timer_disarm(&hello_timer);
-	MsgPublish(client,SIG_CONNECTED);
+	MsgPublish(MQTT_ID,SIG_CONNECTED);
 }
 
 void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 	INFO("MQTT: Published");
+	MsgPublish(MQTT_ID,SIG_TXD);
 }
 
 void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
@@ -114,7 +122,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 	os_free(dataBuf);
 }
 
-bool ledOn = true;
+//bool ledOn = true;
 
 LOCAL void IROM publish(const char* topicName,uint32_t value) {
 	char buf[100];
@@ -125,45 +133,34 @@ LOCAL void IROM publish(const char* topicName,uint32_t value) {
 	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
 	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
 	messagesPublished++;
-
 }
-
+extern char* lastLog;
 #include "util.h"
-LOCAL void IRAM hello_cb(void *arg) {
-	MsgPublish(OS_CLOCK,SIG_TICK);
-	MsgPump();
-	INFO("hello world ");
-//	INFO("HELLO WORLD ");
-//	debug(" DEBUG THE WORLD ");
-/*
-	if (ledOn) {
-		gpio16_output_set(1);
-		ledOn = false;
-	} else {
-		gpio16_output_set(0);
-		ledOn = true;
-	}*/
+LOCAL void IROM hello_cb(void *arg) {
 
-	char buf[100];
-	char topic[30];
-	INFO(" Message %d ", count);
+//	char buf[100];
+//	char topic[30];
+
+	MsgPump();
 
 	publish("count",count++);
 	publish("mqtt/connections",mqttConnectCounter);
 	publish("wifi/connections",wifiConnectCounter);
 	publish("tcp/connections",tcpConnectCounter);
 	publish("mqtt/published",messagesPublished);
+	publish("system/log",lastLog);
 	publish("system/heapSize",system_get_free_heap_size());
 
 	os_timer_arm(&hello_timer, DELAY, 1);
 
 }
-
+/*
 LOCAL os_timer_t tick_timer;
+
 LOCAL void IRAM tick_cb(void *arg) {
-	MsgPublish(2,SIG_TICK);
+//	MsgPublish(CLOCK_ID,SIG_TICK);
 	MsgPump();
-}
+} */
 
 IROM void user_init(void) {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
@@ -171,8 +168,8 @@ IROM void user_init(void) {
 	gpio16_output_conf();
 	os_delay_us(1000000);
 	INFO("Starting");
-	MsgInit(&mqttClient);
-	ets_sprintf(mqttPrefix,"/ESP_%08X",system_get_chip_id());
+	MsgInit();
+	ets_sprintf(mqttPrefix,"/limero314/ESP_%08X",system_get_chip_id());
 	uart_div_modify(0, UART_CLK_FREQ / 115200);
 
 	CFG_Load();
@@ -196,10 +193,14 @@ IROM void user_init(void) {
 	os_timer_disarm(&hello_timer);
 
 	os_timer_setfn(&hello_timer, (os_timer_func_t *) hello_cb, (void *) 0);
-
+/*
 	os_timer_disarm(&tick_timer);
 	os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
 	os_timer_arm(&tick_timer,1,1); // 1 msec repeat
+*/
+	clockInit();
 
 	INFO("System started ...");
 }
+
+

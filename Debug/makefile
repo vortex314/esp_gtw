@@ -9,6 +9,7 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include tools/subdir.mk
+-include ld/subdir.mk
 -include cpp/subdir.mk
 -include subdir.mk
 -include objects.mk
@@ -41,11 +42,14 @@ endif
 # All Target
 all: esp_gtw
 
+dependents:
+	-cd /home/lieven/workspace/Common/Debug && $(MAKE) all
+
 # Tool invocations
-esp_gtw: $(OBJS) $(USER_OBJS)
+esp_gtw: $(OBJS) $(USER_OBJS) /home/lieven/workspace/Common/Debug/libCommon.a
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	xtensa-lx106-elf-g++ -nostartfiles -nodefaultlibs -nostdlib -L/home/lieven/esp-open-sdk/sdk/lib -L"/home/lieven/workspace/Common/Debug" -u call_user_start -Wl,-static -T../ld/link.ld  -Wl,--gc-sections -mlongcalls -Xlinker -L/home/lieven/esp-open-sdk/sdk/lib -Xlinker -lssl -lmain -lhal -lphy -lpp -lnet80211 -llwip -lwpa -lssl -lmain -lcirom -Xlinker --gc-sections -Xlinker --no-undefined -o "esp_gtw" $(OBJS) $(USER_OBJS) $(LIBS)
+	xtensa-lx106-elf-g++ -nostartfiles -nodefaultlibs -nostdlib -L"/home/lieven/workspace/Common/Debug" -Lgcc -L/home/lieven/esp-open-sdk/sdk/lib -u call_user_start -Wl,-static -T../ld/link.ld  -Wl,--gc-sections -mlongcalls -Xlinker -L/home/lieven/esp-open-sdk/sdk/lib -Xlinker -lssl -lmain -lhal -lphy -lpp -lnet80211 -llwip -lwpa -lssl -lmain -lcirom -Xlinker --gc-sections -Xlinker --no-undefined -o "esp_gtw" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -56,5 +60,6 @@ clean:
 
 .PHONY: all clean dependents
 .SECONDARY:
+/home/lieven/workspace/Common/Debug/libCommon.a:
 
 -include ../makefile.targets

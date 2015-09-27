@@ -1,37 +1,18 @@
-#include "malloc.h"
 #include "Sys.h"
-extern "C" {
-#include "mem.h"
-};
 
-//extern "C" void *os_malloc(size_t size);
-//extern "C" void os_free(void* ptr);
 
-extern "C" void* malloc(size_t size){
-	INFO("malloc(%d)",size);
-	return os_zalloc(size);
-//	return pvPortMalloc(size);
-}
-
-extern "C" void free(void* ptr){
-	return os_free(ptr);
-//	return vPortFree(ptr);
-}
 
 
 void * operator new(size_t size) {
-	return os_zalloc(size);
-//	return malloc(size);
+ return malloc(size);
 }
 
 void operator delete(void * ptr) {
-	 os_free(ptr);
-//	free(ptr);
+	free(ptr);
 }
 
 void * operator new[](size_t size) {
-	return os_zalloc(size);
-//	return malloc(size);
+	return malloc(size);
 }
 
 void operator delete[](void * ptr) {
@@ -50,6 +31,7 @@ extern "C" {
 #endif
 
 void _exit(int code) {
+	DEBUG("SHouldn't arrive here !");
 	while(1);
 }
 
@@ -58,10 +40,12 @@ void __aeabi_atexit() {
 }
 
 void __exidx_end() {
+	DEBUG("SHouldn't arrive here !");
 	while(1);
 }
 
 void __exidx_start() {
+	DEBUG("SHouldn't arrive here !");
 	while(1);
 }
 /*
@@ -69,6 +53,7 @@ void __exidx_start() {
  Send a signal. Minimal implementation:
  */
 int _kill(int pid, int sig) {
+	DEBUG("SHouldn't arrive here !");
 	errno = EINVAL;
 	return (-1);
 }
@@ -112,6 +97,7 @@ int _ctype(char c) {
  Query whether output stream is a terminal. For consistency with the other minimal implementations,
  */
 int _isatty(int file) {
+	DEBUG("SHouldn't arrive here !");
 	switch (file) {
 		case STDOUT_FILENO:
 		case STDERR_FILENO:
@@ -129,6 +115,7 @@ int _isatty(int file) {
  Returns -1 on error or number of bytes sent
  */
 int _write(int file, char *ptr, int len) {
+	DEBUG("SHouldn't arrive here !");
 	return 0;
 }
 /*
@@ -138,6 +125,7 @@ int _write(int file, char *ptr, int len) {
  */
 
 int _read(int file, void *ptr, size_t len) {
+	DEBUG("SHouldn't arrive here !");
 
 	return 0;
 }
@@ -218,7 +206,7 @@ void _kill_r(int id){
 caddr_t
 _sbrk_rr (int incr)
 {
-	os_printf_plus(" _sbrk_r called ! ");
+	DEBUG("SHouldn't arrive here !");
 	return 0;
 	/*
   extern char end;		// Defined by the linker
