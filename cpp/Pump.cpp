@@ -18,7 +18,7 @@ extern "C" const char* CLOCK_ID;
 extern "C" const char* MQTT_ID;
 extern "C" const char* TCP_ID;
 extern "C" const char* WIFI_ID;
-const char* LED_ID="LED";
+const char* LED_ID = "LED";
 
 class LedBlink: public Handler {
 	bool _isOn;
@@ -30,10 +30,10 @@ public:
 			Handler("LedBlink") {
 		_isOn = false;
 		_msecInterval = 100;
-		_mqtt = (void*)MQTT_ID;
+		_mqtt = (void*) MQTT_ID;
 	}
 
-	IROM void init(){
+	IROM void init() {
 		gpio16_output_conf();
 	}
 
@@ -50,7 +50,7 @@ public:
 			case SIG_TICK: {
 				gpio16_output_set(_isOn);
 				_isOn = !_isOn;
-				Msg::publish((void*)LED_ID,SIG_TXD);
+				Msg::publish((void*) LED_ID, SIG_TXD);
 //				INFO( "Led Tick ");
 				break;
 			}
@@ -71,41 +71,61 @@ public:
 }
 };
 
-
-
 uint32_t __count = 0;
 //Sender sender();
 static Msg* msg;
 LedBlink *led;
+#include "mutex.h"
+mutex_t mutex;
+extern "C" uint32_t conflicts;
 
-extern "C"   void  MsgInit() {
+extern "C" void MsgInit() {
 	Msg::init();
 	msg = new Msg(256);
 	led = new LedBlink();
 	led->init();
+	CreateMutex(&mutex);
 }
 
-extern "C"   void MsgPump() {
-	Msg::init();
-	while (msg->receive()) {
-		if ( !msg->is(0,SIG_TICK))
-			INFO(">>>>>>>>>>   %s , %s ",(const char* )msg->src(),strSignal[msg->signal()]);
-		msg->rewind();
-		Handler::dispatchToChilds(*msg);
-		msg->free();
-		if ((__count++) % 1000 == 0) {
-			INFO( "Count loop : %d Committed size :%d ", __count,msg->_bb->getCommittedSize());
+extern "C" void MsgPump() {
+
+	static uint32_t sigCount = 0;
+	static void* src = 0;
+	static Signal signal = SIG_IDLE;
+
+	if (GetMutex(&mutex)) {
+
+		while (msg->receive()) {
+
+			if (msg->is(src, signal)) {
+				sigCount++;
+			} else {
+				if (sigCount) {
+					INFO(">>>>>>>>>>   %s , %s x %d ",
+							(const char*) src, strSignal[signal], sigCount);
+				}
+				INFO(">>>>>>>>>>   %s , %s ",
+						(const char* )msg->src(), strSignal[msg->signal()]);
+				src = msg->src();
+				signal = msg->signal();
+				sigCount = 0;
+			}
+
+			Handler::dispatchToChilds(*msg);
+			msg->free();
 		}
+		ReleaseMutex(&mutex);
+	} else {
+		conflicts++;
 	}
 }
 
-
-
-extern "C"   void MsgPublish(void* src, Signal signal) {
-	Msg::publish(src, signal);
+extern "C" void MsgPublish(void* src, Signal signal) {
+	if (GetMutex(&mutex)) {
+		Msg::publish(src, signal);
+		ReleaseMutex(&mutex);
+	} else {
+		conflicts++;
+	}
 }
-
-
-
-
 

@@ -39,6 +39,8 @@
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2009187411" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
+									<listOptionValue builtIn="false" value="STA_SSID='&quot;Merckx&quot;'"/>
+									<listOptionValue builtIn="false" value="STA_PASS='&quot;LievenMarletteEwoutRonald&quot;'"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1847501458" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -54,6 +56,8 @@
 								<option id="gnu.cpp.compiler.option.preprocessor.def.730202308" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
+									<listOptionValue builtIn="false" value="STA_SSID=&quot;Merckx&quot;"/>
+									<listOptionValue builtIn="false" value="STA_PASS=LievenMarletteEwoutRonald"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.2047560662" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -ffunction-sections -fno-rtti -fno-exceptions -mlongcalls -mtext-section-literals" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1703538761" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -160,6 +164,8 @@
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2060140780" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
+									<listOptionValue builtIn="false" value="STA_SSID=&quot;Merckx&quot;"/>
+									<listOptionValue builtIn="false" value="STA_PASS=LievenMarletteEwoutRonald"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.557804839" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -179,6 +185,8 @@
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1868884921" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
+									<listOptionValue builtIn="false" value="STA_SSID=&quot;Merckx&quot;"/>
+									<listOptionValue builtIn="false" value="STA_PASS=LievenMarletteEwoutRonald"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1436362263" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>

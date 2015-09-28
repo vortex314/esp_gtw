@@ -28,6 +28,7 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 */
+#include "Msg.h"
 
 #include "user_interface.h"
 #include "osapi.h"
@@ -257,7 +258,8 @@ mqtt_tcpclient_sent_cb(void *arg)
 {
 	struct espconn *pCon = (struct espconn *)arg;
 	MQTT_Client* client = (MQTT_Client *)pCon->reverse;
-	INFO("TCP: Sent");
+//	INFO("TCP: Sent");
+	MsgPublish(TCP_ID,SIG_TXD);
 	client->sendTimeout = 0;
 	if(client->connState == MQTT_DATA && client->mqtt_state.pending_msg_type == MQTT_MSG_TYPE_PUBLISH){
 		if(client->publishedCb)

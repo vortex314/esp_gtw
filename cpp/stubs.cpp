@@ -28,11 +28,11 @@ extern int errno;
 
 #ifdef __cplusplus
 extern "C" {
+#include "Erc.h"
 #endif
 
 void _exit(int code) {
-	DEBUG("SHouldn't arrive here !");
-	while(1);
+	ASSERT(false);
 }
 
 void __aeabi_atexit() {
@@ -40,20 +40,18 @@ void __aeabi_atexit() {
 }
 
 void __exidx_end() {
-	DEBUG("SHouldn't arrive here !");
-	while(1);
+	ASSERT(false);
 }
 
 void __exidx_start() {
-	DEBUG("SHouldn't arrive here !");
-	while(1);
+	ASSERT(false);
 }
 /*
  kill
  Send a signal. Minimal implementation:
  */
 int _kill(int pid, int sig) {
-	DEBUG("SHouldn't arrive here !");
+	ASSERT(false);
 	errno = EINVAL;
 	return (-1);
 }
@@ -115,7 +113,7 @@ int _isatty(int file) {
  Returns -1 on error or number of bytes sent
  */
 int _write(int file, char *ptr, int len) {
-	DEBUG("SHouldn't arrive here !");
+	ASSERT(false);
 	return 0;
 }
 /*
@@ -125,7 +123,7 @@ int _write(int file, char *ptr, int len) {
  */
 
 int _read(int file, void *ptr, size_t len) {
-	DEBUG("SHouldn't arrive here !");
+	ASSERT(false);
 
 	return 0;
 }
@@ -206,7 +204,7 @@ void _kill_r(int id){
 caddr_t
 _sbrk_rr (int incr)
 {
-	DEBUG("SHouldn't arrive here !");
+	ASSERT(false);
 	return 0;
 	/*
   extern char end;		// Defined by the linker

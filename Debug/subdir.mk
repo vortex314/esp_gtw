@@ -8,6 +8,7 @@ C_SRCS += \
 ../gpio16.c \
 ../mqtt.c \
 ../mqtt_msg.c \
+../mutex.c \
 ../proto.c \
 ../queue.c \
 ../rboot_loc.c \
@@ -23,6 +24,7 @@ OBJS += \
 ./gpio16.o \
 ./mqtt.o \
 ./mqtt_msg.o \
+./mutex.o \
 ./proto.o \
 ./queue.o \
 ./rboot_loc.o \
@@ -38,6 +40,7 @@ C_DEPS += \
 ./gpio16.d \
 ./mqtt.d \
 ./mqtt_msg.d \
+./mutex.d \
 ./proto.d \
 ./queue.d \
 ./rboot_loc.d \
@@ -53,7 +56,7 @@ C_DEPS += \
 %.o: ../%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross GCC Compiler'
-	xtensa-lx106-elf-gcc -DICACHE_FLASH -D__ESP8266__ -I"/home/lieven/workspace/Common" -I/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include -I"/home/lieven/workspace/esp_gtw/include" -I"/home/lieven/workspace/Common/inc" -Os -w -Wall -c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals  -D__ets__ -DICACHE_FLASH -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	xtensa-lx106-elf-gcc -DICACHE_FLASH -D__ESP8266__ -DSTA_SSID='"Merckx"' -DSTA_PASS='"LievenMarletteEwoutRonald"' -I"/home/lieven/workspace/Common" -I/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include -I"/home/lieven/workspace/esp_gtw/include" -I"/home/lieven/workspace/Common/inc" -Os -w -Wall -c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals  -D__ets__ -DICACHE_FLASH -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

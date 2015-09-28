@@ -41,7 +41,7 @@
 #include "Sys.h"
 
 MQTT_Client mqttClient;
-#define DELAY 1000/* milliseconds */
+#define DELAY 2000/* milliseconds */
 LOCAL os_timer_t hello_timer;
 
 uint32_t count = 0;
@@ -92,7 +92,7 @@ void mqttConnectedCb(uint32_t *args) {
 
 void mqttDisconnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
-	INFO("MQTT: Disconnected");
+//	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
 	os_timer_disarm(&hello_timer);
 	MsgPublish(MQTT_ID,SIG_CONNECTED);
@@ -100,7 +100,7 @@ void mqttDisconnectedCb(uint32_t *args) {
 
 void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
-	INFO("MQTT: Published");
+//	INFO("MQTT: Published");
 	MsgPublish(MQTT_ID,SIG_TXD);
 }
 
@@ -143,12 +143,11 @@ LOCAL void IROM publishStr(const char* topicName,char* buf) {
 }
 extern char lastLog[];
 #include "util.h"
+extern uint32_t conflicts;
 LOCAL void IROM hello_cb(void *arg) {
 
 //	char buf[100];
 //	char topic[30];
-
-	MsgPump();
 
 	publish("count",count++);
 	publish("mqtt/connections",mqttConnectCounter);
@@ -158,6 +157,7 @@ LOCAL void IROM hello_cb(void *arg) {
 	publishStr("system/log",lastLog);
 	publishStr("system/build",__DATE__ " " __TIME__);
 	publish("system/heapSize",system_get_free_heap_size());
+	publish("system/conflicts",conflicts);
 
 	os_timer_arm(&hello_timer, DELAY, 1);
 
