@@ -6,6 +6,7 @@
 C_SRCS += \
 ../config.c \
 ../gpio16.c \
+../hw_timer.c \
 ../mqtt.c \
 ../mqtt_msg.c \
 ../mutex.c \
@@ -22,6 +23,7 @@ C_SRCS += \
 OBJS += \
 ./config.o \
 ./gpio16.o \
+./hw_timer.o \
 ./mqtt.o \
 ./mqtt_msg.o \
 ./mutex.o \
@@ -38,6 +40,7 @@ OBJS += \
 C_DEPS += \
 ./config.d \
 ./gpio16.d \
+./hw_timer.d \
 ./mqtt.d \
 ./mqtt_msg.d \
 ./mutex.d \

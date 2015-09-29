@@ -147,18 +147,18 @@ LOCAL void IROM publishStr(const char* topicName, char* buf) {
 extern char lastLog[];
 #include "util.h"
 extern uint32_t conflicts;
-uint32_t timeoutValue = 0;
-uint32_t millis() {
+uint64_t timeoutValue = 0;
+/*uint32_t millis() {
 	return (system_get_time() / 1000);
-}
-extern uint64_t bootTime;
+}*/
+extern uint64_t SysUpTime;
 LOCAL void IROM tick_cb(void *arg) {
 
 //	char buf[100];
 //	char topic[30];
 	MsgPublish(CLOCK_ID, SIG_TICK);
 	MsgPump();
-	if (millis() > timeoutValue) {
+	if (SysMillis() > timeoutValue) {
 		if (mqttConnected) {
 			publish("count", count++);
 			publish("mqtt/connections", mqttConnectCounter);
@@ -168,8 +168,8 @@ LOCAL void IROM tick_cb(void *arg) {
 			publishStr("system/log", lastLog);
 			publishStr("system/build", __DATE__ " " __TIME__);
 			publish("system/heapSize", system_get_free_heap_size());
-			publish("system/bootTime", bootTime);
-			timeoutValue = millis() + 2000;
+			publish("system/bootTime", SysUpTime);
+			timeoutValue = SysMillis() + 2000;
 		}
 	}
 

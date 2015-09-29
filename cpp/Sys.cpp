@@ -18,6 +18,7 @@ extern "C" {
 #include "mem.h"
 #include "util.h"
 
+extern uint64_t SysUpTime;
 
 IROM void* malloc(size_t size) {
 INFO("malloc(%d)",size);
@@ -32,14 +33,15 @@ return vPortFree(ptr);
 #endif
 
 uint64_t SysMillis() {
-	static uint32_t lastSample=0;
+/*	static uint32_t lastSample=0;
 	static uint64_t major=0;
 	uint32_t minor = system_get_time();
 	if ( minor < lastSample ) {	// carry the overflow
 		major += 0x100000000UL;
 	}
 	lastSample = minor ;
-	return (major | minor)/1000;
+	return (major | minor)/1000;*/
+	return SysUpTime;
 }
 
 uint64_t Sys::millis(){

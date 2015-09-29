@@ -25,6 +25,6 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 . \
 tools \
-ld \
 cpp \
+ld \
 
