@@ -28,7 +28,7 @@ void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 		return;
 
 	}
-	uint32_t time = system_get_time() / 1000;
+	uint32_t time = SysMillis();
 
 	char buffer[256];
 	va_list args;
@@ -41,7 +41,7 @@ void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 	strAlign(dst, 18, file, strlen(file));
 	strAlign(&dst[18], 18, function, strlen(function));
 
-	if (level < LOG_INFO) { // put log in mqtt buffer
+	if (level > LOG_INFO) { // put log in mqtt buffer
 		ets_sprintf(lastLog, "%s:%s:%s", SysLogLevelStr[level], dst, buffer);
 	}
 

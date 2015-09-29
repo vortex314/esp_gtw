@@ -2,6 +2,7 @@ pwd
 USB=/dev/ttyUSB0
 PROJECT=$1
 echo $PROJECT
+./reset $USB
 ../tools/esptool.py --port $USB  read_mac
 ../tools/esptool.py elf2image ../Debug/$PROJECT
 ./esptool2 -debug -bin -boot2 -4096 -dio -40 ../Debug/$PROJECT $PROJECT.bin .text .data .rodata

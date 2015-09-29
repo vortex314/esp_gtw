@@ -16,8 +16,7 @@
 #define MQTT_USER			"DVES_USER"
 #define MQTT_PASS			"DVES_PASS"
 
-//#define STA_SSID "Merckx"
-//#define STA_PASS "LievenMarletteEwoutRonald"
+
 #define STA_TYPE AUTH_WPA2_PSK
 
 #define MQTT_RECONNECT_TIMEOUT 	5	/*second*/

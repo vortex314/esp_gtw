@@ -29,7 +29,7 @@ public:
 	IROM LedBlink() :
 			Handler("LedBlink") {
 		_isOn = false;
-		_msecInterval = 100;
+		_msecInterval = 200;
 		_mqtt = (void*) MQTT_ID;
 	}
 
@@ -87,30 +87,32 @@ extern "C" void MsgInit() {
 	CreateMutex(&mutex);
 }
 
-extern "C" void MsgPump() {
+
+void logMsg(Msg* msg){
 
 	static uint32_t sigCount = 0;
 	static void* src = 0;
 	static Signal signal = SIG_IDLE;
+	if (msg->is(src, signal)) {
+		sigCount++;
+	} else {
+		if (sigCount) {
+			INFO(">>>>>>>>>>   %s , %s x %d ",
+					(const char*) src, strSignal[signal], sigCount);
+		}
+		INFO(">>>>>>>>>>   %s , %s ",
+				(const char* )msg->src(), strSignal[msg->signal()]);
+		src = msg->src();
+		signal = msg->signal();
+		sigCount = 0;
+	}
+}
+
+extern "C" void MsgPump() {
 
 	if (GetMutex(&mutex)) {
-
 		while (msg->receive()) {
-
-			if (msg->is(src, signal)) {
-				sigCount++;
-			} else {
-				if (sigCount) {
-					INFO(">>>>>>>>>>   %s , %s x %d ",
-							(const char*) src, strSignal[signal], sigCount);
-				}
-				INFO(">>>>>>>>>>   %s , %s ",
-						(const char* )msg->src(), strSignal[msg->signal()]);
-				src = msg->src();
-				signal = msg->signal();
-				sigCount = 0;
-			}
-
+			logMsg(msg);
 			Handler::dispatchToChilds(*msg);
 			msg->free();
 		}

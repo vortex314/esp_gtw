@@ -41,33 +41,34 @@
 #include "Sys.h"
 
 MQTT_Client mqttClient;
-#define DELAY 2000/* milliseconds */
+#define DELAY 20/* milliseconds */
 LOCAL os_timer_t hello_timer;
 
 uint32_t count = 0;
 disconnectCounter = 0;
 uint32_t messagesPublished = 0;
-uint32_t tcpConnectCounter=0;
-uint32_t mqttConnectCounter=0;
-uint32_t wifiConnectCounter=0;
+uint32_t tcpConnectCounter = 0;
+uint32_t mqttConnectCounter = 0;
+uint32_t wifiConnectCounter = 0;
 char mqttPrefix[30];
+uint8_t mqttConnected = FALSE;
 
 #include "Msg.h"
 extern void MsgPump();
 extern void MsgPublish(void* src, Signal signal);
 extern void MsgInit();
 
-const char* MQTT_ID="MQTT";
-const char* CLOCK_ID="CLOCK";
-const char* TCP_ID="TCP";
-const char* WIFI_ID="TCP";
+const char* MQTT_ID = "MQTT";
+const char* CLOCK_ID = "CLOCK";
+const char* TCP_ID = "TCP";
+const char* WIFI_ID = "TCP";
 
 void wifiConnectCb(uint8_t status) {
 	if (status == STATION_GOT_IP) {
-		MsgPublish(WIFI_ID,SIG_CONNECTED);
+		MsgPublish(WIFI_ID, SIG_CONNECTED);
 		MQTT_Connect(&mqttClient);
 	} else {
-		MsgPublish(WIFI_ID,SIG_DISCONNECTED);
+		MsgPublish(WIFI_ID, SIG_DISCONNECTED);
 		MQTT_Disconnect(&mqttClient);
 	}
 }
@@ -78,15 +79,16 @@ void mqttConnectedCb(uint32_t *args) {
 
 	char topic[30];
 
-	ets_sprintf(topic,"PUT%s/#",mqttPrefix);
+	ets_sprintf(topic, "PUT%s/#", mqttPrefix);
 	MQTT_Subscribe(client, topic, 0);
 
-	ets_sprintf(topic,"PUT%s/realTime",mqttPrefix);
+	ets_sprintf(topic, "PUT%s/realTime", mqttPrefix);
 	MQTT_Publish(client, topic, "12234578", 6, 0, 0);
 
-	MsgPublish(MQTT_ID,SIG_CONNECTED);
+	MsgPublish(MQTT_ID, SIG_CONNECTED);
 
-	os_timer_arm(&hello_timer, DELAY, 1);
+//	os_timer_arm(&hello_timer, DELAY, 1);
+	mqttConnected = TRUE;
 
 }
 
@@ -95,13 +97,14 @@ void mqttDisconnectedCb(uint32_t *args) {
 //	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
 	os_timer_disarm(&hello_timer);
-	MsgPublish(MQTT_ID,SIG_CONNECTED);
+	MsgPublish(MQTT_ID, SIG_CONNECTED);
+	mqttConnected = FALSE;
 }
 
 void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Published");
-	MsgPublish(MQTT_ID,SIG_TXD);
+	MsgPublish(MQTT_ID, SIG_TXD);
 }
 
 void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
@@ -124,60 +127,71 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 
 //bool ledOn = true;
 
-LOCAL void IROM publish(const char* topicName,uint32_t value) {
+LOCAL void IROM publish(const char* topicName, uint32_t value) {
 	char buf[100];
 	char topic[40];
 
 	ets_sprintf(buf, "%d", value);
-	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
+	ets_sprintf(topic, "%s/%s", mqttPrefix, topicName);
 	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
 	messagesPublished++;
 }
 
-LOCAL void IROM publishStr(const char* topicName,char* buf) {
+LOCAL void IROM publishStr(const char* topicName, char* buf) {
 	char topic[40];
 
-	ets_sprintf(topic,"%s/%s",mqttPrefix,topicName);
+	ets_sprintf(topic, "%s/%s", mqttPrefix, topicName);
 	MQTT_Publish(&mqttClient, topic, buf, strlen(buf), 0, 0);
 	messagesPublished++;
 }
 extern char lastLog[];
 #include "util.h"
 extern uint32_t conflicts;
-LOCAL void IROM hello_cb(void *arg) {
+uint32_t timeoutValue = 0;
+uint32_t millis() {
+	return (system_get_time() / 1000);
+}
+extern uint64_t bootTime;
+LOCAL void IROM tick_cb(void *arg) {
 
 //	char buf[100];
 //	char topic[30];
+	MsgPublish(CLOCK_ID, SIG_TICK);
+	MsgPump();
+	if (millis() > timeoutValue) {
+		if (mqttConnected) {
+			publish("count", count++);
+			publish("mqtt/connections", mqttConnectCounter);
+			publish("wifi/connections", wifiConnectCounter);
+			publish("tcp/connections", tcpConnectCounter);
+			publish("mqtt/published", messagesPublished);
+			publishStr("system/log", lastLog);
+			publishStr("system/build", __DATE__ " " __TIME__);
+			publish("system/heapSize", system_get_free_heap_size());
+			publish("system/bootTime", bootTime);
+			timeoutValue = millis() + 2000;
+		}
+	}
 
-	publish("count",count++);
-	publish("mqtt/connections",mqttConnectCounter);
-	publish("wifi/connections",wifiConnectCounter);
-	publish("tcp/connections",tcpConnectCounter);
-	publish("mqtt/published",messagesPublished);
-	publishStr("system/log",lastLog);
-	publishStr("system/build",__DATE__ " " __TIME__);
-	publish("system/heapSize",system_get_free_heap_size());
-	publish("system/conflicts",conflicts);
-
-	os_timer_arm(&hello_timer, DELAY, 1);
+//	os_timer_arm(&hello_timer, DELAY, 1);
 
 }
 /*
-LOCAL os_timer_t tick_timer;
+ LOCAL os_timer_t tick_timer;
 
-LOCAL void IRAM tick_cb(void *arg) {
-//	MsgPublish(CLOCK_ID,SIG_TICK);
-	MsgPump();
-} */
+ LOCAL void IRAM tick_cb(void *arg) {
+ //	MsgPublish(CLOCK_ID,SIG_TICK);
+ MsgPump();
+ } */
 
 IROM void user_init(void) {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	gpio_init();
 	gpio16_output_conf();
 	os_delay_us(1000000);
-	INFO("Starting");
+	INFO("Starting version : " __DATE__ " " __TIME__);
 	MsgInit();
-	ets_sprintf(mqttPrefix,"/limero314/ESP_%08X",system_get_chip_id());
+	ets_sprintf(mqttPrefix, "/limero314/ESP_%08X", system_get_chip_id());
 	uart_div_modify(0, UART_CLK_FREQ / 115200);
 
 	CFG_Load();
@@ -200,15 +214,13 @@ IROM void user_init(void) {
 	// Set up a timer to send the message
 	os_timer_disarm(&hello_timer);
 
-	os_timer_setfn(&hello_timer, (os_timer_func_t *) hello_cb, (void *) 0);
-/*
-	os_timer_disarm(&tick_timer);
-	os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
-	os_timer_arm(&tick_timer,1,1); // 1 msec repeat
-*/
+	os_timer_setfn(&hello_timer, (os_timer_func_t *) tick_cb, (void *) 0);
+	os_timer_arm(&hello_timer, DELAY, 1);
+	/*	os_timer_disarm(&tick_timer);
+	 os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
+	 os_timer_arm(&tick_timer, 1, 1);*/
+	// 1 msec repeat
 	clockInit();
-
 	INFO("System started ...");
 }
-
 

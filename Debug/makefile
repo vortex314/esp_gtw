@@ -43,7 +43,7 @@ endif
 all: esp_gtw
 
 dependents:
-	-cd /home/lieven/workspace/Common/Debug && $(MAKE) all
+	-cd /home/lieven/workspace/Common/Debug && $(MAKE) clean all
 
 # Tool invocations
 esp_gtw: $(OBJS) $(USER_OBJS) /home/lieven/workspace/Common/Debug/libCommon.a

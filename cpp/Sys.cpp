@@ -31,8 +31,19 @@ return vPortFree(ptr);
 }
 #endif
 
-uint64_t Sys::millis() {
-return system_get_time() / 1000;
+uint64_t SysMillis() {
+	static uint32_t lastSample=0;
+	static uint64_t major=0;
+	uint32_t minor = system_get_time();
+	if ( minor < lastSample ) {	// carry the overflow
+		major += 0x100000000UL;
+	}
+	lastSample = minor ;
+	return (major | minor)/1000;
+}
+
+uint64_t Sys::millis(){
+	return SysMillis();
 }
 
 #include "stdarg.h"
