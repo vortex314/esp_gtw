@@ -26,5 +26,4 @@ SUBDIRS := \
 . \
 tools \
 cpp \
-ld \
 

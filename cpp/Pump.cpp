@@ -78,6 +78,9 @@ LedBlink *led;
 #include "mutex.h"
 mutex_t mutex;
 extern "C" uint32_t conflicts;
+#include "Flash.h"
+
+Flash flash;
 
 extern "C" void MsgInit() {
 	Msg::init();
@@ -85,6 +88,7 @@ extern "C" void MsgInit() {
 	led = new LedBlink();
 	led->init();
 	CreateMutex(&mutex);
+	flash.init();
 }
 
 
