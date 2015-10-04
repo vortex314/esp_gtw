@@ -12,7 +12,7 @@
 
 class Config {
 public:
-	virtual ~Config()=0;
+	virtual ~Config(){};
 	virtual bool set(const char* key, const char*s)=0;
 	virtual bool set(const char* key, int value)=0;
 	virtual void get(int& value, const char* key, int dflt)=0;

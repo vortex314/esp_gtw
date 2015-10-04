@@ -188,9 +188,12 @@ IROM void user_init(void) {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	gpio_init();
 	gpio16_output_conf();
+	clockInit();
 	os_delay_us(1000000);
+	INFO("");
 	INFO("Starting version : " __DATE__ " " __TIME__);
 	MsgInit();
+	os_delay_us(1000000);
 	ets_sprintf(mqttPrefix, "/limero314/ESP_%08X", system_get_chip_id());
 	uart_div_modify(0, UART_CLK_FREQ / 115200);
 
@@ -220,7 +223,7 @@ IROM void user_init(void) {
 	 os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
 	 os_timer_arm(&tick_timer, 1, 1);*/
 	// 1 msec repeat
-	clockInit();
+
 	INFO("System started ...");
 }
 

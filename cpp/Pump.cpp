@@ -74,21 +74,24 @@ public:
 uint32_t __count = 0;
 //Sender sender();
 static Msg* msg;
-LedBlink *led;
+
 #include "mutex.h"
 mutex_t mutex;
 extern "C" uint32_t conflicts;
 #include "Flash.h"
 
-Flash flash;
+Flash* flash;
+LedBlink *led;
 
 extern "C" void MsgInit() {
+	INFO(" Start Messge Pump ");
 	Msg::init();
 	msg = new Msg(256);
 	led = new LedBlink();
 	led->init();
 	CreateMutex(&mutex);
-	flash.init();
+	flash=new Flash();
+	flash->init();
 }
 
 
