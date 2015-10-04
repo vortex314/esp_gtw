@@ -4,7 +4,7 @@
  *  Created on: Oct 1, 2015
  *      Author: lieven
  */
-#include "Flash.h"
+
 extern "C" {
 #include "esp8266.h"
 #include "user_interface.h"
@@ -18,54 +18,66 @@ extern "C" {
 #include "mqtt.h"
 #include "queue.h"
 #include "ets_sys.h"
-};
+}
+#include "Flash.h"
 #include "Sys.h"
 
-uint32_t roundQuad(uint32_t value) {
+IROM uint32_t roundQuad(uint32_t value) {
 if ( value & 0x3 ) return (value & 0xFFFFFFFC )+0x4;
 else return value;
 }
 
-Flash::Flash() {
+IROM Flash::Flash() {
 _keyMax=0;
 _freePos=0;
 _pageIdx=0;
 _sequence=0;
 }
 
-Flash::~Flash() {
+IROM Flash::~Flash() {
 };
 
-bool Flash::set(const char* key, const char*s) {
+IROM bool Flash::set(const char* key, const char*s) {
+int idx=findOrCreateKey(key);
+writeItem(idx+1,(uint8_t*)s,strlen(s));
 return true;
 }
-bool Flash::set(const char* key, int value) {
-return true;
-}
-void Flash::get(int& value, const char* key, int dflt) {
 
-}
-void Flash::get(char* value, int length, const char* key, const char* dflt) {
-
+IROM bool Flash::set(const char* key, int value) {
+int idx=findOrCreateKey(key);
+		writeItem(idx+1,(uint8_t*)value,4);
+		return true;
 	}
 
-	void Flash::init() {
+	IROM void Flash::get(int& value, const char* key, int dflt) {
+		int idx=findKey(key);
+		uint16_t length=4;
+		if (idx>=0 ) loadItem(idx+1,(uint8_t*)&value,length);
+		else value=dflt;
+	}
+
+	IROM void Flash::get(char* value, int length, const char* key, const char* dflt) {
+		int idx=findKey(key);
+		uint16_t len=4;
+		if ( idx>=0 ) {
+			if ( !loadItem(idx+1,(uint8_t*)value,len) ) {
+				os_strncpy(value,dflt,length);
+			} else {
+				value[len]='\0';
+			}
+		}
+		else os_strncpy(value,dflt,length);
+	}
+
+	IROM void Flash::init() {
 		INFO("");
 		findOrCreateActivePage();
-//		writeItem(0,(uint8_t*)"ABBA",5);
-		uint16_t pos= findItem(2);
-		Quad w;
-		spi_flash_read(pageAddress(_pageIdx)+pos,&w.w,4);
-		INFO(" pos : %u ,index : %u , length : %u",pos,w.index,w.length);
-		char str[20];
-		os_strcpy(str,"NOPE\0");
-		for(int i=0;i<w.length;i++) {
-			str[i]=flashReadByte(pos+4+i);
-		}
-		INFO(" loadItem : %s ",str);
+
+//		writeItem(13,(uint8_t*)"iot.eclipse.org",os_strlen("iot.eclipse.org"));
+		INFO(" findKey ( 'mqtt/host') : %d ",findKey("mqtt/host"));
 	}
 
-	bool Flash::isValidPage(uint32_t pageIdx,uint32_t& sequence) {
+	IROM bool Flash::isValidPage(uint32_t pageIdx,uint32_t& sequence) {
 		uint32_t magic;
 		uint32_t index=0;
 		if ( spi_flash_read(pageAddress(pageIdx),&magic,sizeof(magic))!=SPI_FLASH_RESULT_OK ) {
@@ -81,22 +93,57 @@ void Flash::get(char* value, int length, const char* key, const char* dflt) {
 		return true;
 	}
 
-	uint16_t Flash::findFreeBegin() {
+	IROM uint16_t Flash::findFreeBegin() {
 		Quad temp;
 		uint16_t offset=8; // after signature and sequence
 		while(true) {
 			if ( spi_flash_read(pageAddress(_pageIdx)+offset,&temp.w,4)!= SPI_FLASH_RESULT_OK )
 			return 0;
 			if ( temp.w == 0xFFFFFFFF ) break;
-			if ( (temp.index & 1==0) && (temp.index >_keyMax)) _keyMax=temp.index;
+			if ( ((temp.index & 1)==0) && (temp.index >_keyMax)) _keyMax=temp.index;
 			offset = offset + roundQuad(temp.length)+4;
-			if ( offset > PAGE_SIZE) break;
+			if ( offset > PAGE_SIZE) return 0;
 		}
 		_freePos=offset;
 		return offset;
 	}
 
-	void Flash::findOrCreateActivePage() {
+	IROM int Flash::findOrCreateKey(const char*s) {
+		int idx=findKey(s);
+		if ( idx < 0 ) {
+			_keyMax+=2;
+			writeItem(_keyMax,(uint8_t*)s,strlen(s));
+			return _keyMax;
+		}
+		return idx;
+	}
+
+	IROM int Flash::findKey(const char*s) {
+		Quad temp;
+		uint16_t strLen=os_strlen(s);
+		char* szKey[40];
+		uint16_t offset=8; // after signature and sequence
+		while(true) {
+			temp.w = flashReadQuad(offset);
+//			INFO(" temp.index %u temp.length %u",temp.index,temp.length);
+			if ( temp.index==0xFFFF ) return -1;
+			if ( temp.length == strLen )
+			{
+				uint16_t length=40;
+				loadItem(offset,(uint8_t*)szKey,length);
+				szKey[length]='\0';
+//				INFO(" strcmp %s : %s : %u ",szKey,s,length);
+				if ( os_strncmp((const char*)szKey,s,(int)length)==0) return temp.index;
+
+			}
+
+			offset = offset + roundQuad(temp.length)+4;
+			if ( offset > PAGE_SIZE) return -1;
+		}
+		return -1;
+	}
+
+	IROM void Flash::findOrCreateActivePage() {
 		INFO("");
 		_sequence=0;
 		uint32_t sequence;
@@ -119,7 +166,7 @@ void Flash::get(char* value, int length, const char* key, const char* dflt) {
 	}
 #define FIRST "FIRST"
 
-	bool Flash::initializePage(uint32_t pageIdx,uint32_t sequence) {
+	IROM bool Flash::initializePage(uint32_t pageIdx,uint32_t sequence) {
 		INFO(" pageIdx : %d sequence : %d ",pageIdx,sequence);
 		uint32_t sector = PAGE_START/PAGE_SIZE + pageIdx;
 		if ( spi_flash_erase_sector(sector) != SPI_FLASH_RESULT_OK ) return false;
@@ -129,15 +176,15 @@ void Flash::get(char* value, int length, const char* key, const char* dflt) {
 		return true;
 	}
 
-	uint32_t Flash::pageAddress(uint32_t pageIdx) {
+	IROM uint32_t Flash::pageAddress(uint32_t pageIdx) {
 		return PAGE_START + ( pageIdx * PAGE_SIZE );
 	}
 
-	uint32_t Flash::nextPage(uint32_t pageIdx) {
+	IROM uint32_t Flash::nextPage(uint32_t pageIdx) {
 		return (pageIdx+1)%PAGE_COUNT;
 	}
 
-	bool Flash::writeItem( uint16_t index,uint8_t* start,uint32_t length) {
+	IROM bool Flash::writeItem( uint16_t index,uint8_t* start,uint32_t length) {
 		INFO(" index : %u , length : %u ",index,length);
 		uint32_t address = pageAddress(_pageIdx)+_freePos;
 		Quad W;
@@ -154,17 +201,22 @@ void Flash::get(char* value, int length, const char* key, const char* dflt) {
 		return true;
 	}
 
-	bool Flash::loadItem(uint16_t& offset,uint16_t& index,uint16_t& length ) {
+	IROM bool Flash::loadItem(uint16_t offset,uint8_t* start,uint16_t& length ) {
+//				INFO("offset 0x%X maxLength %u",offset,length);
 		Quad temp;
-
-		if ( spi_flash_read(pageAddress(_pageIdx)+offset,&temp.w,4)!= SPI_FLASH_RESULT_OK ) return false;
-		if ( temp.w == 0xFFFFFFFF ) return false;
-		index = temp.index;
-		length = temp.length;
+		temp.w = flashReadQuad(offset);
+		if ( temp.index == 0xFFFF ) return false;
+		length = temp.length < length ? temp.length : length;
+		for(uint32_t i=0; i< length;i++)
+		{
+			start[i]=flashReadByte(offset+4+i);
+//					INFO(" readByte : 0x%x",start[i]);
+		}
+		INFO("offset 0x%X length %u",offset,length);
 		return true;
 	}
 
-	uint16_t Flash::findItem(uint16_t idx) {
+	IROM uint16_t Flash::findItem(uint16_t idx) {
 		Quad temp;
 		uint16_t offset=8; // after signature and sequence
 		uint16_t lastOffset=0;
@@ -203,15 +255,20 @@ void Flash::get(char* value, int length, const char* key, const char* dflt) {
 	 */
 
 #define CACHE_SIZE	16
-	int Flash::flashReadByte(uint32_t location) {
-		static Quad W;
+	IROM uint32_t Flash::flashReadQuad(uint32_t location) { // read QUad at quad boundary and cache
+		static uint32_t w;
 		static uint32_t lastLocation=0;
-		uint32_t newLocation = location & 0xFFFFFFFC;
-		if ( newLocation != lastLocation )
+		if ( lastLocation != location )
 		{
-			spi_flash_read(pageAddress(_pageIdx)+newLocation,&W.w,4);
-			lastLocation=newLocation;
+			spi_flash_read(pageAddress(_pageIdx)+location,&w,4);
+			lastLocation=location;
 		}
+		return w;
+	}
+
+	IROM int Flash::flashReadByte(uint32_t location) {
+		Quad W;
+		W.w = flashReadQuad(location & 0xFFFFFFFC); // take start int32
 		return W.b[location&0x03];
 	}
 

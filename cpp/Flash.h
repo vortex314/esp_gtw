@@ -44,6 +44,10 @@ private:
 	bool writeItem( uint16_t sequence, uint8_t* start,uint32_t length) ;
 	uint16_t findFreeBegin();
 	int flashReadByte(uint32_t location) ;
+	int findKey(const char*s);
+	int findOrCreateKey(const char*s);
+	uint32_t flashReadQuad(uint32_t location);
+	bool loadItem(uint16_t offset,uint8_t* start,uint16_t& length );
 
 public:
 	Flash();

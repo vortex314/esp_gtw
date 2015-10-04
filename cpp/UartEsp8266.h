@@ -10,28 +10,30 @@
 
 #include <Uart.h>
 #include "CircBuf.h"
-#include "uart.h"
+
 // EXPOSED C routines for C interrupt handlers
 extern "C" void uart0Receive(uint8_t b);
 extern "C" void uart1Receive(uint8_t b);
 
 class UartEsp8266: public Uart {
-private:
-	CircBuf _in;
-	CircBuf _out;
+public:
+	CircBuf _rxd;
+	CircBuf _txd;
 	uint8_t _index;
+	uint32_t _bytesRxd;
+	uint32_t _bytesTxd;
 public:
 	static UartEsp8266* _uart0;
 	static UartEsp8266* _uart1;
 	UartEsp8266(int idx);
-	virtual ~UartEsp8266();
+	 ~UartEsp8266();
 	void receive(uint8_t b);
-	void init(uint32_t baudrate);
-	virtual Erc write(Bytes& data)=0;
-	virtual Erc write(uint8_t b)=0;
-	virtual bool hasData()=0;
-	virtual bool hasSpace()=0;
-	virtual uint8_t read()=0;
+	void init(uint32_t baud);
+	 Erc write(Bytes& data);
+	 Erc write(uint8_t b);
+	 bool hasData();
+	 bool hasSpace();
+	 uint8_t read();
 
 };
 
