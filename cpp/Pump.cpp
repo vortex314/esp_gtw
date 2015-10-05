@@ -40,6 +40,9 @@ public:
 	IROM virtual ~LedBlink() {
 	}
 
+#include "UartEsp8266.h"
+	extern UartEsp8266* UartEsp8266::_uart0;
+
 	IROM bool dispatch(Msg& msg) {
 		PT_BEGIN()
 		while (true) {
@@ -48,6 +51,8 @@ public:
 					msg.is(_mqtt, SIG_CONNECTED) || msg.is(_mqtt, SIG_DISCONNECTED) || timeout());
 			switch (msg.signal()) {
 			case SIG_TICK: {
+				_uart0->write('L');
+				_uart0->write('\n');
 				gpio16_output_set(_isOn);
 				_isOn = !_isOn;
 				Msg::publish((void*) LED_ID, SIG_TXD);

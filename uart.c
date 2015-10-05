@@ -36,9 +36,10 @@ os_event_t uart_recvTaskQueue[uart_recvTaskQueueLen];
 #define DBG  
 #define DBG1 uart1_sendStr_no_wait
 #define DBG2 os_printf
-uint32_t uartWriteCounter = 0;
 
-extern ICACHE_FLASH_ATTR void uart0RecvByte(uint8_t b);
+
+extern void uart0RecvByte(uint8_t b);
+extern void uart0Write(uint8_t b);
 
 LOCAL void uart0_rx_intr_handler(void *para);
 
@@ -100,10 +101,12 @@ uart_config(uint8 uart_no) {
 	WRITE_PERI_REG(UART_INT_CLR(uart_no), 0xffff);
 	//enable rx_interrupt
 	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
-			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA);
+			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA);
+//	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
+//			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA|UART_TXFIFO_EMPTY_INT_ENA);
 	SET_PERI_REG_MASK(UART_CONF1(UART0),
 			(UART_TX_EMPTY_THRESH_VAL & UART_TXFIFO_EMPTY_THRHD)<<UART_TXFIFO_EMPTY_THRHD_S);
-	SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+//	SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
 }
 
 /******************************************************************************
@@ -114,6 +117,8 @@ uart_config(uint8 uart_no) {
  * Returns      : OK
  *******************************************************************************/
 STATUS uart_tx_one_char(uint8 uart, uint8 TxChar) {
+	uart0Write(TxChar);
+	return OK;
 	while (true) {
 		uint32 fifo_cnt = READ_PERI_REG(UART_STATUS(uart))
 				& (UART_TXFIFO_CNT << UART_TXFIFO_CNT_S);
@@ -206,67 +211,144 @@ void at_port_print(const char *str) __attribute__((alias("uart0_sendStr")));
  * Parameters   : void *para - point to ETS_UART_INTR_ATTACH's arg
  * Returns      : NONE
  *******************************************************************************/
-uint32_t uartReadCounter = 0;
+static unsigned int uart_rx_fifo_length(void) {
+	return ((READ_PERI_REG(UART_STATUS(0)) >> UART_RXFIFO_CNT_S)
+			& UART_RXFIFO_CNT);
+}
+
+static unsigned int uart_tx_fifo_length(void) {
+	return ((READ_PERI_REG(UART_STATUS(0)) >> UART_TXFIFO_CNT_S)
+			& UART_TXFIFO_CNT);
+}
+
+uint32_t uartRxdCount = 0;
+uint32_t uartTxdCount = 0;
+uint32_t uartErrorCount = 0;
+
 LOCAL void uart0_rx_intr_handler(void *para) {
-	uartReadCounter++;
-	/* uart0 and uart1 intr combine togther, when interrupt occur, see reg 0x3ff20020, bit2, bit0 represents
-	 * uart1 and uart0 respectively
-	 */
 	uint8 RcvChar;
 	uint8 uart_no = UART0; //UartDev.buff_uart_no;
 	uint8 fifo_len = 0;
 	uint8 buf_idx = 0;
 	uint8 temp, cnt;
-	//RcvMsgBuff *pRxBuff = (RcvMsgBuff *)para;
-
-	/*ATTENTION:*/
-	/*IN NON-OS VERSION SDK, DO NOT USE "ICACHE_FLASH_ATTR" FUNCTIONS IN THE WHOLE HANDLER PROCESS*/
-	/*ALL THE FUNCTIONS CALLED IN INTERRUPT HANDLER MUST BE DECLARED IN RAM */
-	/*IF NOT , POST AN EVENT AND PROCESS IN SYSTEM TASK */
 	if (UART_FRM_ERR_INT_ST
 			== (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_FRM_ERR_INT_ST)) {
-		DBG1("FRM_ERR\r\n");
+//			DBG1("FRM_ERR\r\n");
 		WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_FRM_ERR_INT_CLR);
 	} else if (UART_RXFIFO_FULL_INT_ST
 			== (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_RXFIFO_FULL_INT_ST)) {
-		DBG("f");
-		uart_rx_intr_disable(UART0);
+
+		while (uart_rx_fifo_length()) {
+			uart0RecvByte(READ_PERI_REG(UART_FIFO(0)));
+			uartRxdCount++;
+		}
+//			DBG("f");
+//			uart_rx_intr_disable(UART0);
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_FULL_INT_CLR);
-		system_os_post(uart_recvTaskPrio, 0, 0);
+
+//			system_os_post(uart_recvTaskPrio, 0, 0);
 	} else if (UART_RXFIFO_TOUT_INT_ST
 			== (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_RXFIFO_TOUT_INT_ST)) {
-		DBG("t");
-		uart_rx_intr_disable(UART0);
+
+//			DBG("t");
+//			uart_rx_intr_disable(UART0);
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_TOUT_INT_CLR);
-		system_os_post(uart_recvTaskPrio, 0, 0);
+		while (uart_rx_fifo_length()) {
+			uart0RecvByte(READ_PERI_REG(UART_FIFO(0)));
+			uartRxdCount++;
+		}
+//			system_os_post(uart_recvTaskPrio, 0, 0);
 	} else if (UART_TXFIFO_EMPTY_INT_ST
 			== (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_TXFIFO_EMPTY_INT_ST)) {
-		DBG("e");
-		int b = uart0SendByte();
-		if (b >= 0) {
-			uart_tx_one_char_no_wait(UART0, (uint8_t) b);
-		} else { // no more chars to send
-			CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+//			DBG("e");
+		int b;
+		while ((uart_tx_fifo_length() < 126) && ((b = uart0SendByte()) >= 0)) {
+			uartTxdCount++;
+			WRITE_PERI_REG(UART_FIFO(UART0), (uint8_t) b);
 		}
-		WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_TXFIFO_EMPTY_INT_CLR);
+		if (b < 0) { // no more chars to send
+			uart_tx_intr_enable(0);
+		}
+		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_TXFIFO_EMPTY_INT_CLR);
+
+//			WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_TXFIFO_EMPTY_INT_CLR);
 		/* to output uart data from uart buffer directly in empty interrupt handler*/
 		/*instead of processing in system event, in order not to wait for current task/function to quit */
 		/*ATTENTION:*/
 		/*IN NON-OS VERSION SDK, DO NOT USE "ICACHE_FLASH_ATTR" FUNCTIONS IN THE WHOLE HANDLER PROCESS*/
 		/*ALL THE FUNCTIONS CALLED IN INTERRUPT HANDLER MUST BE DECLARED IN RAM */
-		CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+//			CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
 #if UART_BUFF_EN
 		tx_start_uart_buffer(UART0);
 #endif
 		//system_os_post(uart_recvTaskPrio, 1, 0);
-		WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_TXFIFO_EMPTY_INT_CLR);
+//			WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_TXFIFO_EMPTY_INT_CLR);
 
 	} else if (UART_RXFIFO_OVF_INT_ST
 			== (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_RXFIFO_OVF_INT_ST)) {
 		WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_RXFIFO_OVF_INT_CLR);
-		DBG1("RX OVF!!\r\n");
+//			DBG1("RX OVF!!\r\n");
 	}
+	/*	ETS_UART_INTR_DISABLE();
+	 //	uint32_t uart_intr_st = READ_PERI_REG(UART_INT_ST(UART0));
+	 //	while (uart_intr_st != 0)
 
+	 // uart0 and uart1 intr combine togther, when interrupt occur, see reg 0x3ff20020, bit2, bit0 represents
+	 // uart1 and uart0 respectively
+	 //
+
+	 if (UART_FRM_ERR_INT_ST
+	 == (READ_PERI_REG(UART_INT_ST(UART0)) & UART_FRM_ERR_INT_ST)) {
+
+	 uartErrorCount++;
+	 WRITE_PERI_REG(UART_INT_CLR(UART0), UART_FRM_ERR_INT_CLR);
+
+	 };
+	 if (UART_RXFIFO_FULL_INT_ST
+	 == (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_FULL_INT_ST)) {
+
+	 while (uart_rx_fifo_length()) {
+	 uart0RecvByte(READ_PERI_REG(UART_FIFO(0)));
+	 uartRxdCount++;
+	 }
+	 uart_rx_intr_disable(UART0);
+	 WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_FULL_INT_CLR);
+
+	 };
+	 if (UART_RXFIFO_TOUT_INT_ST
+	 == (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_TOUT_INT_ST)) {
+
+	 while (uart_rx_fifo_length()) {
+	 uart0RecvByte(READ_PERI_REG(UART_FIFO(0)));
+	 uartRxdCount++;
+	 }
+
+	 uart_rx_intr_disable(UART0);
+	 WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_TOUT_INT_CLR);
+
+	 };
+	 if (UART_TXFIFO_EMPTY_INT_ST
+	 == (READ_PERI_REG(UART_INT_ST(UART0)) & UART_TXFIFO_EMPTY_INT_ST)) {
+
+	 int b;
+	 while ((uart_tx_fifo_length < 126) && ((b = uart0SendByte()) >= 0)) {
+	 uartTxdCount++;
+	 WRITE_PERI_REG(UART_FIFO(UART0), (uint8_t) b);
+	 }
+	 if (b < 0) { // no more chars to send
+	 CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+	 }
+	 WRITE_PERI_REG(UART_INT_CLR(UART0), UART_TXFIFO_EMPTY_INT_CLR);
+
+	 };
+	 if (UART_RXFIFO_OVF_INT_ST
+	 == (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_OVF_INT_ST)) {
+
+	 WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_OVF_INT_CLR);
+	 uartErrorCount++;
+	 }
+	 WRITE_PERI_REG(UART_INT_CLR(0), 0xffff);
+	 ETS_UART_INTR_ENABLE();*/
 }
 
 /******************************************************************************
@@ -328,8 +410,8 @@ uart_init(UartBautRate uart0_br, UartBautRate uart1_br) {
 	UartDev.baut_rate = uart1_br;
 	uart_config(UART1);
 	ETS_UART_INTR_ENABLE();
-	uart_tx_intr_enable(1) ;
-	uart_rx_intr_enable(UART0) ;
+	uart_tx_intr_enable(1);
+	uart_rx_intr_enable(UART0);
 
 #if UART_BUFF_EN
 	pTxBuffer = Uart_Buf_Init(UART_TX_BUFFER_SIZE);
@@ -365,7 +447,8 @@ uart_reattach() {
  * Returns      : STATUS
  *******************************************************************************/
 STATUS uart_tx_one_char_no_wait(uint8 uart, uint8 TxChar) {
-	uartWriteCounter++;
+	uart0Write(TxChar);
+	return OK;
 	uint8 fifo_cnt = ((READ_PERI_REG(UART_STATUS(uart)) >> UART_TXFIFO_CNT_S)
 			& UART_TXFIFO_CNT);
 	if (fifo_cnt < 126) {
@@ -375,7 +458,8 @@ STATUS uart_tx_one_char_no_wait(uint8 uart, uint8 TxChar) {
 }
 
 STATUS uart0_tx_one_char_no_wait(uint8 TxChar) {
-	uartWriteCounter++;
+	uart0Write(TxChar);
+	return OK;
 	uint8 fifo_cnt = ((READ_PERI_REG(UART_STATUS(UART0)) >> UART_TXFIFO_CNT_S)
 			& UART_TXFIFO_CNT);
 	if (fifo_cnt < 126) {
@@ -628,7 +712,6 @@ void uart_rx_intr_enable(uint8 uart_no) {
 //========================================================
 
 LOCAL void uart0_write_char(char c) {
-	uartWriteCounter++;
 	if (c == '\n') {
 		uart_tx_one_char(UART0, '\r');
 		uart_tx_one_char(UART0, '\n');

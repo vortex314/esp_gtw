@@ -147,8 +147,9 @@ LOCAL void IROM publishStr(const char* topicName, char* buf) {
 extern char lastLog[];
 #include "util.h"
 extern uint32_t conflicts;
-extern uint32_t uartWriteCounter;
-extern uint32_t uartReadCounter;
+extern uint32_t uartTxdCount;
+extern uint32_t uartRxdCount;
+extern uint32_t uartErrorCount;
 uint64_t timeoutValue = 0;
 /*uint32_t millis() {
 	return (system_get_time() / 1000);
@@ -171,8 +172,9 @@ LOCAL void IROM tick_cb(void *arg) {
 			publishStr("system/build", __DATE__ " " __TIME__);
 			publish("system/heapSize", system_get_free_heap_size());
 			publish("system/bootTime", SysUpTime);
-			publish("uart/writeCounter", uartWriteCounter);
-			publish("uart/readCounter", uartReadCounter);
+			publish("uart0/txdCount", uartTxdCount);
+			publish("uart0/rxdCount", uartRxdCount);
+			publish("uart0/errorCount", uartRxdCount);
 			timeoutValue = SysMillis() + 2000;
 		}
 	}

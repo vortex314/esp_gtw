@@ -48,7 +48,7 @@ IROM uint8_t UartEsp8266::read() {
 	return _rxd.read();
 }
 
-IROM bool UartEsp8266::hasData() {
+bool UartEsp8266::hasData() { // not in IROM as it will be called in interrupt
 	return _rxd.hasData();
 }
 
@@ -56,8 +56,8 @@ IROM bool UartEsp8266::hasSpace() {
 	return _txd.hasSpace();
 }
 
-IROM void UartEsp8266::receive(uint8_t b) {
-	_rxd.write(b);
+void UartEsp8266::receive(uint8_t b) { // not in IROM as it will be called in interrupt
+	_rxd.writeFromIsr(b);
 	_bytesRxd++;
 }
 
@@ -73,25 +73,28 @@ void checkUart0() {
 	if (UartEsp8266::_uart0 == 0) {
 		UartEsp8266::_uart0 = new UartEsp8266(0);
 		for (int i = 0; i < 26; i++)
-			UartEsp8266::_uart0->write('A' + i);
+			UartEsp8266::_uart0->write('a' + i);
 	}
 }
 
 /**********************************************************
  * USART1 interrupt request handler:
  *********************************************************/
-extern "C" IROM void uart0RecvByte(uint8_t b) {
-	UartEsp8266::_uart0 = 0;
+extern "C" void uart0RecvByte(uint8_t b) {
+	checkUart0();
 	UartEsp8266::_uart0->receive(b);
 }
 
-extern "C" IROM int uart0SendByte() {
+extern "C" int uart0SendByte() {
 	checkUart0();
 	if (UartEsp8266::_uart0->_txd.hasData()) {
 		UartEsp8266::_uart0->_bytesTxd++;
-		return UartEsp8266::_uart0->_txd.read();
-
-	} else uart_tx_intr_enable(0);
+		return UartEsp8266::_uart0->_txd.readFromIsr();
+	}
 	return -1;
 }
 
+extern "C" void uart0Write(uint8_t b) {
+	checkUart0();
+	UartEsp8266::_uart0->write(b);
+}
