@@ -19,6 +19,8 @@ extern "C" const char* MQTT_ID;
 extern "C" const char* TCP_ID;
 extern "C" const char* WIFI_ID;
 const char* LED_ID = "LED";
+#include "UartEsp8266.h"
+
 
 class LedBlink: public Handler {
 	bool _isOn;
@@ -40,8 +42,8 @@ public:
 	IROM virtual ~LedBlink() {
 	}
 
-#include "UartEsp8266.h"
-	extern UartEsp8266* UartEsp8266::_uart0;
+
+
 
 	IROM bool dispatch(Msg& msg) {
 		PT_BEGIN()
@@ -51,11 +53,9 @@ public:
 					msg.is(_mqtt, SIG_CONNECTED) || msg.is(_mqtt, SIG_DISCONNECTED) || timeout());
 			switch (msg.signal()) {
 			case SIG_TICK: {
-				_uart0->write('L');
-				_uart0->write('\n');
 				gpio16_output_set(_isOn);
 				_isOn = !_isOn;
-				Msg::publish((void*) LED_ID, SIG_TXD);
+//				Msg::publish((void*) LED_ID, SIG_TXD);
 //				INFO( "Led Tick ");
 				break;
 			}
@@ -88,8 +88,6 @@ extern "C" uint32_t conflicts;
 Flash* flash;
 LedBlink *led;
 
-
-
 extern "C" void MsgInit() {
 	INFO(" Start Messge Pump ");
 	Msg::init();
@@ -97,12 +95,11 @@ extern "C" void MsgInit() {
 	led = new LedBlink();
 	led->init();
 	CreateMutex(&mutex);
-	flash=new Flash();
+	flash = new Flash();
 	flash->init();
 }
 
-
-void logMsg(Msg* msg){
+void logMsg(Msg* msg) {
 
 	static uint32_t sigCount = 0;
 	static void* src = 0;

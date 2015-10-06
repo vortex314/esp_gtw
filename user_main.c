@@ -174,7 +174,7 @@ LOCAL void IROM tick_cb(void *arg) {
 			publish("system/bootTime", SysUpTime);
 			publish("uart0/txdCount", uartTxdCount);
 			publish("uart0/rxdCount", uartRxdCount);
-			publish("uart0/errorCount", uartRxdCount);
+			publish("uart0/errorCount", uartErrorCount);
 			timeoutValue = SysMillis() + 2000;
 		}
 	}

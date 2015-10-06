@@ -15,7 +15,7 @@
 #include "UartEsp8266.h"
 
 IROM UartEsp8266::UartEsp8266(int idx) :
-		_rxd(256), _txd(256) {
+		_rxd(256), _txd(2048) {
 	_bytesRxd = 0;
 	_bytesTxd = 0;
 }
@@ -68,6 +68,7 @@ IROM void UartEsp8266::init(uint32_t baud) {
 }
 
 UartEsp8266* UartEsp8266::_uart0 = 0;
+UartEsp8266* UartEsp8266::_uart1 = 0;
 
 void checkUart0() {
 	if (UartEsp8266::_uart0 == 0) {
@@ -80,11 +81,12 @@ void checkUart0() {
 /**********************************************************
  * USART1 interrupt request handler:
  *********************************************************/
+// incoming char enqueue it
 extern "C" void uart0RecvByte(uint8_t b) {
 	checkUart0();
 	UartEsp8266::_uart0->receive(b);
 }
-
+// get next byte to transmit or return -1 if not available/empty circbuf
 extern "C" int uart0SendByte() {
 	checkUart0();
 	if (UartEsp8266::_uart0->_txd.hasData()) {
@@ -93,8 +95,15 @@ extern "C" int uart0SendByte() {
 	}
 	return -1;
 }
-
+// enqueue char to send in TXD
 extern "C" void uart0Write(uint8_t b) {
 	checkUart0();
-	UartEsp8266::_uart0->write(b);
+	if (b == '\n') {
+		UartEsp8266::_uart0->write('\r');
+		UartEsp8266::_uart0->write(b);
+	} else if (b == '\r') {
+
+	} else {
+		UartEsp8266::_uart0->write(b);
+	}
 }
