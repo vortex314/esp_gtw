@@ -32,7 +32,7 @@ return vPortFree(ptr);
 }
 #endif
 
-uint64_t SysMillis() {
+IROM uint64_t SysMillis() {
 /*	static uint32_t lastSample=0;
 	static uint64_t major=0;
 	uint32_t minor = system_get_time();
@@ -44,7 +44,7 @@ uint64_t SysMillis() {
 	return SysUpTime;
 }
 
-uint64_t Sys::millis(){
+IROM uint64_t Sys::millis(){
 	return SysMillis();
 }
 

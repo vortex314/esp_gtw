@@ -14,13 +14,13 @@
 
 #include "UartEsp8266.h"
 
-IROM UartEsp8266::UartEsp8266(int idx) :
+ IROM UartEsp8266::UartEsp8266() :
 		_rxd(256), _txd(2048) {
 	_bytesRxd = 0;
 	_bytesTxd = 0;
 }
 
-IROM UartEsp8266::~UartEsp8266() {
+ IROM UartEsp8266::~UartEsp8266() {
 	ERROR(" dtor called ");
 }
 extern "C" void uart_tx_intr_enable(int bol);
@@ -72,7 +72,7 @@ UartEsp8266* UartEsp8266::_uart1 = 0;
 
 void checkUart0() {
 	if (UartEsp8266::_uart0 == 0) {
-		UartEsp8266::_uart0 = new UartEsp8266(0);
+		UartEsp8266::_uart0 = new UartEsp8266();
 		for (int i = 0; i < 26; i++)
 			UartEsp8266::_uart0->write('a' + i);
 	}

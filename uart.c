@@ -88,13 +88,14 @@ uart_config(uint8 uart_no) {
 	//clear all interrupt
 	WRITE_PERI_REG(UART_INT_CLR(uart_no), 0xffff);
 	//enable rx_interrupt
-	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
-			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA);
 //	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
 //			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA|UART_TXFIFO_EMPTY_INT_ENA);
 	SET_PERI_REG_MASK(UART_CONF1(UART0),
 			(UART_TX_EMPTY_THRESH_VAL & UART_TXFIFO_EMPTY_THRHD)<<UART_TXFIFO_EMPTY_THRHD_S);
 //	SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
+			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA);
+	uart_tx_intr_enable(1);
 }
 
 static unsigned int uart_rx_fifo_length(void) {
@@ -137,14 +138,15 @@ uint32_t uartErrorCount = 0;
  *******************************************************************************/
 
 LOCAL void uart0_rx_intr_handler(void *para) {
+	uint32_t int_status = READ_PERI_REG(UART_INT_ST(UART0));
 
-	if (READ_PERI_REG(UART_INT_ST(UART0)) & UART_FRM_ERR_INT_ST) { // FRAMING ERROR
+	if (int_status & UART_FRM_ERR_INT_ST) { // FRAMING ERROR
 
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_FRM_ERR_INT_CLR);
 		uartErrorCount++;
 
 	};
-	if (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_FULL_INT_ST) { // RXD FIFO FULL
+	if (int_status & UART_RXFIFO_FULL_INT_ST) { // RXD FIFO FULL
 
 		while (uart_rx_fifo_length()) {
 			uart0RecvByte(READ_PERI_REG(UART_FIFO(0)));
@@ -154,16 +156,16 @@ LOCAL void uart0_rx_intr_handler(void *para) {
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_FULL_INT_CLR);
 
 	};
-	if (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_TOUT_INT_ST) { // RXD FIFO TIMEOUT
+	if (int_status & UART_RXFIFO_TOUT_INT_ST) { // RXD FIFO TIMEOUT
 
-		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_TOUT_INT_CLR);
 		while (uart_rx_fifo_length()) {
 			uart0RecvByte(READ_PERI_REG(UART_FIFO(0)));
 			uartRxdCount++;
 		}
+		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_TOUT_INT_CLR);
 
 	};
-	if (READ_PERI_REG(UART_INT_ST(UART0)) & UART_TXFIFO_EMPTY_INT_ST) { // TXD FIFO EMPTY
+	if (int_status & UART_TXFIFO_EMPTY_INT_ST) { // TXD FIFO EMPTY
 
 		int b;
 		while ((uart_tx_fifo_length() < 126) && ((b = uart0SendByte()) >= 0)) {
@@ -176,7 +178,7 @@ LOCAL void uart0_rx_intr_handler(void *para) {
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_TXFIFO_EMPTY_INT_CLR);
 
 	};
-	if (READ_PERI_REG(UART_INT_ST(UART0)) & UART_RXFIFO_OVF_INT_ST) {
+	if (int_status & UART_RXFIFO_OVF_INT_ST) {
 
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_OVF_INT_CLR);
 		uartErrorCount++;

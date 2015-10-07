@@ -7,11 +7,11 @@
 #include "Msg.h"
 #include "Handler.h"
 
-#include "all.h"
+//#include "all.h"
 #include "Sys.h"
 
 extern "C" {
-#include "gpio16.h"
+//#include "gpio16.h"
 }
 
 extern "C" const char* CLOCK_ID;
@@ -20,76 +20,21 @@ extern "C" const char* TCP_ID;
 extern "C" const char* WIFI_ID;
 const char* LED_ID = "LED";
 #include "UartEsp8266.h"
-
-
-class LedBlink: public Handler {
-	bool _isOn;
-	uint32_t _msecInterval;
-	void* _mqtt;
-
-public:
-	IROM LedBlink() :
-			Handler("LedBlink") {
-		_isOn = false;
-		_msecInterval = 200;
-		_mqtt = (void*) MQTT_ID;
-	}
-
-	IROM void init() {
-		gpio16_output_conf();
-	}
-
-	IROM virtual ~LedBlink() {
-	}
-
-
-
-
-	IROM bool dispatch(Msg& msg) {
-		PT_BEGIN()
-		while (true) {
-			timeout(_msecInterval);
-			PT_YIELD_UNTIL(
-					msg.is(_mqtt, SIG_CONNECTED) || msg.is(_mqtt, SIG_DISCONNECTED) || timeout());
-			switch (msg.signal()) {
-			case SIG_TICK: {
-				gpio16_output_set(_isOn);
-				_isOn = !_isOn;
-//				Msg::publish((void*) LED_ID, SIG_TXD);
-//				INFO( "Led Tick ");
-				break;
-			}
-			case SIG_CONNECTED: {
-				_msecInterval = 1000;
-				break;
-			}
-			case SIG_DISCONNECTED: {
-				_msecInterval = 200;
-				break;
-			}
-			default: {
-			}
-			}
-
-		}
-	PT_END();
-}
-};
-
-uint32_t __count = 0;
-//Sender sender();
-static Msg* msg;
-
 #include "mutex.h"
-mutex_t mutex;
-extern "C" uint32_t conflicts;
 #include "Flash.h"
+#include "LedBlink.h"
 
+// uint32_t __count = 0;
+//Sender sender();
+mutex_t mutex;
+ extern "C" uint32_t conflicts;
 Flash* flash;
 LedBlink *led;
+Msg* msg;
 
-extern "C" void MsgInit() {
-	INFO(" Start Messge Pump ");
+
+extern "C" IROM void MsgInit() {
+	INFO(" Start Message Pump ");
 	Msg::init();
 	msg = new Msg(256);
 	led = new LedBlink();
@@ -99,7 +44,7 @@ extern "C" void MsgInit() {
 	flash->init();
 }
 
-void logMsg(Msg* msg) {
+IROM void logMsg(Msg* msg) {
 
 	static uint32_t sigCount = 0;
 	static void* src = 0;
@@ -119,7 +64,7 @@ void logMsg(Msg* msg) {
 	}
 }
 
-extern "C" void MsgPump() {
+extern "C" IROM void MsgPump() {
 
 	if (GetMutex(&mutex)) {
 		while (msg->receive()) {
@@ -133,7 +78,7 @@ extern "C" void MsgPump() {
 	}
 }
 
-extern "C" void MsgPublish(void* src, Signal signal) {
+extern "C" IROM void MsgPublish(void* src, Signal signal) {
 	if (GetMutex(&mutex)) {
 		Msg::publish(src, signal);
 		ReleaseMutex(&mutex);

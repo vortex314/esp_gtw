@@ -63,7 +63,7 @@ const char* CLOCK_ID = "CLOCK";
 const char* TCP_ID = "TCP";
 const char* WIFI_ID = "TCP";
 
-void wifiConnectCb(uint8_t status) {
+IROM void wifiConnectCb(uint8_t status) {
 	if (status == STATION_GOT_IP) {
 		MsgPublish(WIFI_ID, SIG_CONNECTED);
 		MQTT_Connect(&mqttClient);
@@ -73,7 +73,7 @@ void wifiConnectCb(uint8_t status) {
 	}
 }
 
-void mqttConnectedCb(uint32_t *args) {
+IROM void mqttConnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 	INFO("MQTT: Connected");
 
@@ -92,7 +92,7 @@ void mqttConnectedCb(uint32_t *args) {
 
 }
 
-void mqttDisconnectedCb(uint32_t *args) {
+IROM void mqttDisconnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
@@ -101,13 +101,13 @@ void mqttDisconnectedCb(uint32_t *args) {
 	mqttConnected = FALSE;
 }
 
-void mqttPublishedCb(uint32_t *args) {
+IROM void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Published");
 	MsgPublish(MQTT_ID, SIG_TXD);
 }
 
-void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
+IROM void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 		const char *data, uint32_t data_len) {
 	char *topicBuf = (char*) os_zalloc(topic_len + 1), *dataBuf =
 			(char*) os_zalloc(data_len + 1);
@@ -175,7 +175,7 @@ LOCAL void IROM tick_cb(void *arg) {
 			publish("uart0/txdCount", uartTxdCount);
 			publish("uart0/rxdCount", uartRxdCount);
 			publish("uart0/errorCount", uartErrorCount);
-			timeoutValue = SysMillis() + 2000;
+			timeoutValue = SysMillis() + 3000;
 		}
 	}
 

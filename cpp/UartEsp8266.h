@@ -8,7 +8,7 @@
 #ifndef UARTESP8266_H_
 #define UARTESP8266_H_
 
-#include <Uart.h>
+#include "Uart.h"
 #include "CircBuf.h"
 
 // EXPOSED C routines for C interrupt handlers
@@ -27,7 +27,7 @@ public:
 	static UartEsp8266* _uart1;
 public:
 
-	UartEsp8266(int idx);
+	UartEsp8266();
 	 ~UartEsp8266();
 	void receive(uint8_t b);
 	void init(uint32_t baud);

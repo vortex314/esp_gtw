@@ -150,7 +150,7 @@ void uart0_sendStr(const char *str);
 
 ///////////////////////////////////////
 #define UART_FIFO_LEN  128  //define the tx fifo length
-#define UART_TX_EMPTY_THRESH_VAL 0x10
+#define UART_TX_EMPTY_THRESH_VAL 0x20
 
 
  struct UartBuffer{
