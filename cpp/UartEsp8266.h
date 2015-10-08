@@ -23,6 +23,7 @@ public:
 	uint8_t _index;
 	uint32_t _bytesRxd;
 	uint32_t _bytesTxd;
+	uint32_t _overflowTxd;
 	static UartEsp8266* _uart0;
 	static UartEsp8266* _uart1;
 public:

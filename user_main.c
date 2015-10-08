@@ -150,6 +150,7 @@ extern uint32_t conflicts;
 extern uint32_t uartTxdCount;
 extern uint32_t uartRxdCount;
 extern uint32_t uartErrorCount;
+extern uint32_t overflowTxd;
 uint64_t timeoutValue = 0;
 /*uint32_t millis() {
 	return (system_get_time() / 1000);
@@ -175,6 +176,7 @@ LOCAL void IROM tick_cb(void *arg) {
 			publish("uart0/txdCount", uartTxdCount);
 			publish("uart0/rxdCount", uartRxdCount);
 			publish("uart0/errorCount", uartErrorCount);
+			publish("uart0/overflowTxd", overflowTxd);
 			timeoutValue = SysMillis() + 3000;
 		}
 	}

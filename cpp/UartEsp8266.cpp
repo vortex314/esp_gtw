@@ -14,10 +14,13 @@
 
 #include "UartEsp8266.h"
 
+extern "C" uint32_t overflowTxd=0;
+
  IROM UartEsp8266::UartEsp8266() :
 		_rxd(256), _txd(2048) {
 	_bytesRxd = 0;
 	_bytesTxd = 0;
+	_overflowTxd=0;
 }
 
  IROM UartEsp8266::~UartEsp8266() {
@@ -29,6 +32,10 @@ IROM Erc UartEsp8266::write(Bytes& bytes) {
 	while (_txd.hasSpace() && bytes.hasData()) {
 		_txd.write(bytes.read());
 	};
+	if ( bytes.hasData()) {
+		_overflowTxd++;
+		overflowTxd++;
+	}
 	if (_txd.hasData()) {
 		uart_tx_intr_enable(1);
 	}
@@ -38,6 +45,10 @@ IROM Erc UartEsp8266::write(Bytes& bytes) {
 IROM Erc UartEsp8266::write(uint8_t data) {
 	if (_txd.hasSpace())
 		_txd.write(data);
+	else {
+		_overflowTxd++;
+		overflowTxd++;
+	}
 	if (_txd.hasData()) {
 		uart_tx_intr_enable(1);
 	}

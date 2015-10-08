@@ -39,23 +39,49 @@ LOCAL void uart0_rx_intr_handler(void *para);
  * Parameters   : uart_no, use UART0 or UART1 defined ahead
  * Returns      : NONE
  *******************************************************************************/LOCAL void ICACHE_FLASH_ATTR
-uart_config(uint8 uart_no) {
-	if (uart_no == UART1) {
-		PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_U1TXD_BK);
-	} else {
-		/* rcv_buff size if 0x100 */
-		ETS_UART_INTR_ATTACH(uart0_rx_intr_handler, &(UartDev.rcv_buff));
-		PIN_PULLUP_DIS(PERIPHS_IO_MUX_U0TXD_U);
-		PIN_FUNC_SELECT(PERIPHS_IO_MUX_U0TXD_U, FUNC_U0TXD);
-#if UART_HW_RTS
-		PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_U0RTS); //HW FLOW CONTROL RTS PIN
-#endif
-#if UART_HW_CTS
-		PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U, FUNC_U0CTS); //HW FLOW CONTROL CTS PIN
-#endif
-	}
+uart0_config() {
+	uint8 uart_no = UART0;
+	/* rcv_buff size if 0x100 */
+	ETS_UART_INTR_ATTACH(uart0_rx_intr_handler, &(UartDev.rcv_buff));
+	PIN_PULLUP_DIS(PERIPHS_IO_MUX_U0TXD_U);
+	PIN_FUNC_SELECT(PERIPHS_IO_MUX_U0TXD_U, FUNC_U0TXD);
 	uart_div_modify(uart_no, UART_CLK_FREQ / (UartDev.baut_rate)); //SET BAUDRATE
 
+	WRITE_PERI_REG(UART_CONF0(uart_no),
+			((UartDev.exist_parity & UART_PARITY_EN_M) << UART_PARITY_EN_S) //SET BIT AND PARITY MODE
+			| ((UartDev.parity & UART_PARITY_M) <<UART_PARITY_S ) | ((UartDev.stop_bits & UART_STOP_BIT_NUM) << UART_STOP_BIT_NUM_S) | ((UartDev.data_bits & UART_BIT_NUM) << UART_BIT_NUM_S));
+
+	SET_PERI_REG_MASK(UART_CONF0(uart_no), UART_RXFIFO_RST | UART_TXFIFO_RST);
+	//clear rx and tx fifo,not ready
+	CLEAR_PERI_REG_MASK(UART_CONF0(uart_no), UART_RXFIFO_RST | UART_TXFIFO_RST);
+	//RESET FIFO
+
+	WRITE_PERI_REG(
+			UART_CONF1(uart_no), //set rx fifo trigger
+			((100 & UART_RXFIFO_FULL_THRHD) << UART_RXFIFO_FULL_THRHD_S) | (0x02 & UART_RX_TOUT_THRHD) << UART_RX_TOUT_THRHD_S | UART_RX_TOUT_EN| ((0x10 & UART_TXFIFO_EMPTY_THRHD)<<UART_TXFIFO_EMPTY_THRHD_S));
+
+	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
+			UART_RXFIFO_TOUT_INT_ENA |UART_FRM_ERR_INT_ENA);
+
+	//clear all interrupt
+	WRITE_PERI_REG(UART_INT_CLR(uart_no), 0xffff);
+	//enable rx_interrupt
+//	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
+//			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA|UART_TXFIFO_EMPTY_INT_ENA);
+	SET_PERI_REG_MASK(UART_CONF1(UART0),
+			(UART_TX_EMPTY_THRESH_VAL & UART_TXFIFO_EMPTY_THRHD)<<UART_TXFIFO_EMPTY_THRHD_S);
+//	SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
+			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA);
+//	uart_tx_intr_enable(1);
+	uart_rx_intr_enable(UART0);
+}
+
+LOCAL void ICACHE_FLASH_ATTR
+uart1_config() {
+	uint8 uart_no = UART1;
+	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_U1TXD_BK);
+	uart_div_modify(uart_no, UART_CLK_FREQ / (UartDev.baut_rate)); //SET BAUDRATE
 	WRITE_PERI_REG(UART_CONF0(uart_no),
 			((UartDev.exist_parity & UART_PARITY_EN_M) << UART_PARITY_EN_S) //SET BIT AND PARITY MODE
 			| ((UartDev.parity & UART_PARITY_M) <<UART_PARITY_S ) | ((UartDev.stop_bits & UART_STOP_BIT_NUM) << UART_STOP_BIT_NUM_S) | ((UartDev.data_bits & UART_BIT_NUM) << UART_BIT_NUM_S));
@@ -65,34 +91,13 @@ uart_config(uint8 uart_no) {
 	//RESET FIFO
 	CLEAR_PERI_REG_MASK(UART_CONF0(uart_no), UART_RXFIFO_RST | UART_TXFIFO_RST);
 
-	if (uart_no == UART0) {
-		//set rx fifo trigger
-		WRITE_PERI_REG(UART_CONF1(uart_no),
-				((100 & UART_RXFIFO_FULL_THRHD) << UART_RXFIFO_FULL_THRHD_S) |
-#if UART_HW_RTS
-				((110 & UART_RX_FLOW_THRHD) << UART_RX_FLOW_THRHD_S) |
-				UART_RX_FLOW_EN | //enbale rx flow control
-#endif
-				(0x02 & UART_RX_TOUT_THRHD) << UART_RX_TOUT_THRHD_S | UART_RX_TOUT_EN| ((0x10 & UART_TXFIFO_EMPTY_THRHD)<<UART_TXFIFO_EMPTY_THRHD_S));
-		//wjl
-#if UART_HW_CTS
-		SET_PERI_REG_MASK( UART_CONF0(uart_no),UART_TX_FLOW_EN); //add this sentense to add a tx flow control via MTCK( CTS )
-#endif
-		SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
-				UART_RXFIFO_TOUT_INT_ENA |UART_FRM_ERR_INT_ENA);
-	} else {
-		WRITE_PERI_REG(UART_CONF1(uart_no),
-				((UartDev.rcv_buff.TrigLvl & UART_RXFIFO_FULL_THRHD) << UART_RXFIFO_FULL_THRHD_S));
-		//TrigLvl default val == 1
-	}
+	WRITE_PERI_REG(UART_CONF1(uart_no),
+			((UartDev.rcv_buff.TrigLvl & UART_RXFIFO_FULL_THRHD) << UART_RXFIFO_FULL_THRHD_S));
+
 	//clear all interrupt
 	WRITE_PERI_REG(UART_INT_CLR(uart_no), 0xffff);
 	//enable rx_interrupt
-//	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
-//			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA|UART_TXFIFO_EMPTY_INT_ENA);
-	SET_PERI_REG_MASK(UART_CONF1(UART0),
-			(UART_TX_EMPTY_THRESH_VAL & UART_TXFIFO_EMPTY_THRHD)<<UART_TXFIFO_EMPTY_THRHD_S);
-//	SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+
 	SET_PERI_REG_MASK(UART_INT_ENA(uart_no),
 			UART_RXFIFO_FULL_INT_ENA|UART_RXFIFO_OVF_INT_ENA|UART_RXFIFO_TOUT_INT_ENA);
 	uart_tx_intr_enable(1);
@@ -109,8 +114,9 @@ static unsigned int uart_tx_fifo_length(void) {
 }
 
 void uart_tx_intr_enable(int bol) {
-	if (bol)
+	if (bol) {
 		SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
+	}
 	else
 		CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
 }
@@ -138,10 +144,13 @@ uint32_t uartErrorCount = 0;
  *******************************************************************************/
 
 LOCAL void uart0_rx_intr_handler(void *para) {
+
 	uint32_t int_status = READ_PERI_REG(UART_INT_ST(UART0));
 
 	if (int_status & UART_FRM_ERR_INT_ST) { // FRAMING ERROR
-
+		// clear rx fifo (apparently this is not optional at this point)
+		SET_PERI_REG_MASK(UART_CONF0(UART0), UART_RXFIFO_RST);
+		CLEAR_PERI_REG_MASK(UART_CONF0(UART0), UART_RXFIFO_RST);
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_FRM_ERR_INT_CLR);
 		uartErrorCount++;
 
@@ -156,6 +165,7 @@ LOCAL void uart0_rx_intr_handler(void *para) {
 		WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_FULL_INT_CLR);
 
 	};
+
 	if (int_status & UART_RXFIFO_TOUT_INT_ST) { // RXD FIFO TIMEOUT
 
 		while (uart_rx_fifo_length()) {
@@ -184,18 +194,20 @@ LOCAL void uart0_rx_intr_handler(void *para) {
 		uartErrorCount++;
 	}
 
+	if (READ_PERI_REG(UART_INT_ST(UART1))) {
+		WRITE_PERI_REG(UART_INT_CLR(UART1), 0xFFFF);
+	}
+
 }
 
 void ICACHE_FLASH_ATTR
 uart_init(UartBautRate uart0_br, UartBautRate uart1_br) {
 
 	UartDev.baut_rate = uart0_br;
-	uart_config(UART0);
+	uart0_config();
 	UartDev.baut_rate = uart1_br;
-	uart_config(UART1);
+	uart1_config();
 	ETS_UART_INTR_ENABLE();
-	uart_tx_intr_enable(1);
-	uart_rx_intr_enable(UART0);
 
 	os_install_putc1((void *) uart0Write);
 }
