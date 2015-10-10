@@ -15,6 +15,7 @@
  * Modification history:
  *     2014/5/1, v1.0 create this file.
  *******************************************************************************/
+#include "stdint.h"
 #include "ets_sys.h"
 #include "os_type.h"
 #include "osapi.h"

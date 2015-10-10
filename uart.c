@@ -16,6 +16,7 @@
  *
  * LMR REDUCED TO THE MAX
  */
+#include "stdint.h"
 #include "ets_sys.h"
 #include "osapi.h"
 #include "uart.h"

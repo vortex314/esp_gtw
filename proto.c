@@ -1,3 +1,4 @@
+#include "stdint.h"
 #include "proto.h"
 #include "ringbuf.h"
 I8 ICACHE_FLASH_ATTR PROTO_Init(PROTO_PARSER *parser, PROTO_PARSE_CALLBACK *completeCallback, U8 *buf, U16 bufSize)

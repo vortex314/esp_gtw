@@ -4,6 +4,7 @@
  *  Created on: Sep 20, 2015
  *      Author: lieven
  */
+#include "stdint.h"
 #include "c_types.h"
 #include "rboot.h"
 

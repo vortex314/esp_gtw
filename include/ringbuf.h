@@ -1,6 +1,6 @@
 #ifndef _RING_BUF_H_
 #define _RING_BUF_H_
-
+#include "stdint.h"
 #include <os_type.h>
 #include <stdlib.h>
 #include "typedef.h"

@@ -26,7 +26,15 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * Lieven : some thoughts
+ * - Cllback routines can be invoked from interrupts and as such can forget to feed the watchdog
+ * - timers are also likely to be in this case
+ * - SPI flash loading can influence timing
+ *
  */
+#include "stdint.h"
 #include "ets_sys.h"
 #include "uart.h"
 #include "osapi.h"
@@ -172,7 +180,7 @@ extern uint64_t SysUpTime;
 
 extern IROM int HandlerTimeouts();
 
-LOCAL void IROM tick_cb(void *arg) {
+void IROM tick_cb(void *arg) {
 
 	if (HandlerTimeouts())
 		system_os_post(MSG_TASK_PRIO, SIG_TICK, CLOCK_ID);
@@ -186,6 +194,7 @@ void IROM MSG_TASK(os_event_t *e) {
 	if (SysMillis() > timeoutValue) {
 		if (mqttConnected) {
 			publish("count", count++);
+			publish("system/conflicts", conflicts);
 			publish("mqtt/connections", mqttConnectCounter);
 			publish("wifi/connections", wifiConnectCounter);
 			publish("tcp/connections", tcpConnectCounter);

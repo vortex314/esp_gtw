@@ -7,10 +7,10 @@
 
 #ifndef ESP8266_H_
 #define ESP8266_H_
-
+#include <stdint.h>
 
 #include <ets_sys.h>
-#include <stdint.h>
+
 
 //Missing function prototypes in include folders. Gcc will warn on these if we don't define 'em anywhere.
 //MOST OF THESE ARE GUESSED! but they seem to swork and shut up the compiler.

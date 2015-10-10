@@ -3,8 +3,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "all.h"
-
+#include "ets_sys.h"
 
 extern void os_printf_plus(const char* s, ...);
 extern void logShort(const char * format, ...);
@@ -36,17 +35,17 @@ typedef enum __attribute__ ((__packed__))
 void pin_func_select(uint32_t pin_name, uint32_t pin_func);
 
 // prototypes missing
-
+#include <stdarg.h>
 void *pvPortMalloc(size_t);
 int ets_vsnprintf(char *, size_t, const char *, va_list);
 
 void ets_isr_attach(int, void *, void *);
 void ets_isr_mask(unsigned intr);
 void ets_isr_unmask(unsigned intr);
-void ets_timer_arm_new(ETSTimer *, uint32_t, bool, int);
+//void ets_timer_arm_new(ETSTimer *, uint32_t, bool, int);
 void ets_timer_disarm(ETSTimer *);
 void ets_timer_setfn(ETSTimer *, ETSTimerFunc *, void *);
-void ets_delay_us(uint16_t);
+//void ets_delay_us(uint16_t);
 
 // local utility functions missing from libc
 

@@ -6,6 +6,7 @@
  */
 
 extern "C" {
+#include "espmissingincludes.h"
 #include "esp8266.h"
 #include "user_interface.h"
 #include "osapi.h"
@@ -19,6 +20,7 @@ extern "C" {
 #include "queue.h"
 #include "ets_sys.h"
 }
+#include "stdint.h"
 #include "Flash.h"
 #include "Sys.h"
 

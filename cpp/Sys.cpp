@@ -14,6 +14,7 @@ extern "C" {
 #endif
 
 #include "user_interface.h"
+#include "espmissingincludes.h"
 #include "osapi.h"
 #include "mem.h"
 #include "util.h"
@@ -26,7 +27,7 @@ return pvPortMalloc(size);
 }
 
 IROM void free(void* ptr) {
-return vPortFree(ptr);
+ vPortFree(ptr);
 }
 #ifdef __cplusplus
 }

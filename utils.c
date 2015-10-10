@@ -30,6 +30,7 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 */
+#include "stdint.h"
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
