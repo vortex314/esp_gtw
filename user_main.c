@@ -61,19 +61,31 @@ extern void MsgInit();
 const char* MQTT_ID = "MQTT";
 const char* CLOCK_ID = "CLOCK";
 const char* TCP_ID = "TCP";
-const char* WIFI_ID = "TCP";
+const char* WIFI_ID = "WIFI";
+#define MSG_TASK_PRIO        		1
+#define MSG_TASK_QUEUE_SIZE    	100
+#define MSG_SEND_TIMOUT			5
+os_event_t MsgQueue[MSG_TASK_QUEUE_SIZE];
+typedef enum {
+	MsgTick, MsgUart
+} MsgType;
 
-IROM void wifiConnectCb(uint8_t status) {
+void Post(const char* src, Signal signal) {
+//	INFO("POST %s : %d ",src,signal);
+	system_os_post(MSG_TASK_PRIO, signal, (ETSParam) src);
+}
+
+ void wifiConnectCb(uint8_t status) {
 	if (status == STATION_GOT_IP) {
-		MsgPublish(WIFI_ID, SIG_CONNECTED);
+		Post(WIFI_ID, SIG_CONNECTED);
 		MQTT_Connect(&mqttClient);
 	} else {
-		MsgPublish(WIFI_ID, SIG_DISCONNECTED);
+		Post(WIFI_ID, SIG_DISCONNECTED);
 		MQTT_Disconnect(&mqttClient);
 	}
 }
 
-IROM void mqttConnectedCb(uint32_t *args) {
+ void mqttConnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 	INFO("MQTT: Connected");
 
@@ -85,29 +97,29 @@ IROM void mqttConnectedCb(uint32_t *args) {
 	ets_sprintf(topic, "PUT%s/realTime", mqttPrefix);
 	MQTT_Publish(client, topic, "12234578", 6, 0, 0);
 
-	MsgPublish(MQTT_ID, SIG_CONNECTED);
+	Post(MQTT_ID, SIG_CONNECTED);
 
 //	os_timer_arm(&hello_timer, DELAY, 1);
 	mqttConnected = TRUE;
 
 }
 
-IROM void mqttDisconnectedCb(uint32_t *args) {
+ void mqttDisconnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
 	os_timer_disarm(&hello_timer);
-	MsgPublish(MQTT_ID, SIG_CONNECTED);
+	Post(MQTT_ID, SIG_CONNECTED);
 	mqttConnected = FALSE;
 }
 
-IROM void mqttPublishedCb(uint32_t *args) {
+ void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Published");
-	MsgPublish(MQTT_ID, SIG_TXD);
+	Post(MQTT_ID, SIG_TXD);
 }
 
-IROM void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
+ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 		const char *data, uint32_t data_len) {
 	char *topicBuf = (char*) os_zalloc(topic_len + 1), *dataBuf =
 			(char*) os_zalloc(data_len + 1);
@@ -151,16 +163,25 @@ extern uint32_t uartTxdCount;
 extern uint32_t uartRxdCount;
 extern uint32_t uartErrorCount;
 extern uint32_t overflowTxd;
-uint64_t timeoutValue = 0;
+
 /*uint32_t millis() {
-	return (system_get_time() / 1000);
-}*/
+ return (system_get_time() / 1000);
+ }*/
+
 extern uint64_t SysUpTime;
+
+extern IROM int HandlerTimeouts();
+
 LOCAL void IROM tick_cb(void *arg) {
 
-//	char buf[100];
-//	char topic[30];
-	MsgPublish(CLOCK_ID, SIG_TICK);
+	if (HandlerTimeouts())
+		system_os_post(MSG_TASK_PRIO, SIG_TICK, CLOCK_ID);
+}
+
+void IROM MSG_TASK(os_event_t *e) {
+//	INFO("event received : %s :%d ",e->par,e->sig);
+	static uint64_t timeoutValue = 0;
+	MsgPublish(e->par, e->sig);
 	MsgPump();
 	if (SysMillis() > timeoutValue) {
 		if (mqttConnected) {
@@ -177,18 +198,15 @@ LOCAL void IROM tick_cb(void *arg) {
 			publish("uart0/rxdCount", uartRxdCount);
 			publish("uart0/errorCount", uartErrorCount);
 			publish("uart0/overflowTxd", overflowTxd);
-			timeoutValue = SysMillis() + 3000;
+			timeoutValue = SysMillis() + 2000;
 		}
 	}
-
-//	os_timer_arm(&hello_timer, DELAY, 1);
-
 }
 /*
  LOCAL os_timer_t tick_timer;
 
  LOCAL void IRAM tick_cb(void *arg) {
- //	MsgPublish(CLOCK_ID,SIG_TICK);
+ //	Publish(CLOCK_ID,SIG_TICK);
  MsgPump();
  } */
 
@@ -223,15 +241,13 @@ IROM void user_init(void) {
 
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 	// Set up a timer to send the message
-	os_timer_disarm(&hello_timer);
 
+	os_timer_disarm(&hello_timer);
 	os_timer_setfn(&hello_timer, (os_timer_func_t *) tick_cb, (void *) 0);
 	os_timer_arm(&hello_timer, DELAY, 1);
-	/*	os_timer_disarm(&tick_timer);
-	 os_timer_setfn(&tick_timer, (os_timer_func_t *) tick_cb, (void *) 0);
-	 os_timer_arm(&tick_timer, 1, 1);*/
-	// 1 msec repeat
 
 	INFO("System started ...");
+	system_os_task(MSG_TASK, MSG_TASK_PRIO, MsgQueue, MSG_TASK_QUEUE_SIZE);
+	system_os_post(MSG_TASK_PRIO, 0, 0);
 }
 

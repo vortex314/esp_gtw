@@ -84,8 +84,6 @@ UartEsp8266* UartEsp8266::_uart1 = 0;
 void checkUart0() {
 	if (UartEsp8266::_uart0 == 0) {
 		UartEsp8266::_uart0 = new UartEsp8266();
-		for (int i = 0; i < 26; i++)
-			UartEsp8266::_uart0->write('a' + i);
 	}
 }
 

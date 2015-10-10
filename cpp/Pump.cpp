@@ -46,7 +46,7 @@ extern "C" IROM void MsgInit() {
 
 IROM void logMsg(Msg* msg) {
 
-	static uint32_t sigCount = 0;
+/*	static uint32_t sigCount = 0;
 	static void* src = 0;
 	static Signal signal = SIG_IDLE;
 	if (msg->is(src, signal)) {
@@ -55,13 +55,13 @@ IROM void logMsg(Msg* msg) {
 		if (sigCount) {
 			INFO(">>>>>>>>>>   %s , %s x %d ",
 					(const char*) src, strSignal[signal], sigCount);
-		}
+		}*/
 		INFO(">>>>>>>>>>   %s , %s ",
 				(const char* )msg->src(), strSignal[msg->signal()]);
-		src = msg->src();
+/*		src = msg->src();
 		signal = msg->signal();
 		sigCount = 0;
-	}
+	}*/
 }
 
 extern "C" IROM void MsgPump() {
