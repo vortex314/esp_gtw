@@ -166,6 +166,7 @@ LOCAL void IROM publishStr(const char* topicName, char* buf) {
 }
 extern char lastLog[];
 #include "util.h"
+#include "esp_coredump.h"
 extern uint32_t conflicts;
 extern uint32_t uartTxdCount;
 extern uint32_t uartRxdCount;
@@ -187,6 +188,7 @@ void IROM tick_cb(void *arg) {
 }
 
 void IROM MSG_TASK(os_event_t *e) {
+
 //	INFO("event received : %s :%d ",e->par,e->sig);
 	static uint64_t timeoutValue = 0;
 	MsgPublish(e->par, e->sig);
@@ -207,7 +209,7 @@ void IROM MSG_TASK(os_event_t *e) {
 			publish("uart0/rxdCount", uartRxdCount);
 			publish("uart0/errorCount", uartErrorCount);
 			publish("uart0/overflowTxd", overflowTxd);
-			timeoutValue = SysMillis() + 2000;
+			timeoutValue = SysMillis() + 5000;
 		}
 	}
 }
@@ -219,14 +221,21 @@ void IROM MSG_TASK(os_event_t *e) {
  MsgPump();
  } */
 
+
+#include "esp_exc.h"
 IROM void user_init(void) {
+
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
+	esp_exception_handler_init();
 	gpio_init();
 	gpio16_output_conf();
 	clockInit();
 	os_delay_us(1000000);
 	INFO("");
 	INFO("Starting version : " __DATE__ " " __TIME__);
+
+
+
 	MsgInit();
 	os_delay_us(1000000);
 	ets_sprintf(mqttPrefix, "/limero314/ESP_%08X", system_get_chip_id());

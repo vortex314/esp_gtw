@@ -33,6 +33,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp_iot_sdk_v1.4.0/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.886301534" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals  -D__ets__ -DICACHE_FLASH" valueType="string"/>
 								<option id="gnu.c.compiler.option.warnings.nowarn.1650923941" name="Inhibit all warnings (-w)" superClass="gnu.c.compiler.option.warnings.nowarn" value="true" valueType="boolean"/>
@@ -41,6 +42,7 @@
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
 									<listOptionValue builtIn="false" value="STA_SSID='&quot;Merckx&quot;'"/>
 									<listOptionValue builtIn="false" value="STA_PASS='&quot;LievenMarletteEwoutRonald&quot;'"/>
+									<listOptionValue builtIn="false" value="ESP_COREDUMP"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1847501458" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -52,12 +54,14 @@
 									<listOptionValue builtIn="false" value="/home/lieven/esp_iot_sdk_v1.4.0/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.730202308" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
 									<listOptionValue builtIn="false" value="STA_SSID=&quot;Merckx&quot;"/>
 									<listOptionValue builtIn="false" value="STA_PASS=LievenMarletteEwoutRonald"/>
+									<listOptionValue builtIn="false" value="ESP_COREDUMP"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.2047560662" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -ffunction-sections -fno-rtti -fno-exceptions -mlongcalls -mtext-section-literals" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1703538761" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -81,6 +85,7 @@
 									<listOptionValue builtIn="false" value="pp"/>
 									<listOptionValue builtIn="false" value="main"/>
 									<listOptionValue builtIn="false" value="cirom"/>
+									<listOptionValue builtIn="false" value="hal"/>
 									<listOptionValue builtIn="false" value="gcc"/>
 								</option>
 								<option id="gnu.cpp.link.option.nostart.1242606685" name="Do not use standard start files (-nostartfiles)" superClass="gnu.cpp.link.option.nostart" value="true" valueType="boolean"/>
@@ -106,6 +111,7 @@
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.160379888" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -160,12 +166,14 @@
 									<listOptionValue builtIn="false" value="/home/lieven/projects/Common/inc"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2060140780" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
 									<listOptionValue builtIn="false" value="STA_SSID=&quot;Merckx&quot;"/>
 									<listOptionValue builtIn="false" value="STA_PASS=LievenMarletteEwoutRonald"/>
+									<listOptionValue builtIn="false" value="ESP_COREDUMP"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.557804839" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -181,12 +189,14 @@
 									<listOptionValue builtIn="false" value="/home/lieven/projects/Common/inc"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1868884921" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
 									<listOptionValue builtIn="false" value="__ESP8266__"/>
 									<listOptionValue builtIn="false" value="STA_SSID=&quot;Merckx&quot;"/>
 									<listOptionValue builtIn="false" value="STA_PASS=LievenMarletteEwoutRonald"/>
+									<listOptionValue builtIn="false" value="ESP_COREDUMP"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1436362263" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -208,13 +218,15 @@
 									<listOptionValue builtIn="false" value="/home/lieven/projects/Common/inc"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.492121209" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core_dump"/>
+						<entry excluding="core_dump|cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="cpp"/>
 					</sourceEntries>
 				</configuration>
@@ -228,30 +240,21 @@
 	<storageModule moduleId="refreshScope" versionNumber="1">
 		<resource resourceType="PROJECT" workspacePath="/esp_bridge"/>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.958934328;cdt.managedbuild.tool.gnu.cpp.compiler.input.1703538761">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.1986023217;cdt.managedbuild.tool.gnu.cross.cpp.compiler.750218579;cdt.managedbuild.tool.gnu.cpp.compiler.input.865653870">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="specsFile">
-					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;" command="xtensa-lx106-elf-g++" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.500500752;cdt.managedbuild.config.gnu.cross.exe.release.500500752.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.915256822;cdt.managedbuild.tool.gnu.cpp.compiler.input.1436362263">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.500500752;cdt.managedbuild.config.gnu.cross.exe.release.500500752.;cdt.managedbuild.tool.gnu.cross.c.compiler.1982005712;cdt.managedbuild.tool.gnu.c.compiler.input.557804839">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
 				<buildOutputProvider>
 					<openAction enabled="true" filePath=""/>
 					<parser enabled="true"/>
 				</buildOutputProvider>
 				<scannerInfoProvider id="specsFile">
-					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;" command="xtensa-lx106-elf-g++" useDefault="true"/>
+					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;" command="xtensa-lx106-elf-gcc" useDefault="true"/>
 					<parser enabled="true"/>
 				</scannerInfoProvider>
 			</profile>
@@ -269,25 +272,40 @@
 				</scannerInfoProvider>
 			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.500500752;cdt.managedbuild.config.gnu.cross.exe.release.500500752.;cdt.managedbuild.tool.gnu.cross.c.compiler.1982005712;cdt.managedbuild.tool.gnu.c.compiler.input.557804839">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.1986023217;cdt.managedbuild.tool.gnu.cross.c.compiler.85985619;cdt.managedbuild.tool.gnu.c.compiler.input.1930333897">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
-			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC">
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.958934328;cdt.managedbuild.tool.gnu.cpp.compiler.input.1703538761">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
 				<buildOutputProvider>
 					<openAction enabled="true" filePath=""/>
 					<parser enabled="true"/>
 				</buildOutputProvider>
 				<scannerInfoProvider id="specsFile">
-					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.c&quot;" command="xtensa-lx106-elf-gcc" useDefault="true"/>
+					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;" command="xtensa-lx106-elf-g++" useDefault="true"/>
 					<parser enabled="true"/>
 				</scannerInfoProvider>
 			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.1986023217;cdt.managedbuild.tool.gnu.cross.c.compiler.85985619;cdt.managedbuild.tool.gnu.c.compiler.input.1930333897">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.1935819552;cdt.managedbuild.tool.gnu.cross.c.compiler.1804971944;cdt.managedbuild.tool.gnu.c.compiler.input.1719536773">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.1986023217;cdt.managedbuild.tool.gnu.cross.cpp.compiler.750218579;cdt.managedbuild.tool.gnu.cpp.compiler.input.865653870">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795;cdt.managedbuild.config.gnu.cross.exe.debug.1105106795.1935819552;cdt.managedbuild.tool.gnu.cross.cpp.compiler.1367240180;cdt.managedbuild.tool.gnu.cpp.compiler.input.2084115076">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.500500752;cdt.managedbuild.config.gnu.cross.exe.release.500500752.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.915256822;cdt.managedbuild.tool.gnu.cpp.compiler.input.1436362263">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+			<profile id="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP">
+				<buildOutputProvider>
+					<openAction enabled="true" filePath=""/>
+					<parser enabled="true"/>
+				</buildOutputProvider>
+				<scannerInfoProvider id="specsFile">
+					<runAction arguments="-E -P -v -dD &quot;${plugin_state_location}/specs.cpp&quot;" command="xtensa-lx106-elf-g++" useDefault="true"/>
+					<parser enabled="true"/>
+				</scannerInfoProvider>
+			</profile>
+		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

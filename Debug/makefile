@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include tools/subdir.mk
 -include cpp/subdir.mk
+-include core_dump/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -42,7 +43,7 @@ endif
 all: esp_gtw
 
 dependents:
-	-cd /home/lieven/workspace/Common/Debug && $(MAKE) all
+	-cd /home/lieven/workspace/Common/Debug && $(MAKE) clean all
 
 # Tool invocations
 esp_gtw: $(OBJS) $(USER_OBJS) /home/lieven/workspace/Common/Debug/libCommon.a

@@ -26,4 +26,5 @@ SUBDIRS := \
 . \
 tools \
 cpp \
+core_dump \
 

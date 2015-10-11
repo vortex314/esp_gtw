@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lCommon -lm -lssl -llwip -lwpa -lnet80211 -lphy -lpp -lmain -lcirom -lgcc
+LIBS := -lCommon -lm -lssl -llwip -lwpa -lnet80211 -lphy -lpp -lmain -lcirom -lhal -lgcc
 
