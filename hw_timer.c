@@ -152,8 +152,13 @@ extern const char* TCP_ID;
 extern const char* WIFI_ID;
 
 uint64_t SysUpTime=0UL;
+uint64_t SysWatchDog=10000UL;
 void hw_test_timer_cb(void) {
 	SysUpTime++;
+	if ( SysUpTime > SysWatchDog) {
+		dump_stack();
+		SysWatchDog=SysUpTime+1000;
+	}
 }
 
 void ICACHE_FLASH_ATTR clockInit(void)

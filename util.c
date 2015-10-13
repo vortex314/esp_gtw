@@ -45,7 +45,7 @@ void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 		ets_sprintf(lastLog, "%s:%s:%s", SysLogLevelStr[level], dst, buffer);
 	}
 
-	ets_printf("%06d.%03d |%s| %s | %s\r\n", time / 1000, time % 1000,
+	os_printf_plus("%06d.%03d |%s| %s | %s\r\n", time / 1000, time % 1000,
 			SysLogLevelStr[level], dst, buffer);
 	ReleaseMutex(&logMutex);
 }

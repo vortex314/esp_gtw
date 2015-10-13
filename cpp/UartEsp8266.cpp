@@ -17,7 +17,7 @@
 extern "C" uint32_t overflowTxd=0;
 
  IROM UartEsp8266::UartEsp8266() :
-		_rxd(256), _txd(2048) {
+		_rxd(256), _txd(3000) {
 	_bytesRxd = 0;
 	_bytesTxd = 0;
 	_overflowTxd=0;

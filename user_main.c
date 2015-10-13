@@ -83,7 +83,7 @@ void Post(const char* src, Signal signal) {
 	system_os_post(MSG_TASK_PRIO, signal, (ETSParam) src);
 }
 
- void wifiConnectCb(uint8_t status) {
+void wifiConnectCb(uint8_t status) {
 	if (status == STATION_GOT_IP) {
 		Post(WIFI_ID, SIG_CONNECTED);
 		MQTT_Connect(&mqttClient);
@@ -93,7 +93,7 @@ void Post(const char* src, Signal signal) {
 	}
 }
 
- void mqttConnectedCb(uint32_t *args) {
+void mqttConnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 	INFO("MQTT: Connected");
 
@@ -112,7 +112,7 @@ void Post(const char* src, Signal signal) {
 
 }
 
- void mqttDisconnectedCb(uint32_t *args) {
+void mqttDisconnectedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Disconnected");
 	mqttConnectCounter++;
@@ -121,13 +121,13 @@ void Post(const char* src, Signal signal) {
 	mqttConnected = FALSE;
 }
 
- void mqttPublishedCb(uint32_t *args) {
+void mqttPublishedCb(uint32_t *args) {
 	MQTT_Client* client = (MQTT_Client*) args;
 //	INFO("MQTT: Published");
 	Post(MQTT_ID, SIG_TXD);
 }
 
- void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
+void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len,
 		const char *data, uint32_t data_len) {
 	char *topicBuf = (char*) os_zalloc(topic_len + 1), *dataBuf =
 			(char*) os_zalloc(data_len + 1);
@@ -178,6 +178,7 @@ extern uint32_t overflowTxd;
  }*/
 
 extern uint64_t SysUpTime;
+extern uint64_t SysWatchDog;
 
 extern IROM int HandlerTimeouts();
 
@@ -185,6 +186,7 @@ void IROM tick_cb(void *arg) {
 
 	if (HandlerTimeouts())
 		system_os_post(MSG_TASK_PRIO, SIG_TICK, CLOCK_ID);
+	SysWatchDog = SysMillis() + 1000;	// if not called within 1 second calls dump_stack;
 }
 
 void IROM MSG_TASK(os_event_t *e) {
@@ -221,7 +223,6 @@ void IROM MSG_TASK(os_event_t *e) {
  MsgPump();
  } */
 
-
 #include "esp_exc.h"
 IROM void user_init(void) {
 
@@ -233,13 +234,12 @@ IROM void user_init(void) {
 	os_delay_us(1000000);
 	INFO("");
 	INFO("Starting version : " __DATE__ " " __TIME__);
-
-
+	dump_stack();
 
 	MsgInit();
 	os_delay_us(1000000);
 	ets_sprintf(mqttPrefix, "/limero314/ESP_%08X", system_get_chip_id());
-	uart_div_modify(0, UART_CLK_FREQ / 115200);
+//	uart_div_modify(0, UART_CLK_FREQ / 115200);
 
 	CFG_Load();
 

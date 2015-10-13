@@ -52,6 +52,8 @@ static void handle_exception(struct regfile *regs) {
  */
 #include "Sys.h"
 IRAM void esp_exception_handler(struct xtensa_stack_frame *frame) {
+	dump_stack();
+	/*
 	uint32_t cause = RSR(EXCCAUSE);
 	uint32_t vaddr = RSR(EXCVADDR);
 	INFO("\nTrap %d: pc=%p va=%p\n", cause, (void *) frame->pc, (void *) vaddr);
@@ -64,7 +66,7 @@ IRAM void esp_exception_handler(struct xtensa_stack_frame *frame) {
 	regs.ps = frame->ps;
 	regs.litbase = RSR(LITBASE);
 
-	handle_exception(&regs);
+	handle_exception(&regs);*/
 	_ResetVector();
 }
 
