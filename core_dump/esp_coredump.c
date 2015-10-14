@@ -67,17 +67,17 @@ void dump_stack() {
 	uint32_t* start = &lv;
 	uint32_t* end = 0x40000000;
 	uint32_t* ptr = start;
-	INFO("@(#):STACK_START 0x%X",start);
+	os_printf_plus("@(#):STACK_START 0x%X\n",start);
 //	INFO("@(#):%8X:%8X", 0xA0, RSR(A0));
 	while (ptr < end) {
 		if ((*ptr > 0x40000000 && *ptr < 0x60000000) // only print CODE locations
 		|| (*ptr > 0x3ff00000 && *ptr < 0x40000000) // data
 				)
-			INFO("@(#):%8X:%8X", ptr, *ptr);
+			os_printf_plus("@(#):%8X:%8X\n", ptr, *ptr);
 //	    INFO("%8x : %8x %8x %8x %8x ",ptr,*ptr,*(ptr+1),*(ptr+2),*(ptr+3));
 		ptr += sizeof(uint32_t);
 	}
-	INFO("@(#):STACK_END");
+	os_printf_plus("@(#):STACK_END\n");
 
 }
 

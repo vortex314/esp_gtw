@@ -53,10 +53,11 @@ static void handle_exception(struct regfile *regs) {
 #include "Sys.h"
 IRAM void esp_exception_handler(struct xtensa_stack_frame *frame) {
 	dump_stack();
-	/*
+	os_delay_us(10000000);
+
 	uint32_t cause = RSR(EXCCAUSE);
 	uint32_t vaddr = RSR(EXCVADDR);
-	INFO("\nTrap %d: pc=%p va=%p\n", cause, (void *) frame->pc, (void *) vaddr);
+	os_printf_plus("\nTrap %d: pc=%p va=%p\n", cause, (void *) frame->pc, (void *) vaddr);
 	memcpy(&regs.a[2], frame->a, sizeof(frame->a));
 
 	regs.a[0] = frame->a0;
@@ -66,19 +67,19 @@ IRAM void esp_exception_handler(struct xtensa_stack_frame *frame) {
 	regs.ps = frame->ps;
 	regs.litbase = RSR(LITBASE);
 
-	handle_exception(&regs);*/
+	handle_exception(&regs);
 	_ResetVector();
 }
 
 void esp_exception_handler_init() {
-#if defined(ESP_FLASH_BYTES_EMUL) || defined(ESP_GDB_SERVER) || \
+//#if defined(ESP_FLASH_BYTES_EMUL) || defined(ESP_GDB_SERVER) || \
     defined(ESP_COREDUMP)
 
 	/*
 	 * The RTOS build intercepts all user exceptions with
 	 * __wrap_user_fatal_exception_handler
 	 */
-#ifndef RTOS_TODO
+//#ifndef RTOS_TODO
 	char causes[] = { EXCCAUSE_ILLEGAL, EXCCAUSE_INSTR_ERROR,
 			EXCCAUSE_LOAD_STORE_ERROR, EXCCAUSE_DIVIDE_BY_ZERO,
 			EXCCAUSE_UNALIGNED, EXCCAUSE_INSTR_PROHIBITED,
@@ -87,7 +88,7 @@ void esp_exception_handler_init() {
 	for (i = 0; i < (int) sizeof(causes); i++) {
 		_xtos_set_exception_handler(causes[i], esp_exception_handler);
 	}
-#endif
+//#endif
 
 #ifdef ESP_FLASH_BYTES_EMUL
 	/*
@@ -97,5 +98,5 @@ void esp_exception_handler_init() {
 	flash_emul_init();
 #endif
 
-#endif
+//#endif
 }

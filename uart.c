@@ -145,6 +145,7 @@ uint32_t uartErrorCount = 0;
  *******************************************************************************/
 
 LOCAL void uart0_rx_intr_handler(void *para) {
+	ETS_UART_INTR_DISABLE();
 
 	uint32_t int_status = READ_PERI_REG(UART_INT_ST(UART0));
 
@@ -198,6 +199,7 @@ LOCAL void uart0_rx_intr_handler(void *para) {
 	if (READ_PERI_REG(UART_INT_ST(UART1))) {
 		WRITE_PERI_REG(UART_INT_CLR(UART1), 0xFFFF);
 	}
+	ETS_UART_INTR_ENABLE();
 
 }
 

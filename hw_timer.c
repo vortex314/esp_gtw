@@ -156,6 +156,7 @@ uint64_t SysWatchDog=10000UL;
 void hw_test_timer_cb(void) {
 	SysUpTime++;
 	if ( SysUpTime > SysWatchDog) {
+		os_printf_plus("MyWatchDog\n");
 		dump_stack();
 		SysWatchDog=SysUpTime+1000;
 	}
