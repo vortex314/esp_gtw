@@ -234,7 +234,9 @@ IROM void user_init(void) {
 	os_delay_us(1000000);
 	INFO("");
 	INFO("Starting version : " __DATE__ " " __TIME__);
-	dump_stack();
+//	dump_stack();
+	struct regfile regs;
+//	esp_dump_core(0,&regs);
 
 	MsgInit();
 	os_delay_us(1000000);

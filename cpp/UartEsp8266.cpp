@@ -14,16 +14,16 @@
 
 #include "UartEsp8266.h"
 
-extern "C" uint32_t overflowTxd=0;
+extern "C" uint32_t overflowTxd = 0;
 
- IROM UartEsp8266::UartEsp8266() :
+IROM UartEsp8266::UartEsp8266() :
 		_rxd(256), _txd(3000) {
 	_bytesRxd = 0;
 	_bytesTxd = 0;
-	_overflowTxd=0;
+	_overflowTxd = 0;
 }
 
- IROM UartEsp8266::~UartEsp8266() {
+IROM UartEsp8266::~UartEsp8266() {
 	ERROR(" dtor called ");
 }
 extern "C" void uart_tx_intr_enable(int bol);
@@ -32,7 +32,7 @@ IROM Erc UartEsp8266::write(Bytes& bytes) {
 	while (_txd.hasSpace() && bytes.hasData()) {
 		_txd.write(bytes.read());
 	};
-	if ( bytes.hasData()) {
+	if (bytes.hasData()) {
 		_overflowTxd++;
 		overflowTxd++;
 	}
@@ -116,3 +116,10 @@ extern "C" void uart0Write(uint8_t b) {
 		UartEsp8266::_uart0->write(b);
 	}
 }
+/*
+extern "C" void uart0WriteWait(uint8_t b) {
+	checkUart0();
+	while (UartEsp8266::_uart0->write(b) != E_OK)
+		;
+}*/
+

@@ -1,4 +1,5 @@
 #define ESP_COREDUMP
+
 #ifdef ESP_COREDUMP
 
 //#include <stdio.h>
@@ -15,8 +16,9 @@
 #include "base64.h"
 #include "Sys.h"
 
-#define uart_puts(__fd,__arg ) INFO(__arg);
-#define uart_putchar(__fd,__arg ) uart0Write(__arg);
+void uart0WriteWait(uint8_t b);
+#define uart_puts(__fd,__arg ) { char* p=__arg;while(*p) uart0WriteWait(*p++);}
+#define uart_putchar(__fd,__arg ) uart0WriteWait(__arg);
 
 #define ESP_COREDUMP_UART_NO 1
 #define ESP_COREDUMP_FILENO (ESP_COREDUMP_UART_NO + 1)
@@ -38,7 +40,7 @@ static void uart_putdec(int fd, unsigned int n) {
 		uart_putchar(fd, '0' + (unsigned int) (n / p) % 10);
 	}
 }
-
+#define RTOS_SDK
 static int core_dump_emit_char_fd = 0;
 static void core_dump_emit_char(char c, void *user_data) {
 	int *col_counter = (int *) user_data;
@@ -67,7 +69,7 @@ void dump_stack() {
 	uint32_t* start = &lv;
 	uint32_t* end = 0x40000000;
 	uint32_t* ptr = start;
-	os_printf_plus("@(#):STACK_START 0x%X\n",start);
+	os_printf_plus("@(#):STACK_START 0x%X\n", start);
 //	INFO("@(#):%8X:%8X", 0xA0, RSR(A0));
 	while (ptr < end) {
 		if ((*ptr > 0x40000000 && *ptr < 0x60000000) // only print CODE locations
@@ -82,7 +84,7 @@ void dump_stack() {
 }
 
 /* address must be aligned to 4 and size must be multiple of 4 */
-void emit_core_dump_section(int fd, const char *name, uint32_t addr,
+static void emit_core_dump_section(int fd, const char *name, uint32_t addr,
 		uint32_t size) {
 	struct cs_base64_ctx ctx;
 	int col_counter = 0;
@@ -90,38 +92,34 @@ void emit_core_dump_section(int fd, const char *name, uint32_t addr,
 	uart_puts(fd, name);
 	uart_puts(fd, "\": {\"addr\": ");
 	uart_putdec(fd, addr);
-//  uart_puts(fd, ", \"data\": \"");
+	uart_puts(fd, ", \"data\": \"");
 	core_dump_emit_char_fd = fd;
-//  cs_base64_init(&ctx, core_dump_emit_char, &col_counter);
+	cs_base64_init(&ctx, core_dump_emit_char, &col_counter);
 
 	uint32_t end = addr + size;
 	while (addr < end) {
-		uint32_t* ptr;
-		ptr = ((uint32_t *) addr);
-
-		addr += sizeof(uint32_t) * 4;
-		INFO("%8x : %8x %8x %8x %8x ",
-				addr, *ptr, *(ptr+1), *(ptr+2), *(ptr+3));
-//    cs_base64_update(&ctx, (char *) &buf, sizeof(uint32_t));
+		uint32_t buf;
+		buf = *((uint32_t *) addr);
+		addr += sizeof(uint32_t);
+		cs_base64_update(&ctx, (char *) &buf, sizeof(uint32_t));
 	}
-//  cs_base64_finish(&ctx);
-
-//  uart_puts(fd, "\"}");
+	cs_base64_finish(&ctx);
+	uart_puts(fd, "\"}");
 }
 
 void esp_dump_core(int fd, struct regfile *regs) {
-	uint32_t lv = 0;
-
-	uart_puts(fd, "--- BEGIN CORE DUMP ---\n");
+	  xthal_set_intenable(0);
+	if (fd == -1) {
+		fd = ESP_COREDUMP_FILENO;
+	}
+	uart_puts(fd, "\r\n--- BEGIN CORE DUMP ---\n");
 
 	uart_puts(fd, "{\"arch\": \"ESP8266\"");
 	emit_core_dump_section(fd, "REGS", (uintptr_t) regs, sizeof(*regs));
 	emit_core_dump_section(fd, "DRAM", 0x3FFE8000, 0x18000);
-	emit_core_dump_section(fd, "STACK", 0x3FFFF000, 0x1000);
-	emit_core_dump_section(fd, "STACK2", &lv, 0x40000000 - (uint32_t) &lv);
 	/* rtos relocates vectors here */
-//  emit_core_dump_section(fd, "VEC", 0x40100000, 0x1000);
-//  emit_core_dump_section(fd, "ROM", 0x40000000, 0x10000);
+	emit_core_dump_section(fd, "VEC", 0x40100000, 0x1000);
+	emit_core_dump_section(fd, "ROM", 0x40000000, 0x10000);
 	uart_puts(fd, "}\n");
 
 	/*
@@ -132,6 +130,7 @@ void esp_dump_core(int fd, struct regfile *regs) {
 	 */
 
 	uart_puts(fd, "---- END CORE DUMP ----\n");
+	  _ResetVector();
 }
 
 #endif /* ESP_COREDUMP */

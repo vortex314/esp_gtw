@@ -27,8 +27,22 @@
 
 extern UartDevice UartDev;
 
+#include "Sys.h"
+
 extern void uart0RecvByte(uint8_t b);
 extern void uart0Write(uint8_t b);
+
+IRAM void uart0WriteWait(uint8 TxChar) {
+	while (true) {
+		uint32 fifo_cnt = READ_PERI_REG(UART_STATUS(0))
+				& (UART_TXFIFO_CNT << UART_TXFIFO_CNT_S);
+		if ((fifo_cnt >> UART_TXFIFO_CNT_S & UART_TXFIFO_CNT) < 126) {
+			break;
+		}
+	}
+
+	WRITE_PERI_REG(UART_FIFO(0), TxChar);
+}
 
 LOCAL void uart0_rx_intr_handler(void *para);
 
@@ -117,8 +131,7 @@ static unsigned int uart_tx_fifo_length(void) {
 void uart_tx_intr_enable(int bol) {
 	if (bol) {
 		SET_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
-	}
-	else
+	} else
 		CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
 }
 
