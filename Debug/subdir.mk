@@ -59,7 +59,7 @@ C_DEPS += \
 %.o: ../%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross GCC Compiler'
-	xtensa-lx106-elf-gcc -DICACHE_FLASH -D__ESP8266__ -DSTA_SSID='"Merckx"' -DSTA_PASS='"LievenMarletteEwoutRonald"' -DESP_COREDUMP -I"/home/lieven/workspace/Common" -I"/home/lieven/workspace/Common/inc" -I/home/lieven/esp_iot_sdk_v1.4.0/include -I"/home/lieven/workspace/esp_gtw/include" -I"/home/lieven/workspace/esp_gtw/core_dump" -Os -w -Wall -c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals  -D__ets__ -DICACHE_FLASH -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	xtensa-lx106-elf-gcc -DICACHE_FLASH -D__ESP8266__ -DSTA_SSID='"Merckx"' -DSTA_PASS='"LievenMarletteEwoutRonald"' -DESP_COREDUMP -I"/home/lieven/workspace/Common" -I"/home/lieven/workspace/Common/inc" -I/home/lieven/esp_iot_sdk_v1.4.0/include -I"/home/lieven/workspace/esp_gtw/include" -I"/home/lieven/workspace/esp_gtw/core_dump" -O0 -w -Wall -c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -fno-jump-tables -D__ets__ -DICACHE_FLASH -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

@@ -22,43 +22,39 @@ extern "C" {
 extern uint64_t SysUpTime;
 
 IROM void* malloc(size_t size) {
-INFO("malloc(%d)",size);
-return pvPortMalloc(size);
+	void* pv = pvPortMalloc(size);
+	INFO("malloc(%d)=> 0x%X", size, pv);
+	return pv;
 }
 
 IROM void free(void* ptr) {
- vPortFree(ptr);
+	INFO("free(0x%X)", ptr);
+	vPortFree(ptr);
 }
-#ifdef __cplusplus
-}
-#endif
 
-IROM uint64_t SysMillis() {
-/*	static uint32_t lastSample=0;
-	static uint64_t major=0;
-	uint32_t minor = system_get_time();
-	if ( minor < lastSample ) {	// carry the overflow
-		major += 0x100000000UL;
-	}
-	lastSample = minor ;
-	return (major | minor)/1000;*/
+
+IRAM uint64_t SysMillis() {
 	return SysUpTime;
 }
 
-IROM uint64_t Sys::millis(){
+IRAM uint64_t Sys::millis() {
 	return SysMillis();
 }
 
 #include "stdarg.h"
 
 IROM
-void Sys::log(SysLogLevel level,const char* file, const	char * function, const char *	format,	... )
-{
+void Sys::log(SysLogLevel level, const char* file, const char * function,
+		const char * format, ...) {
 	va_list args;
-	va_start(args , format);
-	SysLog( level,file,function, format,args );
+	va_start(args, format);
+	SysLog(level, file, function, format, args);
 	va_end(args);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

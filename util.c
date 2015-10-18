@@ -15,6 +15,7 @@ void IROM strAlign(char *dst, int dstLength, char* src, int srcLength) {
 }
 #include <stdarg.h>
 char lastLog[256];
+char buffer[128];
 uint32_t conflicts=0;
 
 const char* SysLogLevelStr[] = { "TRACE", "DEBUG", "INFO", "WARN", "ERROR",
@@ -30,10 +31,11 @@ void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 	}
 	uint32_t time = SysMillis();
 
-	char buffer[256];
+
+	buffer[0]=0;
 	va_list args;
 	va_start(args, format);
-	ets_vsnprintf(buffer, 256, format, args);
+	ets_vsnprintf(buffer, sizeof(buffer), format, args);
 	va_end(args);
 
 	char dst[40];
@@ -41,11 +43,11 @@ void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 	strAlign(dst, 18, file, strlen(file));
 	strAlign(&dst[18], 18, function, strlen(function));
 
-	if (level > LOG_INFO) { // put log in mqtt buffer
-		ets_sprintf(lastLog, "%s:%s:%s", SysLogLevelStr[level], dst, buffer);
-	}
-
-	os_printf_plus("%06d.%03d |%s| %s | %s\r\n", time / 1000, time % 1000,
-			SysLogLevelStr[level], dst, buffer);
+//	if (level > LOG_INFO) { // put log in mqtt buffer
+//		ets_sprintf(lastLog, "%s:%s:%s", SysLogLevelStr[level], dst, buffer);
+//	}
+	ets_snprintf(lastLog,256,"%10u | %s | %s\n", time , dst, buffer);
+	uart0WriteBytes(lastLog,strlen(lastLog));
+//	os_printf_plus();
 	ReleaseMutex(&logMutex);
 }

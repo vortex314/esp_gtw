@@ -51,7 +51,7 @@ static struct regfile regs;
 
 static void handle_exception(struct regfile *regs) {
   xthal_set_intenable(0);
-  printf("Dumping core to debug output\n");
+//  printf("Dumping core to debug output\n");
   esp_dump_core(-1, regs);
 }
 
@@ -71,7 +71,7 @@ static void handle_exception(struct regfile *regs) {
 IRAM void esp_exception_handler(struct xtensa_stack_frame *frame) {
   uint32_t cause = RSR(EXCCAUSE);
   uint32_t vaddr = RSR(EXCVADDR);
-  printf("\nTrap %d: pc=%p va=%p\n", cause, (void *) frame->pc, (void *) vaddr);
+  INFO("\nTrap %d: pc=%p va=%p\n", cause, (void *) frame->pc, (void *) vaddr);
   memcpy(&regs.a[2], frame->a, sizeof(frame->a));
 
   regs.a[0] = frame->a0;

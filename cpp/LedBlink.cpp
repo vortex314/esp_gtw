@@ -20,6 +20,7 @@ IROM LedBlink::LedBlink() :
 
 IROM void LedBlink::init() {
 	gpio16_output_conf();
+	gpio16_output_set(0); 	// LED is ON
 }
 
 IROM  LedBlink::~LedBlink() {
@@ -36,8 +37,6 @@ IROM bool LedBlink::dispatch(Msg& msg) {
 		case SIG_TICK: {
 			gpio16_output_set(_isOn);
 			_isOn = !_isOn;
-//				Msg::publish((void*) LED_ID, SIG_TXD);
-//				INFO( "Led Tick ");
 			break;
 		}
 		case SIG_CONNECTED: {
@@ -54,5 +53,6 @@ IROM bool LedBlink::dispatch(Msg& msg) {
 
 	}
 	PT_END();
+	return false;
 }
 

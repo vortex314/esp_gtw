@@ -56,8 +56,7 @@ IROM void logMsg(Msg* msg) {
 			INFO(">>>>>>>>>>   %s , %s x %d ",
 					(const char*) src, strSignal[signal], sigCount);
 		}*/
-		INFO(">>>>>>>>>>   %s , %s ",
-				(const char* )msg->src(), strSignal[msg->signal()]);
+		INFO(">>>> %s , %s ",	(const char* )msg->src(), strSignal[msg->signal()]);
 /*		src = msg->src();
 		signal = msg->signal();
 		sigCount = 0;

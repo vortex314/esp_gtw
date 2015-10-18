@@ -26,7 +26,10 @@ IROM UartEsp8266::UartEsp8266() :
 IROM UartEsp8266::~UartEsp8266() {
 	ERROR(" dtor called ");
 }
-extern "C" void uart_tx_intr_enable(int bol);
+
+extern "C" void uart0_tx_intr_enable();
+//__________________________________________________________________
+//
 IROM Erc UartEsp8266::write(Bytes& bytes) {
 	bytes.offset(0);
 	while (_txd.hasSpace() && bytes.hasData()) {
@@ -37,7 +40,7 @@ IROM Erc UartEsp8266::write(Bytes& bytes) {
 		overflowTxd++;
 	}
 	if (_txd.hasData()) {
-		uart_tx_intr_enable(1);
+		uart0_tx_intr_enable();
 	}
 	return E_OK;
 }
@@ -50,7 +53,7 @@ IROM Erc UartEsp8266::write(uint8_t data) {
 		overflowTxd++;
 	}
 	if (_txd.hasData()) {
-		uart_tx_intr_enable(1);
+		uart0_tx_intr_enable();
 	}
 	return E_OK;
 }
@@ -116,10 +119,21 @@ extern "C" void uart0Write(uint8_t b) {
 		UartEsp8266::_uart0->write(b);
 	}
 }
-/*
-extern "C" void uart0WriteWait(uint8_t b) {
+
+extern "C" void uart0WriteBytes(uint8_t *pb, uint32_t size) {
 	checkUart0();
-	while (UartEsp8266::_uart0->write(b) != E_OK)
-		;
-}*/
+	if (UartEsp8266::_uart0->_txd.hasSpace(size))
+		for (uint32_t i = 0; i < size; i++)
+			uart0Write(*(pb + i));
+	else {
+		uart0Write('#');
+		overflowTxd++;
+	}
+}
+/*
+ extern "C" void uart0WriteWait(uint8_t b) {
+ checkUart0();
+ while (UartEsp8266::_uart0->write(b) != E_OK)
+ ;
+ }*/
 

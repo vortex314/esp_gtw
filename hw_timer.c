@@ -150,15 +150,18 @@ extern const char* CLOCK_ID;
 extern const char* MQTT_ID;
 extern const char* TCP_ID;
 extern const char* WIFI_ID;
-
-uint64_t SysUpTime=0UL;
-uint64_t SysWatchDog=10000UL;
+#include "esp_exc.h"
+uint64_t SysUpTime = 0UL;
+uint64_t SysWatchDog = 3000UL;
+extern  void uart0WriteBytes(uint8_t *pb, uint32_t size);
 void hw_test_timer_cb(void) {
+	uint32_t lv=0;
 	SysUpTime++;
-	if ( SysUpTime > SysWatchDog) {
-		os_printf_plus("MyWatchDog\n");
-		dump_stack();
-		SysWatchDog=SysUpTime+1000;
+	if (SysUpTime > SysWatchDog) {
+		dump_stack(&lv);
+		struct regfile regs;
+		esp_dump_core(-1, regs);
+		SysWatchDog = SysUpTime + 1000;
 	}
 }
 

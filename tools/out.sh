@@ -1,4 +1,6 @@
 pwd
+mv minicom1.log minicom2.log
+mv minicom.log minicom1.log
 USB=/dev/ttyUSB0
 PROJECT=$1
 echo $PROJECT

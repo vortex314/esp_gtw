@@ -9,7 +9,7 @@
 
 #define MQTT_HOST			"iot.eclipse.org" //or "mqtt.yourdomain.com"
 #define MQTT_PORT			1883
-#define MQTT_BUF_SIZE		1024
+#define MQTT_BUF_SIZE		256 // 1024
 #define MQTT_KEEPALIVE		120	 /*second*/
 
 #define MQTT_CLIENT_ID		"DVES_%08X"

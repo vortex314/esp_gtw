@@ -41,7 +41,9 @@ static void uart_putdec(int fd, unsigned int n) {
 	}
 }
 #define RTOS_SDK
+
 static int core_dump_emit_char_fd = 0;
+
 static void core_dump_emit_char(char c, void *user_data) {
 	int *col_counter = (int *) user_data;
 #ifdef RTOS_SDK
@@ -64,9 +66,9 @@ static void core_dump_emit_char(char c, void *user_data) {
     r;                                                \
   })
 
-void dump_stack() {
-	uint32_t lv = 0;
-	uint32_t* start = &lv;
+void dump_stack(uint32_t* lv) {
+//	ets_wdt_disable();
+	uint32_t* start = lv;
 	uint32_t* end = 0x40000000;
 	uint32_t* ptr = start;
 	os_printf_plus("@(#):STACK_START 0x%X\n", start);
@@ -80,6 +82,7 @@ void dump_stack() {
 		ptr += sizeof(uint32_t);
 	}
 	os_printf_plus("@(#):STACK_END\n");
+//	ets_wdt_enable();
 
 }
 
@@ -108,29 +111,34 @@ static void emit_core_dump_section(int fd, const char *name, uint32_t addr,
 }
 
 void esp_dump_core(int fd, struct regfile *regs) {
-	  xthal_set_intenable(0);
-	if (fd == -1) {
-		fd = ESP_COREDUMP_FILENO;
-	}
-	uart_puts(fd, "\r\n--- BEGIN CORE DUMP ---\n");
+	uint32_t lv=0;
+	xthal_set_intenable(0);
+	ets_wdt_disable();
+//	dump_stack(&lv);
+		if (fd == -1) {
+	 fd = ESP_COREDUMP_FILENO;
+	 }
+	 uart_puts(fd, "\r\n--- BEGIN CORE DUMP ---\n");
 
-	uart_puts(fd, "{\"arch\": \"ESP8266\"");
-	emit_core_dump_section(fd, "REGS", (uintptr_t) regs, sizeof(*regs));
-	emit_core_dump_section(fd, "DRAM", 0x3FFE8000, 0x18000);
-	/* rtos relocates vectors here */
-	emit_core_dump_section(fd, "VEC", 0x40100000, 0x1000);
-	emit_core_dump_section(fd, "ROM", 0x40000000, 0x10000);
-	uart_puts(fd, "}\n");
+	 uart_puts(fd, "{\"arch\": \"ESP8266\"");
+	 emit_core_dump_section(fd, "REGS", (uintptr_t) regs, sizeof(*regs));
+	 emit_core_dump_section(fd, "DRAM", 0x3FFE8000, 0x18000);
+	 // rtos relocates vectors here
+	 emit_core_dump_section(fd, "VEC", 0x40100000, 0x1000);
+	 emit_core_dump_section(fd, "ROM", 0x40000000, 0x10000);
+	 uart_puts(fd, "}\n");
 
-	/*
-	 * IRAM and IROM can be obtained from the firmware/ dir.
-	 * We need the ELF binary anyway to do symbolic debugging anyway
-	 * so we can avoid sending here huge amount of data that's available
-	 * on the host where we run GDB.
-	 */
+	 //
+	 // IRAM and IROM can be obtained from the firmware/ dir.
+	 // We need the ELF binary anyway to do symbolic debugging anyway
+	 // so we can avoid sending here huge amount of data that's available
+	 // on the host where we run GDB.
 
-	uart_puts(fd, "---- END CORE DUMP ----\n");
-	  _ResetVector();
+	 #include "ets_sys.h"
+	 uart_puts(fd, "---- END CORE DUMP ----\n");
+	ets_delay_us(10000000);
+	ets_wdt_enable();
+	_ResetVector();
 }
 
 #endif /* ESP_COREDUMP */
