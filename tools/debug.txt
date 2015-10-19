@@ -1,0 +1,586 @@
+Reading ELF file /home/lieven/workspace/esp_gtw/Debug/esp_gtw
+Reading log file /home/lieven/workspace/esp_gtw/tools/minicom.log
+ CPU xtensa little endian true type 1
+ Section 
+ Section .data
+ Section .rodata
+ Section .bss
+ Section .text
+ Section .irom0.text
+ Section .xtensa.info
+ Section .comment
+ Section .xt.lit._ZN6ConfigD2Ev
+ Section .xt.lit._ZN6ConfigD0Ev
+ Section .xt.prop._ZN6ConfigD2Ev
+ Section .xt.prop._ZN6ConfigD0Ev
+ Section .xt.prop._ZTV6Config
+ Section .xt.prop._ZTV5Flash
+ Section .xt.lit._ZN7HandlerD2Ev
+ Section .xt.lit._ZN7HandlerD0Ev
+ Section .xt.prop._ZN7HandlerD2Ev
+ Section .xt.prop._ZN7HandlerD0Ev
+ Section .xt.prop._ZTV7Handler
+ Section .xt.prop._ZTV8LedBlink
+ Section .xt.lit._ZN4UartD2Ev
+ Section .xt.lit._ZN4UartD0Ev
+ Section .xt.prop._ZN4UartD2Ev
+ Section .xt.prop._ZN4UartD0Ev
+ Section .xt.prop._ZTV4Uart
+ Section .xt.prop._ZTV11UartEsp8266
+ Section .xt.prop._ZN5Board17disableInterruptsEv
+ Section .xt.prop._ZN5Board16enableInterruptsEv
+ Section .xt.lit._ZN11ProtoThreadC2Ev
+ Section .xt.lit._ZN11ProtoThread9isRunningEv
+ Section .xt.prop._ZN11ProtoThreadC2Ev
+ Section .xt.prop._ZN11ProtoThread7restartEv
+ Section .xt.prop._ZN11ProtoThread9isRunningEv
+ Section .xt.prop._ZTV11ProtoThread
+ Section .xt.lit._ZN3StrD2Ev
+ Section .xt.prop._ZN3StrD2Ev
+ Section .xt.lit._ZN3Str6appendEx
+ Section .xt.prop._ZN3Str6appendEx
+ Section .debug_frame
+ Section .debug_info
+ Section .debug_abbrev
+ Section .debug_loc
+ Section .debug_aranges
+ Section .debug_ranges
+ Section .debug_line
+ Section .debug_str
+ Section .debug_macro
+ Section .shstrtab
+ Section .symtab
+ Section .strtab
+ Header PT_LOAD (Loadable segment)
+ Header PT_LOAD (Loadable segment)
+ Header PT_LOAD (Loadable segment)
+ Header PT_LOAD (Loadable segment)
+ Header PT_LOAD (Loadable segment)
+Mon Oct 19 23:29:58 CEST 2015Log file was reset. Restarting logging from start of file.
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:13 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:13 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:14 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:14 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:15 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:15 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:16 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:16 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:17 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:17 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:18 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:18 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:37:19 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3328 DATA _heap_start +0x2368
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAF08 DATA wDevCtrl +0x48
+3FFFFF20:3FFF22B0 DATA _heap_start +0x12F0
+3FFFFF30:3FFF23F8 DATA _heap_start +0x1438
+3FFFFF40:3FFF1E10 DATA _heap_start +0xE50
+3FFFFF60:3FFEDEA0 DATA WdevTimOffSet +0x2E38
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA920 DATA DefFreqCalTimer +0x280
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:37:19 CEST 2015 -------------------------
+Mon Oct 19 23:44:27 CEST 2015Log file was reset. Restarting logging from start of file.
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:49:13 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3278 DATA _heap_start +0x22B8
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAE58 DATA DefFreqCalTimer +0x7B8
+3FFFFF20:3FFF2200 DATA _heap_start +0x1240
+3FFFFF30:3FFF2348 DATA _heap_start +0x1388
+3FFFFF40:3FFF1D60 DATA _heap_start +0xDA0
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA838 DATA DefFreqCalTimer +0x198
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:49:13 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:49:14 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3278 DATA _heap_start +0x22B8
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAE58 DATA DefFreqCalTimer +0x7B8
+3FFFFF20:3FFF2200 DATA _heap_start +0x1240
+3FFFFF30:3FFF2348 DATA _heap_start +0x1388
+3FFFFF40:3FFF1D60 DATA _heap_start +0xDA0
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA838 DATA DefFreqCalTimer +0x198
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:49:14 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:49:15 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3278 DATA _heap_start +0x22B8
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAE58 DATA DefFreqCalTimer +0x7B8
+3FFFFF20:3FFF2200 DATA _heap_start +0x1240
+3FFFFF30:3FFF2348 DATA _heap_start +0x1388
+3FFFFF40:3FFF1D60 DATA _heap_start +0xDA0
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA838 DATA DefFreqCalTimer +0x198
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:49:15 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:49:16 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3278 DATA _heap_start +0x22B8
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAE58 DATA DefFreqCalTimer +0x7B8
+3FFFFF20:3FFF2200 DATA _heap_start +0x1240
+3FFFFF30:3FFF2348 DATA _heap_start +0x1388
+3FFFFF40:3FFF1D60 DATA _heap_start +0xDA0
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA838 DATA DefFreqCalTimer +0x198
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:49:16 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:49:17 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3278 DATA _heap_start +0x22B8
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAE58 DATA DefFreqCalTimer +0x7B8
+3FFFFF20:3FFF2200 DATA _heap_start +0x1240
+3FFFFF30:3FFF2348 DATA _heap_start +0x1388
+3FFFFF40:3FFF1D60 DATA _heap_start +0xDA0
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA838 DATA DefFreqCalTimer +0x198
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:49:17 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Mon Oct 19 23:49:18 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDC0:3FFF3278 DATA _heap_start +0x22B8
+3FFFFDD0:40221E90 CODE ip_output +0x30
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFED0:3FFEAE58 DATA DefFreqCalTimer +0x7B8
+3FFFFF20:3FFF2200 DATA _heap_start +0x1240
+3FFFFF30:3FFF2348 DATA _heap_start +0x1388
+3FFFFF40:3FFF1D60 DATA _heap_start +0xDA0
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF80:40102986 CODE ppProcessTxQ +0x66
+3FFFFF90:402116B6 CODE ppPeocessRxPktHdr +0x14A
+3FFFFFA0:3FFEA838 DATA DefFreqCalTimer +0x198
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Mon Oct 19 23:49:18 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:05:57 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:05:57 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:05:58 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:05:58 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:05:59 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:05:59 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:06:00 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:06:00 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:06:01 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:06:01 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:06:02 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:06:02 CEST 2015 -------------------------
+STACK_START 0x3FFFFD40------------------Tue Oct 20 00:06:03 CEST 2015 -------------------------
+3FFFFD60:3FFFC200 DATA _heap_start +0xB240
+3FFFFD70:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFD80:4010190D CODE lmacProcessTxSuccess +0x39
+3FFFFDF0:40002514 CODE ets_printf +0x48
+3FFFFE30:3FFFFE50 DATA UartDev +0x2040
+3FFFFE50:3FFE9050 DATA unsupported_str +0xA0
+3FFFFE70:4010431C CODE wDev_ProcessFiq +0x2F0
+3FFFFE90:4000050C CODE _xtos_set_exception_handler +0xB8
+3FFFFEB0:40000F68 CODE ets_post +0x144
+3FFFFEC0:40000F58 CODE ets_post +0x134
+3FFFFF20:3FFEA5B4 DATA pmc +0xA4
+3FFFFF40:3FFE9E90 DATA _bss_start +0x168
+3FFFFF50:402114A4 CODE pp_noise_test +0x8
+3FFFFF60:3FFEDE18 DATA WdevTimOffSet +0x2DB0
+3FFFFF70:40202A88 CODE ets_timer_handler_isr +0x90
+3FFFFF80:40202AAE CODE ets_timer_handler_isr +0xB6
+3FFFFF90:3FFE9EB8 DATA _bss_start +0x190
+3FFFFFA0:40000F49 CODE ets_post +0x125
+3FFFFFB0:40000E19 CODE ets_run +0x15
+3FFFFFC0:40001100 CODE ets_isr_unmask +0x158
+3FFFFFD0:40100276 CODE call_user_start_local +0xE
+3FFFFFE0:4010000D CODE call_user_start +0x9
+3FFFFFF0:4000044C CODE _ResetVector +0x3CC
+STACK_END------------------Tue Oct 20 00:06:03 CEST 2015 -------------------------
