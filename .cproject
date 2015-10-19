@@ -18,22 +18,24 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795" name="Debug" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795" name="Debug" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.1105106795." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.2086849650" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
+						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.2086849650" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="cdt.managedbuild.option.gnu.cross.prefix.261373536" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix" value="xtensa-lx106-elf-" valueType="string"/>
 							<option id="cdt.managedbuild.option.gnu.cross.path.720613335" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path" value="/home/lieven/esp-open-sdk/xtensa-lx106-elf/bin" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.targetPlatform.gnu.cross.1284936930" isAbstract="false" osList="all" superClass="cdt.managedbuild.targetPlatform.gnu.cross"/>
-							<builder buildPath="${workspace_loc:/esp_bridge/Debug}" id="cdt.managedbuild.builder.gnu.cross.1429537209" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
-							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1508331245" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
+							<builder buildPath="${workspace_loc:/esp_bridge/Debug}" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator" id="cdt.managedbuild.builder.gnu.cross.1429537209" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
+							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cross.c.compiler.1508331245" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.534156177" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.level.1585577521" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.debugging.level.1585577521" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.default" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.981261988" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp_iot_sdk_v1.4.0/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.886301534" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -fno-jump-tables -D__ets__ -DICACHE_FLASH" valueType="string"/>
 								<option id="gnu.c.compiler.option.warnings.nowarn.1650923941" name="Inhibit all warnings (-w)" superClass="gnu.c.compiler.option.warnings.nowarn" value="true" valueType="boolean"/>
@@ -44,17 +46,20 @@
 									<listOptionValue builtIn="false" value="STA_PASS='&quot;LievenMarletteEwoutRonald&quot;'"/>
 									<listOptionValue builtIn="false" value="ESP_COREDUMP"/>
 								</option>
+								<option id="gnu.c.compiler.option.optimization.flags.392604736" name="Other optimization flags" superClass="gnu.c.compiler.option.optimization.flags" value="-Og" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1847501458" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.958934328" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.958934328" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
 								<option id="gnu.cpp.compiler.option.optimization.level.1691984939" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.debugging.level.2060084551" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.debugging.level.2060084551" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.default" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1424523683" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp_iot_sdk_v1.4.0/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.730202308" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
@@ -64,10 +69,11 @@
 									<listOptionValue builtIn="false" value="ESP_COREDUMP"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.2047560662" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -ffunction-sections -fno-rtti -fno-exceptions -mlongcalls -mtext-section-literals -fno-jump-tables" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.optimization.flags.1021007226" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="-Og" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1703538761" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1505451701" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
-							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1065140071" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
+							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1065140071" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker">
 								<option id="gnu.cpp.link.option.flags.92119245" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-u call_user_start -Wl,-static -T../ld/link.ld  -Wl,--gc-sections -mlongcalls " valueType="string"/>
 								<option id="gnu.cpp.link.option.paths.1016800191" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/Debug}&quot;"/>
@@ -104,7 +110,7 @@
 								</inputType>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.1916232173" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver"/>
-							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.1067312704" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler">
+							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.cross.assembler.1067312704" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler">
 								<option id="gnu.both.asm.option.include.paths.1608734545" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:${ProjDirPath}/include}&quot;"/>
@@ -112,6 +118,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.160379888" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -167,6 +175,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2060140780" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
@@ -190,6 +200,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1868884921" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
@@ -219,6 +231,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.492121209" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>

@@ -66,25 +66,7 @@ static void core_dump_emit_char(char c, void *user_data) {
     r;                                                \
   })
 
-void dump_stack(uint32_t* lv) {
-//	ets_wdt_disable();
-	uint32_t* start = lv;
-	uint32_t* end = 0x40000000;
-	uint32_t* ptr = start;
-	os_printf_plus("@(#):STACK_START 0x%X\n", start);
-//	INFO("@(#):%8X:%8X", 0xA0, RSR(A0));
-	while (ptr < end) {
-		if ((*ptr > 0x40000000 && *ptr < 0x60000000) // only print CODE locations
-		|| (*ptr > 0x3ff00000 && *ptr < 0x40000000) // data
-				)
-			os_printf_plus("@(#):%8X:%8X\n", ptr, *ptr);
-//	    INFO("%8x : %8x %8x %8x %8x ",ptr,*ptr,*(ptr+1),*(ptr+2),*(ptr+3));
-		ptr += sizeof(uint32_t);
-	}
-	os_printf_plus("@(#):STACK_END\n");
-//	ets_wdt_enable();
 
-}
 
 /* address must be aligned to 4 and size must be multiple of 4 */
 static void emit_core_dump_section(int fd, const char *name, uint32_t addr,

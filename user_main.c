@@ -49,7 +49,7 @@
 #include "Sys.h"
 
 MQTT_Client mqttClient;
-#define DELAY 20/* milliseconds */
+#define DELAY 100/* milliseconds */
 LOCAL	os_timer_t hello_timer;
 
 uint32_t count = 0;
@@ -284,7 +284,6 @@ IROM void user_init(void) {
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	esp_exception_handler_init();
 	gpio_init();
-//	gpio16_output_conf();
 	clockInit();
 	os_delay_us(1000000);
 	struct bootflags bf;

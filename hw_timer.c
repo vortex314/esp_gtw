@@ -154,13 +154,28 @@ extern const char* WIFI_ID;
 uint64_t SysUpTime = 0UL;
 uint64_t SysWatchDog = 3000UL;
 extern  void uart0WriteBytes(uint8_t *pb, uint32_t size);
+
+void dump_stack(uint32_t* lv) {
+	uint32_t* start = lv;
+	uint32_t* end = 0x40000000;
+	uint32_t* ptr = start;
+	os_printf_plus("@(#):STACK_START 0x%X\n", start);
+	while (ptr < end) {
+		if ((*ptr > 0x40000000 && *ptr < 0x60000000) // only print CODE locations
+		|| (*ptr > 0x3ff00000 && *ptr < 0x40000000) // data
+				)
+			os_printf_plus("@(#):%8X:%8X\n", ptr, *ptr);
+		ptr += sizeof(uint32_t);
+	}
+	os_printf_plus("@(#):STACK_END\n");
+}
+
 void hw_test_timer_cb(void) {
 	uint32_t lv=0;
 	SysUpTime++;
 	if (SysUpTime > SysWatchDog) {
+		os_printf_plus("\nWATCHDOG\n");
 		dump_stack(&lv);
-		struct regfile regs;
-		esp_dump_core(-1, regs);
 		SysWatchDog = SysUpTime + 1000;
 	}
 }
