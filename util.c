@@ -25,7 +25,8 @@ mutex_t logMutex=1;
 void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 		const char * format, ...) {
 	if (! GetMutex(&logMutex)) {
-		conflicts++;
+//		os_printf_plus(" Syslog called by %s ",function);
+		conflicts+=1000;
 		return;
 
 	}

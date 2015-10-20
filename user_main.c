@@ -49,8 +49,8 @@
 #include "Sys.h"
 
 MQTT_Client mqttClient;
-#define DELAY 100/* milliseconds */
-LOCAL	os_timer_t hello_timer;
+#define DELAY 20/* milliseconds */
+LOCAL os_timer_t hello_timer;
 
 uint32_t count = 0;
 disconnectCounter = 0;
@@ -103,7 +103,7 @@ void mqttConnectedCb(uint32_t *args) {
 	ets_sprintf(topic, "PUT%s/#", mqttPrefix);
 	MQTT_Subscribe(client, topic, 0);
 
-	publishStr("system/online","true");
+	publishStr("system/online", "true");
 
 	Post(MQTT_ID, SIG_CONNECTED);
 
@@ -182,16 +182,18 @@ extern uint64_t SysWatchDog;
 
 extern IROM int HandlerTimeouts();
 #define CLEAN_SIZE 1024
-uint32_t* cleanStack(){
+uint32_t* cleanStack() {
 
 	uint32_t buffer[CLEAN_SIZE];
 	int i;
-	buffer[0]=0;
-	for(i=1;i<CLEAN_SIZE;i++) buffer[i]=buffer[i-1];
+	buffer[0] = 0;
+	for (i = 1; i < CLEAN_SIZE; i++)
+		buffer[i] = buffer[i - 1];
 	return buffer;
 }
 
 void IROM tick_cb(void *arg) {
+	bool b = ThreadLock(__FUNCTION__);
 	static uint64_t timeoutValue = 0;
 	if (SysMillis() > timeoutValue) {
 		timeoutValue = SysMillis() + 3000;
@@ -200,21 +202,24 @@ void IROM tick_cb(void *arg) {
 		}
 	}
 //	if (HandlerTimeouts())
-		Post(CLOCK_ID, SIG_TICK);
+	Post(CLOCK_ID, SIG_TICK);
 //		if (mqttConnected) publish("system/uptime",SysUpTime);
 //		cleanStack();
+	if (b) ThreadUnlock();
 }
 
 void IROM MSG_TASK(os_event_t *e) {
+	bool b = ThreadLock(__FUNCTION__);
 	cleanStack();
 	MsgPublish(e->par, e->sig);
 	MsgPump();
 	SysWatchDog = SysUpTime + 1000; // if not called within 1 second calls dump_stack;
+	if (b ) ThreadUnlock();
 }
 
 void IROM publishAll() {
 	publish("count", count++);
-	publishStr("system/online","true");
+	publishStr("system/online", "true");
 	publish("system/conflicts", conflicts);
 	publish("mqtt/connections", mqttConnectCounter);
 	publish("wifi/connections", wifiConnectCounter);
@@ -237,49 +242,53 @@ void IROM publishAll() {
  MsgPump();
  } */
 
-struct bootflags
-{
-    unsigned char raw_rst_cause : 4;
-    unsigned char raw_bootdevice : 4;
-    unsigned char raw_bootmode : 4;
+struct bootflags {
+	unsigned char raw_rst_cause :4;
+	unsigned char raw_bootdevice :4;
+	unsigned char raw_bootmode :4;
 
-    unsigned char rst_normal_boot : 1;
-    unsigned char rst_reset_pin : 1;
-    unsigned char rst_watchdog : 1;
+	unsigned char rst_normal_boot :1;
+	unsigned char rst_reset_pin :1;
+	unsigned char rst_watchdog :1;
 
-    unsigned char bootdevice_ram : 1;
-    unsigned char bootdevice_flash : 1;
+	unsigned char bootdevice_ram :1;
+	unsigned char bootdevice_flash :1;
 };
 struct bootflags bootmode_detect(void) {
-    int reset_reason, bootmode;
-    asm (
-        "movi %0, 0x60000600\n\t"
-        "movi %1, 0x60000200\n\t"
-        "l32i %0, %0, 0x114\n\t"
-        "l32i %1, %1, 0x118\n\t"
-        : "+r" (reset_reason), "+r" (bootmode) /* Outputs */
-        : /* Inputs (none) */
-        : "memory" /* Clobbered */
-    );
+	int reset_reason, bootmode;
+	asm (
+			"movi %0, 0x60000600\n\t"
+			"movi %1, 0x60000200\n\t"
+			"l32i %0, %0, 0x114\n\t"
+			"l32i %1, %1, 0x118\n\t"
+			: "+r" (reset_reason), "+r" (bootmode) /* Outputs */
+			: /* Inputs (none) */
+			: "memory" /* Clobbered */
+	);
 
-    struct bootflags flags;
+	struct bootflags flags;
 
-    flags.raw_rst_cause = (reset_reason&0xF);
-    flags.raw_bootdevice = ((bootmode>>0x10)&0x7);
-    flags.raw_bootmode = ((bootmode>>0x1D)&0x7);
+	flags.raw_rst_cause = (reset_reason & 0xF);
+	flags.raw_bootdevice = ((bootmode >> 0x10) & 0x7);
+	flags.raw_bootmode = ((bootmode >> 0x1D) & 0x7);
 
-    flags.rst_normal_boot = flags.raw_rst_cause == 0x1;
-    flags.rst_reset_pin = flags.raw_rst_cause == 0x2;
-    flags.rst_watchdog = flags.raw_rst_cause == 0x4;
+	flags.rst_normal_boot = flags.raw_rst_cause == 0x1;
+	flags.rst_reset_pin = flags.raw_rst_cause == 0x2;
+	flags.rst_watchdog = flags.raw_rst_cause == 0x4;
 
-    flags.bootdevice_ram = flags.raw_bootdevice == 0x1;
-    flags.bootdevice_flash = flags.raw_bootdevice == 0x3;
+	flags.bootdevice_ram = flags.raw_bootdevice == 0x1;
+	flags.bootdevice_flash = flags.raw_bootdevice == 0x3;
 
-    return flags;
+	return flags;
 }
 
-#include "esp_exc.h"
+#include "esp_exc.h"// implement for all timers, callbacks from OS,
+
+
+// in SysLog ???
+// in uart0Write ??
 IROM void user_init(void) {
+	ThreadLockInit();
 
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	esp_exception_handler_init();
@@ -288,7 +297,7 @@ IROM void user_init(void) {
 	os_delay_us(1000000);
 	struct bootflags bf;
 	bf = bootmode_detect();
-	INFO("reset cause %d",bf.raw_rst_cause);
+	INFO("reset cause %d", bf.raw_rst_cause);
 	INFO("Starting version : " __DATE__ " " __TIME__);
 	INFO("");
 //	dump_stack();
@@ -310,7 +319,7 @@ IROM void user_init(void) {
 			sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
 	//MQTT_InitClient(&mqttClient, "client_id", "user", "pass", 120, 1);
 	char lwt[40];
-	ets_sprintf(lwt,"%s/system/online",mqttPrefix);
+	ets_sprintf(lwt, "%s/system/online", mqttPrefix);
 	MQTT_InitLWT(&mqttClient, lwt, "false", 0, 0);
 	MQTT_OnConnected(&mqttClient, mqttConnectedCb);
 	MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);

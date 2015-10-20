@@ -153,7 +153,7 @@ extern const char* WIFI_ID;
 #include "esp_exc.h"
 uint64_t SysUpTime = 0UL;
 uint64_t SysWatchDog = 3000UL;
-extern  void uart0WriteBytes(uint8_t *pb, uint32_t size);
+extern void uart0WriteBytes(uint8_t *pb, uint32_t size);
 
 void dump_stack(uint32_t* lv) {
 	uint32_t* start = lv;
@@ -162,7 +162,7 @@ void dump_stack(uint32_t* lv) {
 	os_printf_plus("@(#):STACK_START 0x%X\n", start);
 	while (ptr < end) {
 		if ((*ptr > 0x40000000 && *ptr < 0x60000000) // only print CODE locations
-		|| (*ptr > 0x3ff00000 && *ptr < 0x40000000) // data
+//		|| (*ptr > 0x3ff00000 && *ptr < 0x40000000) // data
 				)
 			os_printf_plus("@(#):%8X:%8X\n", ptr, *ptr);
 		ptr += sizeof(uint32_t);
@@ -171,13 +171,15 @@ void dump_stack(uint32_t* lv) {
 }
 
 void hw_test_timer_cb(void) {
-	uint32_t lv=0;
+//	bool b = ThreadLock(__FUNCTION__);
+	uint32_t lv = 0;
 	SysUpTime++;
 	if (SysUpTime > SysWatchDog) {
 		os_printf_plus("\nWATCHDOG\n");
 		dump_stack(&lv);
 		SysWatchDog = SysUpTime + 1000;
 	}
+//	if (b) ThreadUnlock();
 }
 
 void ICACHE_FLASH_ATTR clockInit(void)

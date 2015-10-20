@@ -24,6 +24,7 @@ WifiCallback wifiCb = NULL;
 static uint8_t wifiStatus = STATION_IDLE, lastWifiStatus = STATION_IDLE;
 static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 {
+	bool b = ThreadLock(__FUNCTION__);
 	struct ip_info ipConfig;
 
 	os_timer_disarm(&WiFiLinker);
@@ -77,6 +78,7 @@ static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
 		if(wifiCb)
 			wifiCb(wifiStatus);
 	}
+	if ( b ) ThreadUnlock();
 }
 
 void ICACHE_FLASH_ATTR WIFI_Connect(uint8_t* ssid, uint8_t* pass, WifiCallback cb)
