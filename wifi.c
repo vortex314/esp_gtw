@@ -22,7 +22,7 @@ extern uint32_t wifiConnectCounter;
 static ETSTimer WiFiLinker;
 WifiCallback wifiCb = NULL;
 static uint8_t wifiStatus = STATION_IDLE, lastWifiStatus = STATION_IDLE;
-static void ICACHE_FLASH_ATTR wifi_check_ip(void *arg)
+static void IROM wifi_check_ip(void *arg)
 {
 	bool b = ThreadLock(__FUNCTION__);
 	struct ip_info ipConfig;

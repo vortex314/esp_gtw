@@ -193,7 +193,7 @@ uint32_t* cleanStack() {
 }
 
 void IROM tick_cb(void *arg) {
-	bool b = ThreadLock(__FUNCTION__);
+	bool b=ThreadLock(__FUNCTION__);
 	static uint64_t timeoutValue = 0;
 	if (SysMillis() > timeoutValue) {
 		timeoutValue = SysMillis() + 3000;
@@ -284,6 +284,18 @@ struct bootflags bootmode_detect(void) {
 
 #include "esp_exc.h"// implement for all timers, callbacks from OS,
 
+void init_done_cb(){
+	esp_exception_handler_init();
+
+	os_timer_disarm(&hello_timer);
+	os_timer_setfn(&hello_timer, (os_timer_func_t *) tick_cb, (void *) 0);
+	os_timer_arm(&hello_timer, DELAY, 1);
+
+	system_os_task(MSG_TASK, MSG_TASK_PRIO, MsgQueue, MSG_TASK_QUEUE_SIZE);
+	MsgInit();
+	Post("SYSTEM",SIG_INIT);
+
+}
 
 // in SysLog ???
 // in uart0Write ??
@@ -291,20 +303,21 @@ IROM void user_init(void) {
 	ThreadLockInit();
 
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
-	esp_exception_handler_init();
+
 	gpio_init();
 	clockInit();
 	os_delay_us(1000000);
-	struct bootflags bf;
-	bf = bootmode_detect();
-	INFO("reset cause %d", bf.raw_rst_cause);
+//	struct bootflags bf;
+//	bf = bootmode_detect();
+//	INFO("reset cause %d", bf.raw_rst_cause);
+	INFO("*****************************************");
 	INFO("Starting version : " __DATE__ " " __TIME__);
-	INFO("");
+
 //	dump_stack();
 //	struct regfile regs;
 //	esp_dump_core(0,&regs);
 
-	MsgInit();
+
 	os_delay_us(1000000);
 	ets_sprintf(mqttPrefix, "/limero314/ESP_%08X", system_get_chip_id());
 //	uart_div_modify(0, UART_CLK_FREQ / 115200);
@@ -327,14 +340,8 @@ IROM void user_init(void) {
 	MQTT_OnData(&mqttClient, mqttDataCb);
 
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
-	// Set up a timer to send the message
 
-	os_timer_disarm(&hello_timer);
-	os_timer_setfn(&hello_timer, (os_timer_func_t *) tick_cb, (void *) 0);
-	os_timer_arm(&hello_timer, DELAY, 1);
 
-	INFO("System started ...");
-	system_os_task(MSG_TASK, MSG_TASK_PRIO, MsgQueue, MSG_TASK_QUEUE_SIZE);
-	system_os_post(MSG_TASK_PRIO, 0, 0);
+	system_init_done_cb(init_done_cb);
 }
 

@@ -24,18 +24,26 @@ const char* SysLogLevelStr[] = { "TRACE", "DEBUG", "INFO", "WARN", "ERROR",
 mutex_t logMutex=1;
 void IROM SysLog(SysLogLevel level, const char* file, const char* function,
 		const char * format, ...) {
-	if (! GetMutex(&logMutex)) {
+	char *p;
+	buffer[0]=0;
+	va_list args;
+	va_start(args, format);
+	if ( GetMutex(&logMutex)==0) {
+		for(p= "$$$:";*p!=0;p++) 	uart0WriteWait(*p);
+		for(p=file;*p!=0;p++) 	uart0WriteWait(*p);
+		for(p= "$$$";*p!=0;p++) 	uart0WriteWait(*p);
+		for(p=function;*p!=0;p++) 	uart0WriteWait(*p);
+//		uart0WriteBytes(":",1);
+//		uart0WriteBytes(function,strlen(function));
 //		os_printf_plus(" Syslog called by %s ",function);
 		conflicts+=1000;
+		va_end(args);
 		return;
 
 	}
 	uint32_t time = SysMillis();
 
 
-	buffer[0]=0;
-	va_list args;
-	va_start(args, format);
 	ets_vsnprintf(buffer, sizeof(buffer), format, args);
 	va_end(args);
 

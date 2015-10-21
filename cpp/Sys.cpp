@@ -20,10 +20,16 @@ extern "C" {
 #include "util.h"
 
 extern uint64_t SysUpTime;
+#include "mutex.h"
+mutex_t mallocMutex=1;
+
+
 
 IROM void* malloc(size_t size) {
+	while(!GetMutex(&mallocMutex));
 	void* pv = pvPortMalloc(size);
 	INFO("malloc(%d)=> 0x%X", size, pv);
+	ReleaseMutex(&mallocMutex);
 	return pv;
 }
 
