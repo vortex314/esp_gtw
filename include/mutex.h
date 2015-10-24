@@ -12,6 +12,7 @@ extern "C" {
 #endif
 
 #include <c_types.h>
+#include <stdint.h>
 
 typedef int32 mutex_t;
 

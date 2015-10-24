@@ -74,7 +74,7 @@ void ICACHE_FLASH_ATTR
 CFG_Load()
 {
 
-	INFO("load ...");
+	INFO("load from 0x%X ...",CFG_LOCATION * SPI_FLASH_SEC_SIZE);
 	spi_flash_read((CFG_LOCATION + 3) * SPI_FLASH_SEC_SIZE,
 				   (uint32 *)&saveFlag, sizeof(SAVE_FLAG));
 	if (saveFlag.flag == 0) {
@@ -86,6 +86,7 @@ CFG_Load()
 	}
 	if(sysCfg.cfg_holder != CFG_HOLDER){
 		os_memset(&sysCfg, 0x00, sizeof sysCfg);
+		INFO(" SSID : %s, PASS : %s ",STA_SSID,STA_PASS);
 
 
 		sysCfg.cfg_holder = CFG_HOLDER;
@@ -106,7 +107,7 @@ CFG_Load()
 
 		INFO("default configuration");
 
-// LMR commented out 		CFG_Save();
+		CFG_Save();// LMR commented out
 	}
 
 }

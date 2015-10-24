@@ -12,6 +12,7 @@ void ICACHE_FLASH_ATTR CreateMutex(mutex_t *mutex) {
 	*mutex = 1;
 }
 
+extern uint32_t conflicts;
 // try to get a mutex
 // returns true if successful, false if mutex not free
 // as the esp8266 doesn't support the atomic S32C1I instruction
@@ -33,7 +34,8 @@ bool ICACHE_FLASH_ATTR GetMutex(mutex_t *mutex) {
 			: "r" (mutex), "r" (iOld), "r" (iNew)
 			: "a15", "memory"
 	);
-
+	if (!iOld)
+		conflicts += 10000;
 	return (bool) iOld;
 }
 
@@ -64,6 +66,6 @@ bool ThreadLock(const char* name) {
 
 void ThreadUnlock() {
 //	os_printf_plus(" Thread %s Unlock  \n", funcName);
-		ReleaseMutex(&threadMutex);
+	ReleaseMutex(&threadMutex);
 }
 

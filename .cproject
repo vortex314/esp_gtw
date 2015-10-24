@@ -32,10 +32,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp_iot_sdk_v1.4.0/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/cpp}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.misc.other.886301534" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Os -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -fno-jump-tables -D__ets__ -DICACHE_FLASH" valueType="string"/>
 								<option id="gnu.c.compiler.option.warnings.nowarn.1650923941" name="Inhibit all warnings (-w)" superClass="gnu.c.compiler.option.warnings.nowarn" value="true" valueType="boolean"/>
@@ -55,11 +55,11 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1424523683" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp_iot_sdk_v1.4.0/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/cpp}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.730202308" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
@@ -115,11 +115,11 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:${ProjDirPath}/include}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/esp_iot_sdk_v1.3.0/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/cpp}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.160379888" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -177,6 +177,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/cpp}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2060140780" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
@@ -202,6 +205,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/cpp}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1868884921" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="ICACHE_FLASH"/>
@@ -233,6 +239,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/core_dump}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_gtw/gdbstub}&quot;"/>
 									<listOptionValue builtIn="false" value="/home/lieven/esp-open-sdk/lx106-hal/include/"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/core_dump}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp_cpp/cpp}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.492121209" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>

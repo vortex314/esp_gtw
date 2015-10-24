@@ -29,7 +29,7 @@ bool IROM Sender::dispatch(Msg& msg) {
 	CONNECTED: {
 		PT_YIELD_UNTIL( msg.is(_mqtt, SIG_DISCONNECTED) || timeout());
 		if (timeout()) {
-			char sValue[10];
+//			char sValue[10];
 //			ets_sprintf(sValue,(const char*)"%d",_myProp);
 //			MQTT_Publish(&mqttClient, "/mqtt/topic/0", "hello0", 6, 0, 0);
 		} else {

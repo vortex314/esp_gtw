@@ -45,6 +45,21 @@ IROM Erc UartEsp8266::write(Bytes& bytes) {
 	return E_OK;
 }
 
+IROM Erc UartEsp8266::write(uint8_t* pb,uint32_t length) {
+	uint32_t i=0;
+	while (_txd.hasSpace() && i<length) {
+		_txd.write(pb[i]);
+	};
+	if (i<length) {
+		_overflowTxd++;
+		overflowTxd++;
+	}
+	if (_txd.hasData()) {
+		uart0_tx_intr_enable();
+	}
+	return E_OK;
+}
+
 IROM Erc UartEsp8266::write(uint8_t data) {
 	if (_txd.hasSpace())
 		_txd.write(data);

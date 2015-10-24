@@ -58,4 +58,5 @@ void ICACHE_FLASH_ATTR CFG_Load();
 
 extern SYSCFG sysCfg;
 
+
 #endif /* USER_CONFIG_H_ */

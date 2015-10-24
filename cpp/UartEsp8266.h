@@ -34,6 +34,7 @@ public:
 	void init(uint32_t baud);
 	 Erc write(Bytes& data);
 	 Erc write(uint8_t b);
+	 Erc write(uint8_t* pb,uint32_t length);
 	 bool hasData();
 	 bool hasSpace();
 	 uint8_t read();
